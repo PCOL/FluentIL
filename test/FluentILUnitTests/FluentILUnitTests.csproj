@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
+    <PackageReference Include="MSTest.TestAdapter" Version="1.1.18" />
+    <PackageReference Include="MSTest.TestFramework" Version="1.1.18" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FluentIL\FluentIL.csproj" />
+    <Content Include="TypeBuilderUnitTests.cs" />
+    <Content Include="TypeFactoryUnitTests.cs" />
+    <Content Include="TypePropertyUnitTests.cxs" />
+    <Content Include="TypePropertyUnitTests.cs" />
+    <Content Include="TypeMethodUnitTests.cs" />
+    <Content Include="TypeInterfaceUnitTests.cs" />
+    <Content Include="Resources\ITestInterface.cs" />
+    <Content Include="GenericTypeUnitTests.cs" />
+    <Content Include="ModuleMethodUnitTests.cs" />
+  </ItemGroup>
+</Project>
