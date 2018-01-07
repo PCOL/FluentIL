@@ -268,6 +268,42 @@ namespace FluentIL
         }
 
         /// <summary>
+        /// Loads a method token.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="method"></param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdToken(this IEmitter emitter, MethodInfo method)
+        {
+            emitter.Emit(OpCodes.Ldtoken, method);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Loads a fields token.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="field">The field.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdToken(this IEmitter emitter, FieldInfo field)
+        {
+            emitter.Emit(OpCodes.Ldtoken, field);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Loads a fields token.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="field">The field.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdToken(this IEmitter emitter, IFieldBuilder field)
+        {
+            return emitter
+                .LdToken(field.Define());
+        }
+
+        /// <summary>
         /// Loads a null.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
@@ -276,6 +312,59 @@ namespace FluentIL
         public static IEmitter LdNull(this IEmitter emitter)
         {
             emitter.Emit(OpCodes.Ldnull);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load a value onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="type">The type to load.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitLdInd(this IEmitter emitter, Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.SByte:
+                    emitter.Emit(OpCodes.Ldind_I1);
+                    break;
+
+                case TypeCode.Char:
+                case TypeCode.Int16:
+                    emitter.Emit(OpCodes.Ldind_I2);
+                    break;
+
+                case TypeCode.Byte:
+                    emitter.Emit(OpCodes.Ldind_U1);
+                    break;
+
+                case TypeCode.Int32:
+                    emitter.Emit(OpCodes.Ldind_I4);
+                    break;
+
+                case TypeCode.UInt32:
+                    emitter.Emit(OpCodes.Ldind_U4);
+                    break;
+
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                    emitter.Emit(OpCodes.Ldind_I8);
+                    break;
+
+                case TypeCode.Single:
+                    emitter.Emit(OpCodes.Ldind_R4);
+                    break;
+
+                case TypeCode.Double:
+                    emitter.Emit(OpCodes.Ldind_R8);
+                    break;
+
+                default:
+                    emitter.Emit(OpCodes.Ldobj, type);
+                    break;
+            }
+
             return emitter;
         }
     }

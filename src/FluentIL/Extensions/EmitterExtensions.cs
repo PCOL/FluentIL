@@ -12,102 +12,45 @@ namespace FluentIL
     /// </summary>
     public static class EmitterExtensions
     {
-        private static readonly OpCode[] ConvOpCodes = new OpCode[]
-        {
-            OpCodes.Nop,
-            OpCodes.Nop,
-            OpCodes.Nop,
-            OpCodes.Conv_I1,
-            OpCodes.Conv_I2,
-            OpCodes.Conv_I1,
-            OpCodes.Conv_U1,
-            OpCodes.Conv_I2,
-            OpCodes.Conv_U2,
-            OpCodes.Conv_I4,
-            OpCodes.Conv_U4,
-            OpCodes.Conv_I8,
-            OpCodes.Conv_U8,
-            OpCodes.Conv_R4,
-            OpCodes.Conv_R8,
-            OpCodes.Nop,
-            OpCodes.Nop,
-            OpCodes.Nop,
-            OpCodes.Nop
-        };
-
-        private static readonly OpCode[] LdindOpCodes = new OpCode[]
-        {
-            OpCodes.Ldobj,
-            OpCodes.Ldobj,
-            OpCodes.Ldobj,
-            OpCodes.Ldind_I1,
-            OpCodes.Ldind_I2,
-            OpCodes.Ldind_I1,
-            OpCodes.Ldind_U1,
-            OpCodes.Ldind_I2,
-            OpCodes.Ldind_U2,
-            OpCodes.Ldind_I4,
-            OpCodes.Ldind_U4,
-            OpCodes.Ldind_I8,
-            OpCodes.Ldind_I8,
-            OpCodes.Ldind_R4,
-            OpCodes.Ldind_R8,
-            OpCodes.Ldobj,
-            OpCodes.Ldobj,
-            OpCodes.Ldobj,
-            OpCodes.Ldobj
-        };
-
-        private static readonly OpCode[] StindOpCodes = new OpCode[]
-        {
-            OpCodes.Stobj,
-            OpCodes.Stobj,
-            OpCodes.Stobj,
-            OpCodes.Stind_I1,
-            OpCodes.Stind_I2,
-            OpCodes.Stind_I1,
-            OpCodes.Stind_I1,
-            OpCodes.Stind_I2,
-            OpCodes.Stind_I2,
-            OpCodes.Stind_I4,
-            OpCodes.Stind_I4,
-            OpCodes.Stind_I8,
-            OpCodes.Stind_I8,
-            OpCodes.Stind_R4,
-            OpCodes.Stind_R8,
-            OpCodes.Stobj,
-            OpCodes.Stobj,
-            OpCodes.Stobj,
-            OpCodes.Stobj
-        };
-
-        private static readonly OpCode[] LdcI4OpCodes = new OpCode[]
-        {
-            OpCodes.Ldc_I4_0,
-            OpCodes.Ldc_I4_1,
-            OpCodes.Ldc_I4_2,
-            OpCodes.Ldc_I4_3,
-            OpCodes.Ldc_I4_4,
-            OpCodes.Ldc_I4_5,
-            OpCodes.Ldc_I4_6,
-            OpCodes.Ldc_I4_7,
-            OpCodes.Ldc_I4_8
-        };
+        /// <summary>
+        /// The <see cref="MethodInfo"/> for the <see cref="IDisposable.Dispose()"/> method.
+        /// </summary>
+        private static readonly MethodInfo DisposeMethodInfo = typeof(IDisposable).GetMethod("Dispose");
 
         /// <summary>
-        /// <see cref="IDisposable"/> Dispose <see cref="MethodInfo"/>
+        /// The <see cref="MethodInfo"/> for the <see cref="Type.GetTypeFromHandle(RuntimeTypeHandle)"/> method.
         /// </summary>
-        private static readonly MethodInfo DisposeMethodInfo = typeof(IDisposable).GetTypeInfo().GetMethod("Dispose");
+        private static readonly MethodInfo TypeGetTypeFromHandle = typeof(Type).GetMethod("GetTypeFromHandle");
 
         /// <summary>
-        /// <see cref="Type"/> GetTypeFromHandle <see cref="MethodInfo"/>
+        /// The <see cref="MethodInfo"/> for the <see cref="TypeFactory.GetType(string, bool)"/> method.
         /// </summary>
-        private static readonly MethodInfo GetTypeFromHandleMethodInfo = typeof(Type).GetTypeInfo().GetMethod("GetTypeFromHandle");
+        private static readonly MethodInfo TypeFactoryGetType = typeof(TypeFactory).GetMethod("GetType", new Type[] { typeof(string), typeof(bool) });
 
         /// <summary>
-        /// The <see cref="MethodInfo"/> for the <see cref="TypeFactory"/> GetType method.
+        /// The <see cref="MethodInfo"/> for the <see cref="MethodBase.GetMethodFromHandle(RuntimeMethodHandle)"/> method.
         /// </summary>
-        private static readonly MethodInfo GetTypeMethodInfo = typeof(TypeFactory).GetMethod("GetType", new Type[] { typeof(string), typeof(bool) });
+        private readonly static MethodInfo MethodBaseGetMethodFromHandle = typeof(MethodBase).GetMethod("GetMethodFromHandle", new[] { typeof(RuntimeMethodHandle) });
+
+        /// <summary>
+        /// The <see cref="MethodInfo"/> for the <see cref="MethodBase.GetMethodFromHandle(RuntimeMethodHandle, RuntimeTypeHandle)"/> method.
+        /// </summary>
+        private readonly static MethodInfo MethodBaseGetMethodFromHandleGeneric = typeof(MethodBase).GetMethod("GetMethodFromHandle", new[] { typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle) });
+
+        /// <summary>
+        /// A <see cref="MethodInfo"/> for the <see cref="Object.GetType()"/> method.
+        /// </summary>
+        private readonly static MethodInfo ObjectGetType = typeof(object).GetMethod("GetType");
+
+        /// <summary>
+        /// A <see cref="MethodInfo"/> for the <see cref="Type.GetType(string, bool)"/> method.
+        /// </summary>
+        private readonly static MethodInfo TypeGetType = typeof(Type).GetMethod("GetType", new[] { typeof(string), typeof(bool) });
+
+        /// <summary>
+        /// A <see cref="MethodInfo"/> for the <see cref="Type.IsAssignableFrom(Type)"/> method.
+        /// </summary>
+        private readonly static MethodInfo TypeIsAssignableFrom = typeof(Type).GetMethod("IsAssignableFrom");
 
         /// <summary>
         /// Writes a local to standard output.
@@ -121,7 +64,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits a <see cref="OpCodes.Newobj"/>.
         /// </summary>
         /// <param name="emitter"></param>
         /// <param name="ctor"></param>
@@ -132,7 +75,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits a <see cref="OpCodes.Nop"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -202,7 +145,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits a <see cref="OpCodes.Ret"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -218,7 +161,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter SizeOf(this IEmitter emitter, Type valueType)
         {
-            if (valueType.GetTypeInfo().IsValueType == false)
+            if (valueType.IsValueType == false)
             {
                 throw new InvalidProgramException("SizeOf instruction must take a value type");
             }
@@ -352,7 +295,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Box(this IEmitter emitter, Type referenceType)
         {
-            if (referenceType.GetTypeInfo().IsClass == false)
+            if (referenceType.IsClass == false)
             {
                 throw new InvalidProgramException("Box instruction must take a reference type");
             }
@@ -393,7 +336,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Unbox(this IEmitter emitter, Type valueType)
         {
-            if (valueType.GetTypeInfo().IsValueType == false)
+            if (valueType.IsValueType == false)
             {
                 throw new InvalidProgramException("Unbox instruction must take a value type");
             }
@@ -421,7 +364,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter UnboxAny(this IEmitter emitter, Type valueType)
         {
-            if (valueType.GetTypeInfo().IsValueType == false)
+            if (valueType.IsValueType == false)
             {
                 throw new InvalidProgramException("Unbox instruction must take a value type");
             }
@@ -439,7 +382,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Mkrefany, type);
         }
-        
+
         /// <summary>
         /// Emits IL to allocate a block of memory on the stack and push the pointer onto the evaluation stack.
         /// </summary>
@@ -482,7 +425,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter InitObj(this IEmitter emitter, Type valueType)
         {
-            if (valueType.GetTypeInfo().IsValueType == false)
+            if (valueType.IsValueType == false)
             {
                 throw new InvalidProgramException("InitObj instruction must take a value type");
             }
@@ -554,7 +497,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="method"></param>
@@ -565,7 +508,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="method">The method to call.</param>
@@ -582,7 +525,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Calls a constructor.
+        /// Emits a <see cref="OpCodes.Call"/> to a constructor.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="ctor">The constructor to call.</param>
@@ -593,7 +536,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Calls a constructor.
+        /// Emits a <see cref="OpCodes.Call"/> to a constructor.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="ctor">The constructor to call.</param>
@@ -610,7 +553,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits a <see cref="OpCodes.Calli"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="method"></param>
@@ -621,7 +564,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits a <see cref="OpCodes.Callvirt"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="method"></param>
@@ -637,9 +580,9 @@ namespace FluentIL
         /// <typeparam name="T">The <see cref="Type"/> to emit the 'typeof()' for.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter TypeOf<T>(this IEmitter emitter)
+        public static IEmitter EmitTypeOf<T>(this IEmitter emitter)
         {
-            return emitter.TypeOf(typeof(T));
+            return emitter.EmitTypeOf(typeof(T));
         }
 
         /// <summary>
@@ -648,11 +591,83 @@ namespace FluentIL
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="type">The <see cref="Type"/> to emit the 'typeof()' for.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter TypeOf(this IEmitter emitter, Type type)
+        public static IEmitter EmitTypeOf(this IEmitter emitter, Type type)
         {
             return emitter
                 .LdToken(type)
-                .Call(GetTypeFromHandleMethodInfo);
+                .Call(TypeGetTypeFromHandle);
+        }
+
+
+        /// <summary>
+        /// Emits the IL to perform an 'IsAssignableFrom' operation.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="from">The <see cref="Type"/> to check is assignable from.</param>
+        /// <param name="local">A <see cref="LocalBuilder"/> to check.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitIsAssignableFrom<T>(this IEmitter emitter, ILocal local)
+        {
+            return emitter.EmitIsAssignableFrom(typeof(T), local);
+        }
+
+        /// <summary>
+        /// Emits the IL to perform an 'IsAssignableFrom' operation.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="from">The <see cref="Type"/> to check is assignable from.</param>
+        /// <param name="local">A <see cref="LocalBuilder"/> to check.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitIsAssignableFrom(this IEmitter emitter, Type from, ILocal local)
+        {
+            return emitter
+                .EmitTypeOf(from)
+                .LdLocA(local)
+                .Constrained(local.LocalType)
+                .CallVirt(ObjectGetType)
+                .CallVirt(TypeIsAssignableFrom);
+        }
+
+        /// <summary>
+        /// Emits the IL to perform an 'IsAssignableFrom' operation.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="from">The <see cref="Type"/> to check is assignable from.</param>
+        /// <param name="to">A <see cref="Type"/> to check.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitIsAssignableFrom(this IEmitter emitter, Type from, Type to)
+        {
+            return emitter
+                .EmitTypeOf(from)
+                .EmitTypeOf(to)
+                .CallVirt(TypeIsAssignableFrom);
+        }
+
+        /// <summary>
+        /// Emit IL to get method.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> to emit the 'typeof()' for.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="ILGenerator"/> instance.</returns>
+        public static IEmitter EmitMethod(this IEmitter emitter, MethodInfo methodInfo)
+        {
+            return emitter
+                .LdToken(methodInfo)
+                .Call(MethodBaseGetMethodFromHandle);
+        }
+
+        /// <summary>
+        /// Emit IL to get method.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/> to emit the 'typeof()' for.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitMethod(this IEmitter emitter, MethodInfo methodInfo, Type declaringType)
+        {
+            return emitter
+                .LdToken(methodInfo)
+                .LdToken(declaringType)
+                .Call(MethodBaseGetMethodFromHandleGeneric);
         }
 
         /// <summary>
@@ -664,18 +679,16 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Using(this IEmitter emitter, ILocal disposableObj, Action generateBlock)
         {
-            ILabel beginBlock;
-            ILabel endFinally;
-
             // Try
-            emitter.BeginExceptionBlock(out beginBlock);
+            emitter.BeginExceptionBlock(out ILabel beginBlock);
 
             generateBlock();
 
             // Finally
             return emitter
                 .BeginFinallyBlock()
-                .DefineLabel(out endFinally)
+                .DefineLabel(out ILabel endFinally)
+
                 .LdLoc(disposableObj)
                 .BrFalseS(endFinally)
                 .LdLoc(disposableObj)
@@ -684,8 +697,7 @@ namespace FluentIL
                 .MarkLabel(endFinally)
                 .EndExceptionBlock();
         }
-        
-        
+
         /// <summary>
         /// Emits IL to call the static Format method on the <see cref="string"/> object.
         /// </summary>
@@ -695,128 +707,23 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StringFormat(this IEmitter emitter, string format, params ILocal[] locals)
         {
-            MethodInfo stringFormatMethod = typeof(string).GetTypeInfo().GetMethod("Format", new Type[] { typeof(string), typeof(object[]) });
-            ILocal localArray;
-
             return emitter
-                .DeclareLocal(typeof(object), out localArray)
+                .DeclareLocal(typeof(object), out ILocal localArray)
                 .Array(
                     localArray,
                     locals.Length,
                     (index) =>
                     {
                         emitter.LdLoc(locals[index]);
-                        if (locals[index].LocalType.GetTypeInfo().IsValueType == true)
+                        if (locals[index].LocalType.IsValueType == true)
                         {
                             emitter.Emit(OpCodes.Box, locals[index].LocalType);
                         }
                     })
                 .LdStr(format)
                 .LdLoc(localArray)
-                .Call(stringFormatMethod);
-        }
-
-        /// <summary>
-        /// Emits IL to convert one type to another.
-        /// </summary>
-        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="sourceType">The source type.</param>
-        /// <param name="targetType">The destination type.</param>
-        /// <param name="isAddress">A value indicating whether or not the convert is for an address.</param>
-        /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter EmitConv(this IEmitter emitter, Type sourceType, Type targetType, bool isAddress)
-        {
-            if (sourceType != targetType)
-            {
-                var sourceTypeInfo = sourceType.GetTypeInfo();
-                var targetTypeInfo = targetType.GetTypeInfo();
-
-                if (sourceType.IsByRef == true)
-                {
-                    Type elementType = sourceType.GetElementType();
-                    emitter.LdInd(elementType);
-                    emitter.EmitConv(elementType, targetType, isAddress);
-                }
-                else if (targetTypeInfo.IsValueType == true)
-                {
-                    if (sourceTypeInfo.IsValueType == true)
-                    {
-                        OpCode opCode = ConvOpCodes[(int)Type.GetTypeCode(targetType)];
-                    }
-                    else
-                    {
-                        emitter.Emit(OpCodes.Unbox, targetType);
-                        if (isAddress == false)
-                        {
-                            emitter.LdInd(targetType);
-                        }
-                    }
-                }
-                else if (targetTypeInfo.IsAssignableFrom(sourceType) == true)
-                {
-                    if (sourceTypeInfo.IsValueType == true)
-                    {
-                        if (isAddress == true)
-                        {
-                            emitter.LdInd(sourceType);
-                        }
-
-                        emitter.Emit(OpCodes.Box, sourceType);
-                    }
-                }
-                else if (targetType.IsGenericParameter == true)
-                {
-                    emitter.Emit(OpCodes.Unbox_Any, targetType);
-                }
-                else
-                {
-                    emitter.Emit(OpCodes.Castclass, targetType);
-                }
-            }
-
-            return emitter;
-        }
-
-        /// <summary>
-        /// Emits the IL to load a value onto the evaluation stack.
-        /// </summary>
-        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="type">The type to load.</param>
-        /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter LdInd(this IEmitter emitter, Type type)
-        {
-            OpCode opCode = LdindOpCodes[(int)Type.GetTypeCode(type)];
-            if (opCode.Equals(OpCodes.Ldobj) == true)
-            {
-                emitter.Emit(opCode, type);
-            }
-            else
-            {
-                emitter.Emit(opCode);
-            }
-
-            return emitter;
-        }
-
-        /// <summary>
-        /// Emits the IL to store the value from the top of the evaluation stack.
-        /// </summary>
-        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="type">The type to store.</param>
-        /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter StInd(this IEmitter emitter, Type type)
-        {
-            OpCode opCode = StindOpCodes[(int)Type.GetTypeCode(type)];
-            if (opCode.Equals(OpCodes.Stobj) == true)
-            {
-                emitter.Emit(opCode, type);
-            }
-            else
-            {
-                emitter.Emit(opCode);
-            }
-
-            return emitter;
+                .Call(typeof(string)
+                    .GetMethod("Format", new Type[] { typeof(string), typeof(object[]) }));
         }
 
         /// <summary>
@@ -828,17 +735,12 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter For(this IEmitter emitter, ILocal local, Action<ILocal> action)
         {
-            ILabel beginLoop;
-            ILabel loopCheck;
-            ILocal index;
-            ILocal item;
-
             emitter
-                .DefineLabel("beginLoop", out beginLoop)
-                .DefineLabel("loopCheck", out loopCheck)
+                .DefineLabel("beginLoop", out ILabel beginLoop)
+                .DefineLabel("loopCheck", out ILabel loopCheck)
 
-                .DeclareLocal<int>("index", out index)
-                .DeclareLocal(local.LocalType.GetElementType(), "item", out item)
+                .DeclareLocal<int>("index", out ILocal index)
+                .DeclareLocal(local.LocalType.GetElementType(), "item", out ILocal item)
 
                 .LdcI4_0()
                 .StLoc(index)
@@ -869,47 +771,76 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to perform a for loop over an array.
+        /// Emits IL to perform a for loop over an array without element loading.
         /// </summary>
-        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="local">The local variable holding the array.</param>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="localLength">The local variable holding the length.</param>
         /// <param name="action">An action to allow the injecting of the loop code.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter For(this IEmitter emitter, int startIndex, int length, Action<ILocal> action)
+        public static IEmitter EmitFor(
+            this IEmitter emitter,
+            ILocal localLength,
+            Action<ILocal> action)
         {
-            ILabel beginLoop;
-            ILabel loopCheck;
-            ILocal localIndex;
-            ILocal localLength;
-
             emitter
-                .DefineLabel("beginLoop", out beginLoop)
-                .DefineLabel("loopCheck", out loopCheck)
+                .DefineLabel(out ILabel beginLoop)
+                .DefineLabel(out ILabel loopCheck)
+                .DeclareLocal(typeof(int), out ILocal index)
 
-                .DeclareLocal<int>("index", out localIndex)
-                .DeclareLocal<int>("length", out localLength)
-
-                .LdcI4(startIndex)
-                .StLoc(localIndex)
-                .LdcI4(length)
-                .StLoc(localLength)
+                .LdcI4_0()
+                .StLoc(index)
                 .Br(loopCheck)
-                .MarkLabel(beginLoop)
-                .Nop();
+                .MarkLabel(beginLoop);
 
-            action(localIndex);
+            action(index);
 
             return emitter
                 .Nop()
-                .LdLoc(localIndex)
+                .LdLoc(index)
                 .LdcI4_1()
-                .Emit(OpCodes.Add)
-                .StLoc(localIndex)
+                .Add()
+                .StLoc(index)
 
                 .MarkLabel(loopCheck)
-                .LdLocS(localIndex)
-                .LdLocS(localLength)
-                .BltS(beginLoop);
+                .LdLoc(index)
+                .LdLoc(localLength)
+                .Blt(beginLoop);
+        }
+
+        /// <summary>
+        /// Emits IL to perform a for loop over an array with element loading.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="localArray">The local variable holding the array.</param>
+        /// <param name="action">An action to allow the injecting of the loop code.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitFor(
+            this IEmitter emitter,
+            ILocal localArray,
+            Action<ILocal, ILocal> action)
+        {
+            return emitter
+                .DeclareLocal(localArray.LocalType.GetElementType(), out ILocal itemLocal)
+                .DeclareLocal(typeof(int), out ILocal lengthLocal)
+
+                .LdLoc(localArray)
+                .LdLen()
+                .ConvI4()
+                .StLocS(lengthLocal)
+
+                .EmitFor(
+                    lengthLocal,
+                    (index) =>
+                    {
+                        emitter
+                            .LdLoc(localArray)
+                            .LdLoc(index)
+                            .LdElemRef()
+                            .StLoc(itemLocal)
+                            .Nop();
+
+                        action(index, itemLocal);
+                    });
         }
 
         /// <summary>
@@ -921,49 +852,40 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter ForEach(this IEmitter emitter, ILocal local, Action<ILocal> action)
         {
-            if (local.LocalType.IsArray == true)
+            var localType = local.LocalType;
+            if (localType.IsArray == true)
             {
                 return emitter.For(local, action);
             }
 
-            TypeInfo localTypeInfo = local.LocalType.GetTypeInfo();
-            if (localTypeInfo.IsGenericType == false ||
-                typeof(IEnumerable<>).MakeGenericType(localTypeInfo.GetGenericArguments()).GetTypeInfo().IsAssignableFrom(local.LocalType) == false)
+            if (localType.IsGenericType == false ||
+                typeof(IEnumerable<>).MakeGenericType(localType.GetGenericArguments()).IsAssignableFrom(local.LocalType) == false)
             {
                 throw new InvalidOperationException("Not a enumerable type");
             }
 
-            Type enumerableType = localTypeInfo.GetGenericArguments()[0];
+            Type enumerableType = localType.GetGenericArguments()[0];
             Type enumeratorType = typeof(IEnumerator<>).MakeGenericType(enumerableType);
 
-            MethodInfo getEnumerator = typeof(IEnumerable<>).MakeGenericType(enumerableType).GetTypeInfo().GetMethod("GetEnumerator");
-            MethodInfo getCurrent = enumeratorType.GetTypeInfo().GetMethod("get_Current");
-            MethodInfo moveNext = typeof(IEnumerator).GetTypeInfo().GetMethod("MoveNext");
-
-            ILocal localEnumerator;
-            ILocal localItem;
-
-            ILabel loopStart;
-            ILabel loopCheck;
-            ILabel loopEnd;
-            ILabel endFinally;
-            ILabel beginEx;
+            MethodInfo getEnumerator = typeof(IEnumerable<>).MakeGenericType(enumerableType).GetMethod("GetEnumerator");
+            MethodInfo getCurrent = enumeratorType.GetProperty("Current").GetGetMethod();
+            MethodInfo moveNext = typeof(IEnumerator).GetMethod("MoveNext");
 
             emitter
-                .DefineLabel("loopStart", out loopStart)
-                .DefineLabel("loopCheck", out loopCheck)
-                .DefineLabel("loopEnd", out loopEnd)
-                .DefineLabel("endFinally", out endFinally)
+                .DefineLabel("loopStart", out ILabel loopStart)
+                .DefineLabel("loopCheck", out ILabel loopCheck)
+                .DefineLabel("loopEnd", out ILabel loopEnd)
+                .DefineLabel("endFinally", out ILabel endFinally)
 
-                .DeclareLocal(enumeratorType, "localEnumerator", out localEnumerator)
-                .DeclareLocal(enumerableType, "localItem", out localItem)
+                .DeclareLocal(enumeratorType, "localEnumerator", out ILocal localEnumerator)
+                .DeclareLocal(enumerableType, "localItem", out ILocal localItem)
 
                 .LdLocS(local)
                 .CallVirt(getEnumerator)
                 .StLocS(localEnumerator)
 
             // Try
-                .BeginExceptionBlock(out beginEx)
+                .BeginExceptionBlock(out ILabel beginEx)
 
                 .BrS(loopCheck)
                 .MarkLabel(loopStart)
@@ -1035,7 +957,7 @@ namespace FluentIL
         /// <typeparam name="T">The locals type.</typeparam>
         /// <param name="emitter">An emitter instance.</param>
         /// <param name="localName">The name of the local.</param>
-        /// <param name="pinned">The value indicating whether or not the local is pinned.</param>        
+        /// <param name="pinned">The value indicating whether or not the local is pinned.</param>
         /// <param name="local">A variable to receive a local.</param>
         /// <returns>The <see cref="IEmitter"/> instance</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, string localName, bool pinned, out ILocal local)
@@ -1043,13 +965,13 @@ namespace FluentIL
             emitter.DeclareLocal(typeof(T), localName, pinned, out local);
             return emitter;
         }
-        
+
         /// <summary>
         /// Declares a local.
         /// </summary>
         /// <typeparam name="T">The locals type.</typeparam>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <param name="pinned">The value indicating whether or not the local is pinned.</param>        
+        /// <param name="pinned">The value indicating whether or not the local is pinned.</param>
         /// <param name="local">A variable to receive a local.</param>
         /// <returns>The <see cref="IEmitter"/> instance</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter,bool pinned, out ILocal local)
@@ -1065,8 +987,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance</returns>
         public static IEmitter Try(this IEmitter emitter)
         {
-            ILabel label;
-            return emitter.BeginExceptionBlock(out label);
+            return emitter.BeginExceptionBlock(out ILabel label);
         }
 
         /// <summary>
@@ -1111,12 +1032,13 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance</returns>
         public static IEmitter Catch(this IEmitter emitter, Type exceptionType, ILocal local)
         {
-            if (typeof(Exception).GetTypeInfo().IsAssignableFrom(local.LocalType) == false)
+            if (typeof(Exception).IsAssignableFrom(local.LocalType) == false)
             {
                 throw new InvalidOperationException("Local must be an exception type");
             }
 
-            return emitter.Catch(exceptionType)
+            return emitter
+                .Catch(exceptionType)
                 .StLoc(local);
         }
 
@@ -1167,12 +1089,13 @@ namespace FluentIL
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
         /// <param name="message">The exception message</param>
         /// <returns>The <see cref="IEmitter"/> instance</returns>
-        public static IEmitter ThrowException<TException>(this IEmitter emitter, string message)
+        public static IEmitter ThrowException<TException>(
+            this IEmitter emitter,
+            string message)
             where TException : Exception
         {
             ConstructorInfo ctor =
                 typeof(TException)
-                .GetTypeInfo()
                 .GetConstructor(new[] { typeof(string) });
 
             if (ctor == null)
@@ -1195,12 +1118,15 @@ namespace FluentIL
         /// <param name="typeName">The <see cref="LocalBuilder"/> containing the type name.</param>
         /// <param name="dynamicOnly">A value indicating whether or not to only check for dynamically generated types.</param>
         /// <returns>The <see cref="IEmitter"/> instance</returns>
-        public static IEmitter GetType(this IEmitter emitter, ILocal typeNameLocal, bool dynamicOnly = false)
+        public static IEmitter GetType(
+            this IEmitter emitter,
+            ILocal typeNameLocal,
+            bool dynamicOnly = false)
         {
             return emitter
                 .LdLocS(typeNameLocal)
                 .Emit(dynamicOnly == false ? OpCodes.Ldc_I4_0 : OpCodes.Ldc_I4_1)
-                .Call(GetTypeMethodInfo);
+                .Call(TypeFactoryGetType);
         }
 
         /// <summary>
@@ -1210,33 +1136,15 @@ namespace FluentIL
         /// <param name="typeName">The type name.</param>
         /// <param name="dynamicOnly">A value indicating whether or not to only check for dynamically generated types.</param>
         /// <returns>The <see cref="IEmitter"/> instance</returns>
-        public static IEmitter GetType(this IEmitter emitter, string typeName, bool dynamicOnly = false)
+        public static IEmitter GetType(
+            this IEmitter emitter,
+            string typeName,
+            bool dynamicOnly = false)
         {
             return emitter
                 .LdStr(typeName)
                 .Emit(dynamicOnly == false ? OpCodes.Ldc_I4_0 : OpCodes.Ldc_I4_1)
-                .Call(GetTypeMethodInfo);
-        }
-
-        /// <summary>
-        /// Emits the IL to perform a IF operation.
-        /// </summary>
-        /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <param name="expression">A expression to evaluate.</param>
-        /// <returns></returns>
-        public static IEmitter IF(this IEmitter emitter, Expression<Func<bool>> expression)
-        {
-            DebugOutput.WriteLine("Return Type: {0}", expression.ReturnType);
-            DebugOutput.WriteLine("Node Type: {0}", expression.NodeType);
-
-            BinaryExpression body = expression.Body as BinaryExpression;
-            MethodCallExpression left = body.Left as MethodCallExpression;
-            ParameterExpression right = body.Right as ParameterExpression;
-
-            DebugOutput.WriteLine("Body: {0}", body.GetType().Name);
-            DebugOutput.WriteLine("Body: {0}", left.Object.GetType());
-
-            return emitter;
+                .Call(TypeFactoryGetType);
         }
     }
 }

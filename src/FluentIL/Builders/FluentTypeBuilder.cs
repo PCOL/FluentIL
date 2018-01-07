@@ -88,12 +88,12 @@ namespace FluentIL.Builders
         {
             this.ThrowIfAlreadyBuilt();
 
-            if (baseType.GetTypeInfo().IsInterface == true)
+            if (baseType.IsInterface == true)
             {
                 throw new InvalidOperationException("Type cannot be an interface.");
             }
 
-            if (baseType.GetTypeInfo().IsSealed == true)
+            if (baseType.IsSealed == true)
             {
                 throw new InvalidOperationException("Type cannot inherit from a sealed type.");
             }
@@ -113,7 +113,7 @@ namespace FluentIL.Builders
         {
             this.ThrowIfAlreadyBuilt();
 
-            if (interfaceType.GetTypeInfo().IsInterface == false)
+            if (interfaceType.IsInterface == false)
             {
                 throw new InvalidOperationException("Type must be an interface.");
             }
@@ -311,7 +311,6 @@ Console.WriteLine("Defining Property: {0}", name);
             this.genericParameters = this.genericParameters ?? new List<FluentGenericParameterBuilder>();
             var builder = new FluentGenericParameterBuilder(parameterName, null);
             this.genericParameters.Add(builder);
-            //this.actions.Add(() => builder.Define());
             return builder;
         }
 
@@ -329,7 +328,9 @@ Console.WriteLine("Defining Property: {0}", name);
             {
                 this.BuildGenericParameters();
 
-                return this.genericParameters.FirstOrDefault(p => p.ParameterName == parameterName)?.AsType();
+                return this.genericParameters
+                    .FirstOrDefault(p => p.ParameterName == parameterName)
+                    ?.AsType();
             }
 
             return null;

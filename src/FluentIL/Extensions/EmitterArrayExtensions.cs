@@ -882,10 +882,11 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to allocate and fill an array.
         /// </summary>
-        /// <param name="emitter">The <see cref="ILGenerator"/> to use.</param>
+        /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="localArray">The local to store the array in.</param>
         /// <param name="length">The size of the array.</param>
         /// <param name="action">The action to execute for each index in the array.</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter Array(this IEmitter emitter, ILocal localArray, int length, Action<int> action)
         {
             if (localArray.LocalType.IsArray == false)
@@ -905,11 +906,12 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to allocate and fill an array.
         /// </summary>
-        /// <param name="emitter">The <see cref="ILGenerator"/> to use.</param>
+        /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="arrayType">The <see cref="Type"/> to array to emit.</param>
         /// <param name="localArray">The local to store the array in.</param>
         /// <param name="length">The size of the array.</param>
         /// <param name="action">The action to execute for each index in the array.</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter Array(this IEmitter emitter, Type arrayType, ILocal localArray, int length, Action<int> action)
         {
             if (localArray.LocalType.IsArray == false)
@@ -929,9 +931,10 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to allocate and fill an array.
         /// </summary>
-        /// <param name="emitter">The <see cref="ILGenerator"/> to use.</param>
+        /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="localArray">The local to store the array in.</param>
         /// <param name="localTypes">The local variables to add to the array.</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter TypeArray(this IEmitter emitter, ILocal localArray, params ILocal[] localTypes)
         {
             if (localArray.LocalType.IsArray == false)
@@ -951,9 +954,10 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to allocate and fill an array.
         /// </summary>
-        /// <param name="emitter">The <see cref="ILGenerator"/> to use.</param>
+        /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="localArray">The local to store the array in.</param>
         /// <param name="types">The types to add to the array.</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter TypeArray(this IEmitter emitter, ILocal localArray, params Type[] types)
         {
             if (localArray.LocalType.IsArray == false)
@@ -964,7 +968,7 @@ namespace FluentIL
             ArrayBuilder arrayBuilder = new ArrayBuilder(emitter, typeof(Type), types.Length, localArray);
             for (int i = 0; i < types.Length; i++)
             {
-                arrayBuilder.Set(i, () => emitter.TypeOf(types[i]));
+                arrayBuilder.Set(i, () => emitter.EmitTypeOf(types[i]));
             }
 
             return emitter;

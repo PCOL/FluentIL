@@ -10,10 +10,19 @@ namespace FluentIL.Builders
     internal class FluentEventBuilder
         : IEventBuilder
     {
+        /// <summary>
+        /// The name of the event.
+        /// </summary>
         private readonly string eventName;
 
+        /// <summary>
+        /// The events type.
+        /// </summary>
         private readonly Type eventType;
 
+        /// <summary>
+        /// A function to define the event.
+        /// </summary>
         private readonly Func<string, EventAttributes, Type, EventBuilder> define;
 
         /// <summary>
@@ -33,20 +42,24 @@ namespace FluentIL.Builders
             this.define = define;
         }
 
+        /// <inheritdoc />
         public EventAttributes EventAttributes { get; private set; }
 
+        /// <inheritdoc />
         public IEventBuilder SpecialName()
         {
             this.EventAttributes |= EventAttributes.SpecialName;
             return this;
         }
 
+        /// <inheritdoc />
         public IEventBuilder RTSpecialName()
         {
             this.EventAttributes |= EventAttributes.RTSpecialName;
             return this;
         }
 
+        /// <inheritdoc />
         public EventBuilder Define()
         {
             return this.define(

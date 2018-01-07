@@ -14,7 +14,7 @@ namespace FluentIL.Builders
         /// A list of module builders.
         /// </summary>
         private Dictionary<string, FluentModuleBuilder> modules = new Dictionary<string, FluentModuleBuilder>();
-                
+
         /// <summary>
         /// Initialises a new instance of the <see cref="AssemblyBuilderImpl"/> class.
         /// </summary>
@@ -25,7 +25,7 @@ namespace FluentIL.Builders
         }
 
         /// <summary>
-        /// A <see cref="AssemblyBuilder"/> instance.
+        /// Gets an <see cref="AssemblyBuilder"/> instance.
         /// </summary>
         public AssemblyBuilder AssemblyBuilder { get; }
 

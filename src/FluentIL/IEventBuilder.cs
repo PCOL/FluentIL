@@ -8,10 +8,22 @@ namespace FluentIL
     /// </summary>
     public interface IEventBuilder
     {
+        /// <summary>
+        /// Adds the 'SpecialName' attribute.
+        /// </summary>
+        /// <returns>The <see cref="IEventBuilder"/> instance.</returns>
         IEventBuilder SpecialName();
 
+        /// <summary>
+        /// Adds the 'RTSpecialName' attribute.
+        /// </summary>
+        /// <returns>The <see cref="IEventBuilder"/> instance.</returns>
         IEventBuilder RTSpecialName();
 
+        /// <summary>
+        /// Defines the <see cref="EventBuilder"/>.
+        /// </summary>
+        /// <returns>An <see cref="EventBuilder"/> instance.</returns>
         EventBuilder Define();
     }
 }

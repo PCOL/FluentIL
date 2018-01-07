@@ -42,36 +42,23 @@ namespace FluentIL.Builders
             this.FieldAttributes = FieldAttributes.Private;
         }
 
-        /// <summary>
-        /// Gets the fields name.
-        /// </summary>
+        /// <inheritdoc />
         public string FieldName { get; }
 
-        /// <summary>
-        /// Gets the fields type.
-        /// </summary>
+        /// <inheritdoc />
         public Type FieldType { get; }
 
-        /// <summary>
-        /// Gets or sets the fields attributes.
-        /// </summary>
+        /// <inheritdoc />
         public FieldAttributes FieldAttributes { get; set; }
 
-        /// <summary>
-        /// Sets the attributes
-        /// </summary>
-        /// <param name="attributes"></param>
-        /// <returns>A <see cref="FieldBuilder"/> instance.</returns>
+        /// <inheritdoc />
         public IFieldBuilder Attributes(FieldAttributes attributes)
         {
             this.FieldAttributes = attributes;
             return this;
         }
 
-        /// <summary>
-        /// Defines the field.
-        /// </summary>
-        /// <returns>A <see cref="FieldBuilder"/> instance.</returns>
+        /// <inheritdoc />
         public FieldBuilder Define()
         {
             if (this.fieldBuilder == null)

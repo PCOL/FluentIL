@@ -102,5 +102,52 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Stfld, field);
         }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="type">The type to store.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitStInd(this IEmitter emitter, Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                    emitter.Emit(OpCodes.Stind_I1);
+                    break;
+
+                case TypeCode.Char:
+                case TypeCode.Int16:
+                    emitter.Emit(OpCodes.Stind_I2);
+                    break;
+
+                case TypeCode.Int32:
+                case TypeCode.UInt32:
+                    emitter.Emit(OpCodes.Stind_I4);
+                    break;
+
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                    emitter.Emit(OpCodes.Stind_I8);
+                    break;
+
+                case TypeCode.Single:
+                    emitter.Emit(OpCodes.Stind_R4);
+                    break;
+
+                case TypeCode.Double:
+                    emitter.Emit(OpCodes.Stind_R8);
+                    break;
+
+                default:
+                    emitter.Emit(OpCodes.Stobj, type);
+                    break;
+            }
+
+            return emitter;
+        }
     }
 }

@@ -128,7 +128,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I1_Un);
         }
-        
+
         /// <summary>
         /// Converts the unsigned value on top of the evaluation stack to signed int16 and extending it to int32, throwing OverflowException on overflow.
         /// </summary>
@@ -138,7 +138,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I2_Un);
         }
-        
+
         /// <summary>
         /// Converts the unsigned value on top of the evaluation stack to signed int32, throwing OverflowException on overflow.
         /// </summary>
@@ -148,7 +148,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I4_Un);
         }
-       
+
         /// <summary>
         /// Converts the unsigned value on top of the evaluation stack to signed int64, throwing OverflowException on overflow.
         /// </summary>
@@ -158,7 +158,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I8_Un);
         }
-        
+
         /// <summary>
         /// Converts the unsigned integer value on top of the evaluation stack to float32.
         /// </summary>
@@ -237,6 +237,121 @@ namespace FluentIL
         public static IEmitter ConvU8(this IEmitter emitter)
         {
             return emitter.Emit(OpCodes.Conv_U8);
+        }
+
+        /// <summary>
+        /// Emits IL to convert one type to another.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="sourceType">The source type.</param>
+        /// <param name="targetType">The destination type.</param>
+        /// <param name="isAddress">A value indicating whether or not the convert is for an address.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitConv(
+            this IEmitter emitter,
+            Type sourceType,
+            Type targetType,
+            bool isAddress)
+        {
+            if (sourceType != targetType)
+            {
+                if (sourceType.IsByRef == true)
+                {
+                    Type elementType = sourceType.GetElementType();
+                    emitter.EmitLdInd(elementType);
+                    emitter.EmitConv(elementType, targetType, isAddress);
+                }
+                else if (targetType.IsValueType == true)
+                {
+                    if (sourceType.IsValueType == true)
+                    {
+                        emitter.EmitConv(targetType);
+                    }
+                    else
+                    {
+                        emitter.Emit(OpCodes.Unbox, targetType);
+                        if (isAddress == false)
+                        {
+                            emitter.EmitLdInd(targetType);
+                        }
+                    }
+                }
+                else if (targetType.IsAssignableFrom(sourceType) == true)
+                {
+                    if (sourceType.IsValueType == true)
+                    {
+                        if (isAddress == true)
+                        {
+                            emitter.EmitLdInd(sourceType);
+                        }
+
+                        emitter.Emit(OpCodes.Box, sourceType);
+                    }
+                }
+                else if (targetType.IsGenericParameter == true)
+                {
+                    emitter.Emit(OpCodes.Unbox_Any, targetType);
+                }
+                else
+                {
+                    emitter.Emit(OpCodes.Castclass, targetType);
+                }
+            }
+
+            return emitter;
+        }
+
+        /// <summary>
+        /// Emits IL to convert a type.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter EmitConv(this IEmitter emitter, Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Boolean:
+                case TypeCode.SByte:
+                    emitter.ConvI1();
+                    break;
+
+                case TypeCode.Char:
+                case TypeCode.Int16:
+                    emitter.ConvI2();
+                    break;
+
+                case TypeCode.Byte:
+                    emitter.ConvU2();
+                    break;
+
+                case TypeCode.Int32:
+                    emitter.ConvI4();
+                    break;
+
+                case TypeCode.UInt32:
+                    emitter.ConvU4();
+                    break;
+
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                    emitter.ConvI8();
+                    break;
+
+                case TypeCode.Single:
+                    emitter.ConvR4();
+                    break;
+
+                case TypeCode.Double:
+                    emitter.ConvR8();
+                    break;
+
+                default:
+                    emitter.Nop();
+                    break;
+            }
+
+            return emitter;
         }
     }
 }

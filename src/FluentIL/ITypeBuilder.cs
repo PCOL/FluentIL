@@ -132,8 +132,13 @@ namespace FluentIL
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder NewGenericParameter(string parameterName, Action<IGenericParameterBuilder> parameterBuilder);
 
+        /// <summary>
+        /// Gets a generic parameter type.
+        /// </summary>
+        /// <param name="parameterName">The name of the generic parameter.</param>
+        /// <returns>A <see cref="Type"/>.</returns>
         Type GetGenericParameterType(string parameterName);
-        
+
         /// <summary>
         /// Defines a nest type.
         /// </summary>
@@ -141,8 +146,16 @@ namespace FluentIL
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder NewNestedType(string typeName);
 
+        /// <summary>
+        /// Defines the <see cref="TypeBuilder"/>.
+        /// </summary>
+        /// <returns>A <see cref="TypeBuilder"/> instance.</returns>
         TypeBuilder Define();
 
+        /// <summary>
+        /// Creates the actual type.
+        /// </summary>
+        /// <returns>A <see cref="Type"/> instance.</returns>
         Type CreateType();
     }
 }

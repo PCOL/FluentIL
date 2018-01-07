@@ -46,7 +46,6 @@
     <Content Include="Builders\FluentPropertyBuilder.cs" />
     <Content Include="Builders\FluentTypeBuilder.cs" />
     <Content Include="Emitters\DebugEmitter.cs" />
-    <Content Include="Emitters\Emitter.cs" />
     <Content Include="Emitters\ILGeneratorEmitter.cs" />
     <Content Include="Emitters\LabelAdapter.cs" />
     <Content Include="Emitters\LocalAdpater.cs" />

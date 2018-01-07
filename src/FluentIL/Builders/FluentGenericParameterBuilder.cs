@@ -24,7 +24,9 @@ namespace FluentIL.Builders
         /// </summary>
         /// <param name="parameterName">The paramter name.</param>
         /// <param name="builderAction">The builder action.</param>
-        public FluentGenericParameterBuilder(string parameterName, Func<string, GenericTypeParameterBuilder> define)
+        public FluentGenericParameterBuilder(
+            string parameterName,
+            Func<string, GenericTypeParameterBuilder> define)
         {
             this.ParameterName = parameterName;
             this.define = define;
@@ -65,7 +67,7 @@ namespace FluentIL.Builders
         /// <inheritdoc />
         public IGenericParameterBuilder InterfaceType(Type interfaceType)
         {
-            if (interfaceType.GetTypeInfo().IsInterface == false)
+            if (interfaceType.IsInterface == false)
             {
                 throw new InvalidOperationException("Type must be an interface");
             }
@@ -132,6 +134,7 @@ namespace FluentIL.Builders
             return this.builder.AsType();
         }
 
+        /// <inheritdoc />
         public GenericTypeParameterBuilder Define()
         {
             if (this.ParameterBuilder == null)

@@ -39,9 +39,7 @@ namespace FluentIL.Builders
         )
         {
             this.define = define;
-            //this.MethodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName;
             this.callingConvention = CallingConventions.HasThis;
-            // this.body = new Emitter();
         }
 
         /// <summary>
@@ -49,8 +47,8 @@ namespace FluentIL.Builders
         /// </summary>
         /// <param name="define">A default constructor definition function.</param>
         public FluentConstructorBuilder(
-            Func<MethodAttributes, ConstructorBuilder> define
-        )
+            Func<MethodAttributes,
+            ConstructorBuilder> define)
         {
             this.defineDefault = define;
         }
@@ -92,11 +90,7 @@ namespace FluentIL.Builders
             return this;
         }
 
-        /// <summary>
-        /// Defines the constructor parameters.
-        /// </summary>
-        /// <param name="parameterTypes">The parameter types.</param>
-        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
+        /// <inheritdoc />
         public IConstructorBuilder Params(params Type[] parameterTypes)
         {
             this.parameters = parameterTypes.Select(
@@ -105,11 +99,7 @@ namespace FluentIL.Builders
             return this;
         }
 
-        /// <summary>
-        /// Builds the constructor.
-        /// </summary>
-        /// <param name="typeBuilder">A <see cref="TypeBuilder"/> instance.</param>
-        /// <returns>A <see cref="ConstructorInfo"/> instance.</returns>
+        /// <inheritdoc />
         public ConstructorBuilder Define()
         {
             ConstructorBuilder ctor = null;
@@ -137,9 +127,6 @@ namespace FluentIL.Builders
             DebugOutput.WriteLine("New Constructor ({0})", string.Join(", ", this.parameters.Select(p => $"{p.ParameterType} {p.ParameterName}")));
             DebugOutput.WriteLine("Calling Convention: {0}", this.callingConvention);
             DebugOutput.WriteLine("");
-
-            // var emitter = new ILGeneratorEmitter(ctor.GetILGenerator());
-            // this.body.EmitMethod(emitter);
 
             return ctor;
         }
