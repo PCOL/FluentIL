@@ -6,10 +6,11 @@
     using System.Reflection;
     using System.Reflection.Emit;
     using FluentIL.Builders;
+
     /// <summary>
     /// Represents an <see cref="AssemblyBuilder"/> cache.
     /// </summary>
-    public class AssemblyBuilderCache
+    internal class AssemblyBuilderCache
     {
         /// <summary>
         /// The cache.
@@ -53,6 +54,10 @@
             return this.cache.Remove(name);
         }
 
+        /// <summary>
+        /// Returns a list of assmiblies.
+        /// </summary>
+        /// <returns>A list of assemblies</returns>
         public IEnumerable<Assembly> GetAssemblies()
         {
             return this.cache.Select(a => a.Value.AssemblyBuilder);

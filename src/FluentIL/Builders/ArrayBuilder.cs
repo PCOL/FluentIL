@@ -21,7 +21,7 @@ namespace FluentIL.Builders
         /// <summary>
         /// Initializes a new instance of the <see cref="ArrayBuilder"/> class.
         /// </summary>
-        /// <param name="emitter">The IL generator.</param>
+        /// <param name="emitter">The <see cref="IEmitter"/>.</param>
         /// <param name="arrayType">The type of array.</param>
         /// <param name="length">The length of the array.</param>
         /// <param name="localArray">Optional local variable.</param>
@@ -32,7 +32,7 @@ namespace FluentIL.Builders
             {
                 throw new InvalidProgramException("The local array type is not an array");
             }
-            
+
             this.emitter = emitter;
             this.localArray = localArray;
             if (this.localArray == null)

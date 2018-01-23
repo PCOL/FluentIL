@@ -8,28 +8,24 @@ namespace FluentIL
     using Microsoft.Extensions.DependencyModel;
 
     /// <summary>
-    /// 
+    ///  Represents a cache of assemblies in the current application.
     /// </summary>
-    public static class AssemblyCache
+    internal static class AssemblyCache
     {
         /// <summary>
-        /// Gets a type by name from the current <see cref="AppDomain"/>.
+        /// Gets a type by name from the cache.
         /// </summary>
         /// <param name="typeName">The name of the type.</param>
-        /// <param name="dynamicOnly">A value indicating whether only dynamic assemblies should be checked or not.</param>
+        /// <param name="dynamicOnly">Optional value indicating whether only dynamic assemblies should be checked or not.</param>
         /// <returns>A <see cref="Type"/> representing the type if found; otherwise null.</returns>
-        public static Type GetType(string typeName, bool dynamicOnly)
+        public static Type GetType(string typeName, bool dynamicOnly = false)
         {
-            foreach (var ass in AssemblyCache.GetAssemblies())
+            foreach (var ass in AssemblyCache.GetAssemblies(dynamicOnly))
             {
-                if (dynamicOnly == false ||
-                    ass.IsDynamic == true)
+                Type type = ass.GetType(typeName);
+                if (type != null)
                 {
-                    Type type = ass.GetType(typeName);
-                    if (type != null)
-                    {
-                        return type;
-                    }
+                    return type;
                 }
             }
 
@@ -40,7 +36,7 @@ namespace FluentIL
         /// Gets a list of loaded assemblies.
         /// </summary>
         /// <returns>A list of assemblies.</returns>
-        public static IEnumerable<Assembly> GetAssemblies()
+        public static IEnumerable<Assembly> GetAssemblies(bool dynamicOnly = false)
         {
             var runtimeId = RuntimeEnvironment.GetRuntimeIdentifier();
             var compiled =
@@ -48,10 +44,10 @@ namespace FluentIL
                 let ass = Assembly.Load(lib)
                 select ass;
 
-            return FilterAssemblies(compiled);
+            return FilterAssemblies(compiled, dynamicOnly);
         }
 
-        private static IEnumerable<Assembly> FilterAssemblies(IEnumerable<Assembly> list)
+        private static IEnumerable<Assembly> FilterAssemblies(IEnumerable<Assembly> list, bool dynamicOnly)
         {
             if (list == null)
             {
@@ -60,7 +56,11 @@ namespace FluentIL
 
             foreach (var assembly in list)
             {
-                yield return assembly;
+                if (dynamicOnly == false ||
+                    assembly.IsDynamic == true)
+                {
+                   yield return assembly;
+                }
             }
         }
     }

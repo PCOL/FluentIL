@@ -104,23 +104,19 @@ namespace FluentIL
         /// Gets a type by name from the current <see cref="AppDomain"/>.
         /// </summary>
         /// <param name="typeName">The name of the type.</param>
-        /// <param name="dynamicOnly">A value indicating whether only dynamic assemblies should be checked or not.</param>
+        /// <param name="dynamicOnly">Optional value indicating whether only dynamic assemblies should be checked or not.</param>
         /// <returns>A <see cref="Type"/> representing the type if found; otherwise null.</returns>
-        public Type GetType(string typeName, bool dynamicOnly)
+        public Type GetType(string typeName, bool dynamicOnly = false)
         {
             var list = this.assemblyCache.GetAssemblies()
-                .Union(AssemblyCache.GetAssemblies());
+                .Union(AssemblyCache.GetAssemblies(dynamicOnly));
 
             foreach (var ass in list)
             {
-                if (dynamicOnly == false ||
-                    ass.IsDynamic == true)
+                Type type = ass.GetType(typeName);
+                if (type != null)
                 {
-                    Type type = ass.GetType(typeName);
-                    if (type != null)
-                    {
-                        return type;
-                    }
+                    return type;
                 }
             }
 

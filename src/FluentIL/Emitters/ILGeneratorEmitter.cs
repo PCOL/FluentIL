@@ -8,7 +8,7 @@ namespace FluentIL.Emitters
     /// <summary>
     /// <see cref="ILGenerator"/> implementation of the <see cref="IEmitter"/> interface.
     /// </summary>
-    public class ILGeneratorEmitter
+    internal class ILGeneratorEmitter
         : IEmitter
     {
         /// <summary>
