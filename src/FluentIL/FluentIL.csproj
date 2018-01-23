@@ -1,20 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <VersionPrefix>1.0.0-alpha001</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>alpha1</VersionSuffix>
+    <PackageId>Fluent.IL</PackageId>
+    <Authors>pcol</Authors>
+    <AssemblyTitle>Fluent.IL</AssemblyTitle>
+    <Description>A fluent IL helper library.</Description>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+    <PackageTags>relection emit il</PackageTags>
+    <PackageProjectUrl>https://github.com/PCOL/FluentIL</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/PCOL/FluentIL/blob/master/LICENSE</PackageLicenseUrl>
     <TargetFramework>netstandard2.0</TargetFramework>
     <DebugType>portable</DebugType>
     <AssemblyName>FluentIL</AssemblyName>
-    <PackageId>FluentIL</PackageId>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
-    <!-- <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback> -->
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="1.1.1" />
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
-    <PackageReference Include="IFluentInterface" Version="2.0.3" />
     <Content Include="ILabel.cs" />
     <Content Include="AssemblyBuilderCache.cs" />
     <Content Include="AssemblyCache.cs" />
