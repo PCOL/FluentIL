@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix>alpha2</VersionSuffix>
+    <VersionSuffix>alpha3</VersionSuffix>
     <PackageId>Fluent.IL</PackageId>
     <Authors>pcol</Authors>
     <AssemblyTitle>Fluent.IL</AssemblyTitle>
