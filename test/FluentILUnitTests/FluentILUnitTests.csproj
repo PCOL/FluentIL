@@ -21,5 +21,6 @@
     <Content Include="GenericTypeUnitTests.cs" />
     <Content Include="ModuleMethodUnitTests.cs" />
     <Content Include="BoxUnBoxUnitTests.cs" />
+    <Content Include="ConstructorUnitTests.cs" />
   </ItemGroup>
 </Project>

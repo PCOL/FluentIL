@@ -4,7 +4,7 @@ namespace FluentIL
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
-    
+
     /// <summary>
     /// Defines an interface for builder types.
     /// </summary>
@@ -20,7 +20,7 @@ namespace FluentIL
         /// Gets the implemented interfaces.
         /// </summary>
         IEnumerable<Type> Interfaces { get; }
-        
+
         /// <summary>
         /// Sets the <see cref="ITypeBuilder"/> attributes.
         /// </summary>
@@ -41,7 +41,7 @@ namespace FluentIL
         /// <param name="baseType">The base type</param>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder InheritsFrom(Type baseType);
-        
+
         /// <summary>
         /// Implements an interface on the <see cref="ITypeBuilder"/> instance.
         /// </summary>
@@ -57,35 +57,58 @@ namespace FluentIL
         ITypeBuilder Implements(Type interfaceType);
 
         /// <summary>
-        /// 
+        /// Defines a new constructor.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
         IConstructorBuilder NewConstructor();
-        
+
         /// <summary>
-        /// 
+        /// Defines a new constructor.
         /// </summary>
-        /// <param name="fieldName"></param>
-        /// <param name="fieldType"></param>
-        /// <returns></returns>
+        /// <param name="constructorBuilder">A <see cref="IConstructorBuilder"/>.</param>
+        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
+        ITypeBuilder NewConstructor(Action<IConstructorBuilder> constructorBuilder);
+
+        /// <summary>
+        /// Defines a default constructor.
+        /// </summary>
+        /// <param name="constructorAttributes">The constructors method attributes.</param>
+        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
+        ITypeBuilder NewDefaultConstructor(MethodAttributes constructorAttributes);
+
+        /// <summary>
+        /// Defines a new field.
+        /// </summary>
+        /// <param name="fieldName">The name of the field.</param>
+        /// <param name="fieldType">The fields type.</param>
+        /// <returns>The <see cref="IFieldBuilder"/> instance.</returns>
         IFieldBuilder NewField(string fieldName, Type fieldType);
 
         /// <summary>
-        /// Builds a method.
+        /// Defines a new field.
         /// </summary>
-        /// <param name="methodName"></param>
-        /// <param name="action"></param>
+        /// <param name="fieldName">The name of the field.</param>
+        /// <param name="fieldType">The fields type.</param>
+        /// <param name="fieldBuilder">A <see cref="IFieldBuilder"/>.</param>
+        /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
+        ITypeBuilder NewField(string fieldName, Type fieldType, Action<IFieldBuilder> fieldBuilder);
+
+        /// <summary>
+        /// Defines a method.
+        /// </summary>
+        /// <param name="methodName">The name of the method.</param>
+        /// <param name="action">A <see cref="IMethodBuilder"/> action.</param>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder NewMethod(string methodName, Action<IMethodBuilder> action);
 
         /// <summary>
-        /// Builds a method.
+        /// Defines a method.
         /// </summary>
-        /// <param name="methodName"></param>
-        /// <param name="attributes"></param>
-        /// <param name="callingConvention"></param>
-        /// <param name="returnType"></param>
-        /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
+        /// <param name="methodName">The name of the method.</param>
+        /// <param name="attributes">The methods attributes.</param>
+        /// <param name="callingConvention">The method calling convention.</param>
+        /// <param name="returnType">The methods return type.</param>
+        /// <returns>A <see cref="IMethodBuilder"/> instance.</returns>
         IMethodBuilder NewMethod(
             string methodName,
             MethodAttributes attributes,
@@ -93,42 +116,58 @@ namespace FluentIL
        	    Type returnType);
 
         /// <summary>
-        /// Builds a method.
+        /// Defines a method.
         /// </summary>
-        /// <param name="methodName">The method name.</param>
+        /// <param name="methodName">The name of the method.</param>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         IMethodBuilder NewMethod(string methodName);
 
         /// <summary>
-        /// Adds a property to the type.
+        /// Defines a property.
         /// </summary>
-        /// <param name="propertyName"></param>
-        /// <param name="propertyType"></param>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <param name="propertyType">The properties type.</param>
         /// <returns></returns>
-        IPropertyBuilder NewProperty(
-            string propertyName,
-            Type propertyType);
+        IPropertyBuilder NewProperty(string propertyName, Type propertyType);
 
         /// <summary>
-        /// Adds an event to the type.
+        /// Defines a property.
         /// </summary>
-        /// <param name="eventName"></param>
-        /// <param name="eventType"></param>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <param name="propertyType">The properties type.</param>
+        /// <param name="propertyBuilder">A <see cref="IPropertyBuilder"/> action.</param>
+        /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
+        ITypeBuilder NewProperty(string propertyName, Type propertyType, Action<IPropertyBuilder> propertyBuilder);
+
+        /// <summary>
+        /// Defines an event.
+        /// </summary>
+        /// <param name="eventName">The name of the event.</param>
+        /// <param name="eventType">The events type.</param>
         /// <returns>The <see cref="IEventBuilder"/> instance.</returns>
         IEventBuilder NewEvent(string eventName, Type eventType);
 
         /// <summary>
-        /// Adds a new generic type parameter to the type.
+        /// Defines an event.
         /// </summary>
-        /// <param name="parameterName"></param>
+        /// <param name="eventName">The name of the event.</param>
+        /// <param name="eventType">The events type.</param>
+        /// <param name="eventBuilder">An <see cref="IEventBuilder"/> action</param>
+        /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
+        ITypeBuilder NewEvent(string eventName, Type eventType, Action<IEventBuilder> eventBuilder);
+
+        /// <summary>
+        /// Defines a generic parameter.
+        /// </summary>
+        /// <param name="parameterName">The name of the generic parameter.</param>
         /// <returns>The <see cref="IGenericParameterBuilder"/> instance.</returns>
         IGenericParameterBuilder NewGenericParameter(string parameterName);
 
         /// <summary>
         /// Adds a new generic type parameter to the type.
         /// </summary>
-        /// <param name="parameterName"></param>
-        /// <param name="parameterBuilder"></param>
+        /// <param name="parameterName">The name of the generic parameter.</param>
+        /// <param name="parameterBuilder">A <see cref="IGenericParameterBuilder"/> action.</param>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder NewGenericParameter(string parameterName, Action<IGenericParameterBuilder> parameterBuilder);
 

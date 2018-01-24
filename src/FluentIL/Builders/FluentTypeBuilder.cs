@@ -148,7 +148,14 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc />
-        public IConstructorBuilder NewDefaultConstructor()
+        public ITypeBuilder NewConstructor(Action<IConstructorBuilder> constructorBuilder)
+        {
+            constructorBuilder(this.NewConstructor());
+            return this;
+        }
+
+        /// <inheritdoc />
+        public ITypeBuilder NewDefaultConstructor(MethodAttributes constructorAttributes)
         {
             var ctorBuilder = new FluentConstructorBuilder(
                 (attrs) =>
@@ -160,8 +167,9 @@ namespace FluentIL.Builders
                 }
             );
 
+            ctorBuilder.MethodAttributes = constructorAttributes;
             this.actions.Add(() => ctorBuilder.Define());
-            return ctorBuilder;
+            return this;
         }
 
         /// <inheritdoc />
@@ -188,6 +196,13 @@ namespace FluentIL.Builders
 
             this.actions.Add(() => fieldBuilder.Define());
             return fieldBuilder;
+        }
+
+        /// <inheritdoc />
+        public ITypeBuilder NewField(string fieldName, Type fieldType, Action<IFieldBuilder> fieldBuilder)
+        {
+            fieldBuilder(this.NewField(fieldName, fieldType));
+            return this;
         }
 
         /// <inheritdoc />
@@ -246,7 +261,6 @@ namespace FluentIL.Builders
                 parameterTypesRequired,
                 parameterTypesOptional) =>
                 {
-Console.WriteLine("Defining Property: {0}", name);
                     return this
                         .Define()
                         .DefineProperty(
@@ -263,6 +277,13 @@ Console.WriteLine("Defining Property: {0}", name);
 
             this.actions.Add(() => builder.Define());
             return builder;
+        }
+
+        /// <inheritdoc/>
+        public ITypeBuilder NewProperty(string propertyName, Type propertyType, Action<IPropertyBuilder> propertyBuilder)
+        {
+            propertyBuilder(this.NewProperty(propertyName, propertyType));
+            return this;
         }
 
         /// <inheritdoc/>
@@ -283,6 +304,13 @@ Console.WriteLine("Defining Property: {0}", name);
 
             this.actions.Add(() => builder.Define());
             return builder;
+        }
+
+        /// <inheritdoc />
+        public ITypeBuilder NewEvent(string eventName, Type eventType, Action<IEventBuilder> eventBuilder)
+        {
+            eventBuilder(this.NewEvent(eventName, eventType));
+            return this;
         }
 
         /// <inheritdoc/>

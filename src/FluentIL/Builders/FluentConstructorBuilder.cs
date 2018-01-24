@@ -31,6 +31,11 @@ namespace FluentIL.Builders
         private List<FluentParameterBuilder> parameters = new List<FluentParameterBuilder>();
 
         /// <summary>
+        /// The constuctor builder.
+        /// </summary>
+        private ConstructorBuilder ctor;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="FluentConstructorBuilder"/> class.
         /// </summary>
         /// <param name="define">A constructor definition function.</param>
@@ -102,10 +107,14 @@ namespace FluentIL.Builders
         /// <inheritdoc />
         public ConstructorBuilder Define()
         {
-            ConstructorBuilder ctor = null;
+            if (this.ctor != null)
+            {
+                return this.ctor;
+            }
+
             if (this.define != null)
             {
-                ctor = this.define(
+                this.ctor = this.define(
                     this.MethodAttributes,
                     this.callingConvention,
                     this.parameters.Select(p => p.ParameterType).ToArray(),
@@ -115,12 +124,12 @@ namespace FluentIL.Builders
                 int i = 0;
                 foreach (var parm in this.parameters)
                 {
-                    ctor.DefineParameter(++i, parm.Attributes, parm.ParameterName);
+                    this.ctor.DefineParameter(++i, parm.Attributes, parm.ParameterName);
                 }
             }
             else if (this.defineDefault != null)
             {
-                ctor = this.defineDefault(this.MethodAttributes);
+                this.ctor = this.defineDefault(this.MethodAttributes);
             }
 
             DebugOutput.WriteLine("=======================================");
@@ -128,7 +137,7 @@ namespace FluentIL.Builders
             DebugOutput.WriteLine("Calling Convention: {0}", this.callingConvention);
             DebugOutput.WriteLine("");
 
-            return ctor;
+            return this.ctor;
         }
     }
 }
