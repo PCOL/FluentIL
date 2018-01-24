@@ -291,29 +291,29 @@ namespace FluentIL
         /// Converts a value type to an object reference (type O).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="referenceType">A reference type</param>
+        /// <param name="valueType">A value type</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter Box(this IEmitter emitter, Type referenceType)
+        public static IEmitter Box(this IEmitter emitter, Type valueType)
         {
-            if (referenceType.IsClass == false)
+            if (valueType.IsValueType == false)
             {
-                throw new InvalidProgramException("Box instruction must take a reference type");
+                throw new InvalidProgramException("Box instruction must take a value type");
             }
 
-            return emitter.Emit(OpCodes.Box, referenceType);
+            return emitter.Emit(OpCodes.Box, valueType);
         }
 
         /// <summary>
         /// Converts a value type to an object reference (type O).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="referenceType">A reference type</param>
+        /// <param name="valueType">A reference type</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter Box(this IEmitter emitter, Type referenceType, ILocal localValue)
+        public static IEmitter Box(this IEmitter emitter, Type valueType, ILocal localValue)
         {
             return emitter
                 .LdLoc(localValue)
-                .Box(referenceType);
+                .Box(valueType);
         }
 
         /// <summary>

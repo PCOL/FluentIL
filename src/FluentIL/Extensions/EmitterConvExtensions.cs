@@ -247,7 +247,7 @@ namespace FluentIL
         /// <param name="targetType">The destination type.</param>
         /// <param name="isAddress">A value indicating whether or not the convert is for an address.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter EmitConv(
+        public static IEmitter Conv(
             this IEmitter emitter,
             Type sourceType,
             Type targetType,
@@ -258,8 +258,8 @@ namespace FluentIL
                 if (sourceType.IsByRef == true)
                 {
                     Type elementType = sourceType.GetElementType();
-                    emitter.EmitLdInd(elementType);
-                    emitter.EmitConv(elementType, targetType, isAddress);
+                    emitter.LdInd(elementType);
+                    emitter.Conv(elementType, targetType, isAddress);
                 }
                 else if (targetType.IsValueType == true)
                 {
@@ -272,7 +272,7 @@ namespace FluentIL
                         emitter.Emit(OpCodes.Unbox, targetType);
                         if (isAddress == false)
                         {
-                            emitter.EmitLdInd(targetType);
+                            emitter.LdInd(targetType);
                         }
                     }
                 }
@@ -282,7 +282,7 @@ namespace FluentIL
                     {
                         if (isAddress == true)
                         {
-                            emitter.EmitLdInd(sourceType);
+                            emitter.LdInd(sourceType);
                         }
 
                         emitter.Emit(OpCodes.Box, sourceType);

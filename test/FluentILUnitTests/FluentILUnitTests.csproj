@@ -20,5 +20,6 @@
     <Content Include="Resources\ITestInterface.cs" />
     <Content Include="GenericTypeUnitTests.cs" />
     <Content Include="ModuleMethodUnitTests.cs" />
+    <Content Include="BoxUnBoxUnitTests.cs" />
   </ItemGroup>
 </Project>

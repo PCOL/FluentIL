@@ -10,7 +10,7 @@ namespace FluentIL
     public static class EmitterLdExtensions
     {
         /// <summary>
-        /// 
+        /// Emits the IL to load a string onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="value"></param>
@@ -22,7 +22,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load a local onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="local"></param>
@@ -34,7 +34,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load a local onto the evaluation stack (short form).
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="local"></param>
@@ -46,7 +46,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load a local at position 0 onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -57,7 +57,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load a local at position 1 onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -68,7 +68,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load a local at position 2 onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -79,7 +79,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load a local at position 3 onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -90,7 +90,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load the address of a local onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -101,7 +101,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load the address of a local onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -129,7 +129,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits IL to load the address of a local onto the evaluation stack (short form).
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -140,7 +140,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load the value of a field onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <param name="field"></param>
@@ -152,7 +152,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load the value of a field onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <param name="field"></param>
@@ -164,7 +164,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load the address of a field onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <param name="field"></param>
@@ -176,7 +176,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to load the address of a field onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <param name="field"></param>
@@ -184,6 +184,54 @@ namespace FluentIL
         public static IEmitter LdFlda(this IEmitter emitter, IFieldBuilder field)
         {
             emitter.Emit(OpCodes.Ldflda, field);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Emits the IL to load the value of a static field onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="field">A <see cref="IFieldBuilder"/>.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdsFld(this IEmitter emitter, IFieldBuilder field)
+        {
+            emitter.Emit(OpCodes.Ldsfld, field);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Emits the IL to load the value of a static field onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="field">A <see cref="FieldBuilder"/>.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdsFld(this IEmitter emitter, FieldBuilder field)
+        {
+            emitter.Emit(OpCodes.Ldsfld, field);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Emits the IL to load the address of a static field onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="field">A <see cref="IFieldBuilder"/>.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdsFlda(this IEmitter emitter, IFieldBuilder field)
+        {
+            emitter.Emit(OpCodes.Ldsflda, field);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Emits the IL to load the address of a static field onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="field">A <see cref="FieldBuilder"/>.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdsFlda(this IEmitter emitter, FieldBuilder field)
+        {
+            emitter.Emit(OpCodes.Ldsflda, field);
             return emitter;
         }
 
@@ -304,10 +352,9 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Loads a null.
+        /// Emits the IL to Load a null onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
-        /// <param name="type"></param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdNull(this IEmitter emitter)
         {
@@ -316,56 +363,166 @@ namespace FluentIL
         }
 
         /// <summary>
+        /// Emits the IL to indirectly copy a value type onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdObj(this IEmitter emitter, Type type)
+        {
+            emitter.Emit(OpCodes.Ldobj, type);
+            return emitter;
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load a native int onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndI(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_I);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an int8 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndI1(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_I1);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an int16 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndI2(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_I2);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an int32 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndI4(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_I4);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an int64 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndI8(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_I8);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load a float32 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndR4(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_R4);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load a float64 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndR8(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_R8);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an object onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndRef(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_Ref);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an unsigned int8 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndU1(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_U1);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an unsigned int16 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndU2(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_U2);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly load an unsigned int32 onto the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdIndU4(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Ldind_U4);
+        }
+
+        /// <summary>
         /// Emits the IL to indirectly load a value onto the evaluation stack.
         /// </summary>
 	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="type">The type to load.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter EmitLdInd(this IEmitter emitter, Type type)
+        public static IEmitter LdInd(this IEmitter emitter, Type type)
         {
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Boolean:
                 case TypeCode.SByte:
-                    emitter.Emit(OpCodes.Ldind_I1);
-                    break;
+                    return emitter.LdIndI1();
 
                 case TypeCode.Char:
                 case TypeCode.Int16:
-                    emitter.Emit(OpCodes.Ldind_I2);
-                    break;
+                    return emitter.LdIndI2();
 
                 case TypeCode.Byte:
-                    emitter.Emit(OpCodes.Ldind_U1);
-                    break;
+                    return emitter.LdIndU1();
 
                 case TypeCode.Int32:
-                    emitter.Emit(OpCodes.Ldind_I4);
-                    break;
+                    return emitter.LdIndI4();
 
                 case TypeCode.UInt32:
-                    emitter.Emit(OpCodes.Ldind_U4);
-                    break;
+                    return emitter.LdIndU4();
 
                 case TypeCode.Int64:
                 case TypeCode.UInt64:
-                    emitter.Emit(OpCodes.Ldind_I8);
-                    break;
+                    return emitter.LdIndI8();
 
                 case TypeCode.Single:
-                    emitter.Emit(OpCodes.Ldind_R4);
-                    break;
+                    return emitter.LdIndR4();
 
                 case TypeCode.Double:
-                    emitter.Emit(OpCodes.Ldind_R8);
-                    break;
+                    return emitter.LdIndR8();
 
                 default:
-                    emitter.Emit(OpCodes.Ldobj, type);
-                    break;
+                    return emitter.LdObj(type);
             }
-
-            return emitter;
         }
     }
 }
