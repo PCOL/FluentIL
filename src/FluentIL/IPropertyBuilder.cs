@@ -12,6 +12,16 @@ namespace FluentIL
         PropertyAttributes PropertyAttributes { get; set; }
 
         /// <summary>
+        /// Gets the set method.
+        /// </summary>
+        IMethodBuilder SetMethod { get; set; }
+
+        /// <summary>
+        /// Gets the get method.
+        /// </summary>
+        IMethodBuilder GetMethod { get; set; }
+
+        /// <summary>
         /// Sets the attributes for the property.
         /// </summary>
         /// <param name="attributes">The attributes to set.</param>

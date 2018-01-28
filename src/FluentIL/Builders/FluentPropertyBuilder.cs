@@ -41,16 +41,6 @@ namespace FluentIL.Builders
         /// </summary>
         private List<Type> parameterTypes;
 
-        /// <summary>
-        /// The get method builder.
-        /// </summary>
-        private IMethodBuilder getMethod;
-
-        /// <summary>
-        /// The set method builder.
-        /// </summary>
-        private IMethodBuilder setMethod;
-
         private PropertyBuilder propertyBuilder;
 
         /// <summary>
@@ -73,90 +63,74 @@ namespace FluentIL.Builders
             this.PropertyAttributes = PropertyAttributes.None;
         }
 
-        /// <summary>
-        /// Gets or sets the property attributes.
-        /// </summary>
+        /// <inheritdoc />
         public PropertyAttributes PropertyAttributes { get; set; }
 
-        /// <summary>
-        /// Gets the get property method builder
-        /// </summary>
+        /// <inheritdoc />
+        public IMethodBuilder SetMethod { get; set; }
+
+        /// <inheritdoc />
+        public IMethodBuilder GetMethod { get; set; }
+
+        /// <inheritdoc />
         public IPropertyBuilder Getter(Action<IMethodBuilder> action)
         {
             action.Invoke(this.Getter());
             return this;
         }
 
-        /// <summary>
-        /// Gets the get property method builder
-        /// </summary>
+        /// <inheritdoc />
         public IMethodBuilder Getter()
         {
-            if (this.getMethod == null)
+            if (this.GetMethod == null)
             {
-                this.getMethod = this.typeBuilder
+                this.GetMethod = this.typeBuilder
                     .NewMethod($"get_{this.name}")
                     .CallingConvention(this.callingConvention)
+                    .SpecialName()
                     .Returns(this.propertyType);
             }
 
-            return this.getMethod;
+            return this.GetMethod;
         }
 
-        /// <summary>
-        /// Gets or adds the set property method builder.
-        /// </summary>
-        /// <returns>A <see cref="IMethodBuilder"/> which represents the set method.</returns>
+        /// <inheritdoc />
         public IPropertyBuilder Setter(Action<IMethodBuilder> action)
         {
             action.Invoke(this.Setter());
             return this;
         }
 
-        /// <summary>
-        /// Gets or adds the set property method builder.
-        /// </summary>
-        /// <returns>A <see cref="IMethodBuilder"/> which represents the set method.</returns>
+        /// <inheritdoc />
         public IMethodBuilder Setter()
         {
-            if (this.setMethod == null)
+            if (this.SetMethod == null)
             {
-                this.setMethod = this.typeBuilder
+                this.SetMethod = this.typeBuilder
                     .NewMethod($"set_{this.name}")
                     .CallingConvention(this.callingConvention)
                     .Param(this.propertyType, "value", ParameterAttributes.None)
                     .Returns(typeof(void));
             }
 
-            return this.setMethod;
+            return this.SetMethod;
         }
 
-        /// <summary>
-        /// Sets the attributes of the property.
-        /// </summary>
-        /// <param name="attributes">The attibutes to set.</param>
-        /// <returns>The property builder.</returns>
+        /// <inheritdoc />
         public IPropertyBuilder Attributes(PropertyAttributes attributes)
         {
             this.PropertyAttributes = attributes;
             return this;
         }
 
-        /// <summary>
-        /// Sets the calling convention.
-        /// </summary>
-        /// <param name="callingConvention">The calling convention.</param>
-        /// <returns>The property builder.</returns>
+        /// <inheritdoc />
         public IPropertyBuilder CallingConvention(CallingConventions callingConvention)
         {
             this.callingConvention = callingConvention;
             return this;
         }
 
-        /// <summary>
-        /// Builds the property.
-        /// </summary>
-        /// <returns>A <see cref="PropertyInfo"/> instance.</returns>
+        /// <inheritdoc />
         public PropertyBuilder Define()
         {
             if (this.propertyBuilder == null)
@@ -172,14 +146,14 @@ namespace FluentIL.Builders
                     null,
                     null);
 
-                if (this.getMethod != null)
+                if (this.GetMethod != null)
                 {
-                    this.propertyBuilder.SetGetMethod(this.getMethod.Define());
+                    this.propertyBuilder.SetGetMethod(this.GetMethod.Define());
                 }
 
-                if (this.setMethod != null)
+                if (this.SetMethod != null)
                 {
-                    this.propertyBuilder.SetSetMethod(this.setMethod.Define());
+                    this.propertyBuilder.SetSetMethod(this.SetMethod.Define());
                 }
 
                 DebugOutput.WriteLine("");

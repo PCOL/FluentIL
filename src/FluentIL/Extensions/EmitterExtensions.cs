@@ -497,7 +497,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// Emits the IL to call a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="method"></param>
@@ -505,6 +505,31 @@ namespace FluentIL
         public static IEmitter Call(this IEmitter emitter, MethodInfo method)
         {
             return emitter.Emit(OpCodes.Call, method);
+        }
+
+        /// <summary>
+        /// Emits to call a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="method"></param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, IMethodBuilder method)
+        {
+            return emitter.Call(method.Define());
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="method">The method to call.</param>
+        /// <param name="locals">Method parameters as local variables.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, IMethodBuilder method, params ILocal[] locals)
+        {
+            return emitter.Call(
+                method.Define(),
+                locals);
         }
 
         /// <summary>
@@ -525,7 +550,19 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits a <see cref="OpCodes.Call"/> to a constructor.
+        /// Emits the IL to call a constructor.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="ctor">The constructor to call.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, IConstructorBuilder ctor)
+        {
+            return emitter
+                .Call(ctor.Define());
+        }
+
+        /// <summary>
+        /// Emits the IL to call a constructor.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="ctor">The constructor to call.</param>
@@ -536,7 +573,20 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits a <see cref="OpCodes.Call"/> to a constructor.
+        /// Emits the IL to call a constructor.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="ctor">The constructor to call.</param>
+        /// <param name="locals">The constructors parameters as local variables.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, IConstructorBuilder ctor, params ILocal[] locals)
+        {
+            return emitter
+                .Call(ctor.Define(), locals);
+        }
+
+        /// <summary>
+        /// Emits the IL to call a constructor.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="ctor">The constructor to call.</param>
@@ -558,9 +608,31 @@ namespace FluentIL
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="method"></param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Calli(this IEmitter emitter, IMethodBuilder method)
+        {
+            return emitter.Calli(method);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Calli"/> to a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="method"></param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Calli(this IEmitter emitter, MethodInfo method)
         {
             return emitter.Emit(OpCodes.Calli, method);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Callvirt"/> to a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="method"></param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter CallVirt(this IEmitter emitter, IMethodBuilder method)
+        {
+            return emitter.CallVirt(method.Define());
         }
 
         /// <summary>
@@ -727,57 +799,13 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to perform a for loop over an array.
-        /// </summary>
-        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="local">The local variable holding the array.</param>
-        /// <param name="action">An action to allow the injecting of the loop code.</param>
-        /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter For(this IEmitter emitter, ILocal local, Action<ILocal> action)
-        {
-            emitter
-                .DefineLabel("beginLoop", out ILabel beginLoop)
-                .DefineLabel("loopCheck", out ILabel loopCheck)
-
-                .DeclareLocal<int>("index", out ILocal index)
-                .DeclareLocal(local.LocalType.GetElementType(), "item", out ILocal item)
-
-                .LdcI4_0()
-                .StLoc(index)
-                .Br(loopCheck)
-                .MarkLabel(beginLoop)
-
-                .LdLoc(local)
-                .LdLocS(index)
-                .LdElemRef()
-                .StLocS(item)
-                .Nop();
-
-            action(item);
-
-            return emitter
-                .Nop()
-                .LdLocS(index)
-                .LdcI4_1()
-                .Emit(OpCodes.Add)
-                .StLocS(index)
-                .MarkLabel(loopCheck)
-
-                .LdLocS(index)
-                .LdLoc(local)
-                .LdLen()
-                .ConvI4()
-                .BltS(beginLoop);
-        }
-
-        /// <summary>
         /// Emits IL to perform a for loop over an array without element loading.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="localLength">The local variable holding the length.</param>
         /// <param name="action">An action to allow the injecting of the loop code.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter EmitFor(
+        public static IEmitter For(
             this IEmitter emitter,
             ILocal localLength,
             Action<ILocal> action)
@@ -814,7 +842,7 @@ namespace FluentIL
         /// <param name="localArray">The local variable holding the array.</param>
         /// <param name="action">An action to allow the injecting of the loop code.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter EmitFor(
+        public static IEmitter For(
             this IEmitter emitter,
             ILocal localArray,
             Action<ILocal, ILocal> action)
@@ -828,7 +856,7 @@ namespace FluentIL
                 .ConvI4()
                 .StLocS(lengthLocal)
 
-                .EmitFor(
+                .For(
                     lengthLocal,
                     (index) =>
                     {
@@ -884,12 +912,11 @@ namespace FluentIL
                 .CallVirt(getEnumerator)
                 .StLocS(localEnumerator)
 
-            // Try
-                .BeginExceptionBlock(out ILabel beginEx)
+                .Try(out ILabel beginEx)
 
-                .BrS(loopCheck)
+                .Br(loopCheck)
                 .MarkLabel(loopStart)
-                .LdLocS(localEnumerator)
+                .LdLoc(localEnumerator)
                 .CallVirt(getCurrent)
                 .StLocS(localItem)
                 .Nop();
@@ -898,27 +925,27 @@ namespace FluentIL
 
             emitter
                 .Nop()
-                .Nop()
-
                 .MarkLabel(loopCheck)
-                .LdLocS(localEnumerator)
+                .LdLoc(localEnumerator)
                 .CallVirt(moveNext)
-                .BrTrueS(loopStart)
+                .BrTrue(loopStart)
 
-                .LeaveS(loopEnd)
+                .Leave(loopEnd)
 
-            // Finally
-                .BeginFinallyBlock()
+                .Finally()
 
-                .LdLocS(localEnumerator)
-                .BrFalseS(endFinally)
+                .LdLoc(localEnumerator)
+                .BrFalse(endFinally)
 
-                .LdLocS(localEnumerator)
+                .LdLoc(localEnumerator)
                 .CallVirt(DisposeMethodInfo)
-                .Nop()
 
+                .Nop()
                 .MarkLabel(endFinally)
+
                 .EndExceptionBlock()
+
+                .Nop()
                 .MarkLabel(loopEnd);
 
             return emitter;

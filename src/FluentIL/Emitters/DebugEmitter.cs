@@ -244,7 +244,7 @@ namespace FluentIL.Emitters
                 return this;
             }
 
-            this.debugOutput.WriteLine("\t[{0}] {1}.{2}({3})", methodInfo.ReturnType, methodInfo.DeclaringType, methodInfo.Name, string.Join(", ", methodInfo.GetParameters().Select(p => $"{p.ParameterType} {p.Name}")));
+            this.debugOutput.WriteLine("\t[{0}] {1}.{2}()", methodInfo.ReturnType, methodInfo.DeclaringType, methodInfo.Name);
             return this;
         }
 
