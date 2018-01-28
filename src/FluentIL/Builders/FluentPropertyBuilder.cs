@@ -37,10 +37,8 @@ namespace FluentIL.Builders
         private CallingConventions callingConvention = CallingConventions.HasThis;
 
         /// <summary>
-        /// A list of parameter types.
+        /// The defined property builder. 
         /// </summary>
-        private List<Type> parameterTypes;
-
         private PropertyBuilder propertyBuilder;
 
         /// <summary>
@@ -142,7 +140,7 @@ namespace FluentIL.Builders
                     this.propertyType,
                     null,
                     null,
-                    this.parameterTypes != null ? this.parameterTypes.ToArray() : System.Type.EmptyTypes,
+                    null,
                     null,
                     null);
 

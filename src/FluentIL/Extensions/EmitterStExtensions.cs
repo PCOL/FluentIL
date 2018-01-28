@@ -104,50 +104,133 @@ namespace FluentIL
         }
 
         /// <summary>
+        /// Emits the IL to copy a value of a specified type from the top of the evaluation stack
+        /// into the supplied address.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="type">The type to store.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StObj(this IEmitter emitter, Type type)
+        {
+            return emitter.Emit(OpCodes.Stobj, type);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value of type native int from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndI(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_I);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value of type int8 from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndI1(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_I1);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value of type int16 from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndI2(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_I2);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value of type int32 from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndI4(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_I4);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value of type int64 from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndI8(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_I8);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value of type float32 from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndR4(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_R4);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a value of type float64 from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndR8(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_R8);
+        }
+
+        /// <summary>
+        /// Emits the IL to indirectly store a object reference from the top of the evaluation stack.
+        /// </summary>
+	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter StIndRef(this IEmitter emitter)
+        {
+            return emitter.Emit(OpCodes.Stind_Ref);
+        }
+
+        /// <summary>
         /// Emits the IL to indirectly store a value from the top of the evaluation stack.
         /// </summary>
 	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="type">The type to store.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter EmitStInd(this IEmitter emitter, Type type)
+        public static IEmitter StInd(this IEmitter emitter, Type type)
         {
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Boolean:
                 case TypeCode.SByte:
                 case TypeCode.Byte:
-                    emitter.Emit(OpCodes.Stind_I1);
-                    break;
+                    return emitter.StIndI1();
 
                 case TypeCode.Char:
                 case TypeCode.Int16:
-                    emitter.Emit(OpCodes.Stind_I2);
-                    break;
+                    return emitter.StIndI2();
 
                 case TypeCode.Int32:
                 case TypeCode.UInt32:
-                    emitter.Emit(OpCodes.Stind_I4);
-                    break;
+                    return emitter.StIndI4();
 
                 case TypeCode.Int64:
                 case TypeCode.UInt64:
-                    emitter.Emit(OpCodes.Stind_I8);
-                    break;
+                    return emitter.StIndI8();
 
                 case TypeCode.Single:
-                    emitter.Emit(OpCodes.Stind_R4);
-                    break;
-
+                    return emitter.StIndR4();
+                    
                 case TypeCode.Double:
-                    emitter.Emit(OpCodes.Stind_R8);
-                    break;
+                    return emitter.StIndR8();
 
                 default:
-                    emitter.Emit(OpCodes.Stobj, type);
-                    break;
+                    return emitter.StObj(type);
             }
-
-            return emitter;
         }
     }
 }
