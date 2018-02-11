@@ -128,9 +128,16 @@ namespace FluentIL
         GenericTypeParameterBuilder GetGenericParameter(string parameterName);
 
         /// <summary>
+        /// Sets a custom attribute.
+        /// </summary>
+        /// <param name="customAttribute">The custom attribute.</param>
+        /// <returns>The <see cref="MethodInfo"/> instance.</returns>
+        IMethodBuilder SetCustomAttribute(CustomAttributeBuilder customAttribute);
+
+        /// <summary>
         /// Defines the method.
         /// </summary>
-        /// <returns>A <see cref="MethodInfo"/> instance.</returns>
+        /// <returns>The <see cref="MethodInfo"/> instance.</returns>
         MethodBuilder Define();
     }
 }

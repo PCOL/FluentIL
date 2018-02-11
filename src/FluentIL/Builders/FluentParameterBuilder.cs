@@ -1,7 +1,9 @@
 namespace FluentIL.Builders
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
+    using System.Reflection.Emit;
 
     /// <summary>
     /// An implementation of the <see cref="IParameterBuilder"/> interface.
@@ -43,6 +45,11 @@ namespace FluentIL.Builders
         /// Gets the parameters attributes.
         /// </summary>
         internal ParameterAttributes Attributes { get; private set; } = ParameterAttributes.None;
+
+        /// <summary>
+        /// Gets the parameters custom attributes.
+        /// </summary>
+        internal List<CustomAttributeBuilder> CustomAttributes { get; private set; }
 
         /// <inheritdoc/>
         public IParameterBuilder Type<T>()
@@ -110,6 +117,14 @@ namespace FluentIL.Builders
         public IParameterBuilder Retval()
         {
             this.Attributes |= ParameterAttributes.Retval;
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IParameterBuilder SetCustomAttribute(CustomAttributeBuilder attributeBuilder)
+        {
+            this.CustomAttributes = this.CustomAttributes ?? new List<CustomAttributeBuilder>();
+            this.CustomAttributes.Add(attributeBuilder);
             return this;
         }
     }

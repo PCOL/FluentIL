@@ -1,6 +1,7 @@
 namespace FluentIL
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
     using FluentIL.Builders;
@@ -79,5 +80,24 @@ namespace FluentIL
             return new FluentMethodBuilder(methodName, defineFunc)
                 .Static();
         }
+
+        /// <summary>
+        /// Helper method for setting custom attributes.
+        /// </summary>
+        /// <param name="attrs">A list of custom attributes.</param>
+        /// <param name="action">An action for settin the attribute.</param>
+        internal static void SetCustomAttributes(
+            this IEnumerable<CustomAttributeBuilder> attrs,
+            Action<CustomAttributeBuilder> action)
+        {
+            if (attrs != null)
+            {
+                foreach (var attr in attrs)
+                {
+                    action(attr);
+                }
+            }
+        }
+
     }
 }

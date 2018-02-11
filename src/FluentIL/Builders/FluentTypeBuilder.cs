@@ -28,6 +28,8 @@ namespace FluentIL.Builders
 
         private List<FluentGenericParameterBuilder> genericParameters;
 
+        private List<CustomAttributeBuilder> customAttributes;
+
         private TypeInfo typeInfo;
 
         private bool genericParemetersBuilt;
@@ -364,6 +366,14 @@ namespace FluentIL.Builders
             return null;
         }
 
+        /// <inheritdoc />
+        public ITypeBuilder SetCustomAttribute(CustomAttributeBuilder customAttribute)
+        {
+            this.customAttributes = this.customAttributes ?? new List<CustomAttributeBuilder>();
+            this.customAttributes.Add(customAttribute);
+            return this;
+        }
+
         /// <summary>
         /// Builds the type.
         /// </summary>
@@ -385,6 +395,8 @@ namespace FluentIL.Builders
                     this.interfaces.ToArray());
 
                 this.BuildGenericParameters();
+
+                this.customAttributes.SetCustomAttributes(a => this.typeBuilder.SetCustomAttribute(a));
             }
 
             return this.typeBuilder;

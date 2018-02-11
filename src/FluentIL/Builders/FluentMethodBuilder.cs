@@ -10,8 +10,6 @@ namespace FluentIL.Builders
     public class FluentMethodBuilder
         : IMethodBuilder
     {
-        //private readonly Emitter body;
-
         private readonly Func<string, MethodAttributes, CallingConventions, Type, Type[], Type[], Type[], Type[][], Type[][], MethodBuilder> defineMethod;
 
         private string methodName;
@@ -28,7 +26,7 @@ namespace FluentIL.Builders
 
         private MethodBuilder methodBuilder;
 
-        //private Func<MethodInfo> postAction;
+        private List<CustomAttributeBuilder> customAttributes;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="FluentMethodBuilder"/> class.
@@ -44,8 +42,6 @@ namespace FluentIL.Builders
             this.methodName = methodName;
             this.returnType = typeof(void);
             this.defineMethod = defineMethod;
-            // this.postAction = postAction;
-            // this.body = new Emitter();
         }
 
         /// <inheritdoc/>
@@ -93,11 +89,7 @@ namespace FluentIL.Builders
             return this;
         }
 
-        /// <summary>
-        /// Defines the constructor parameters.
-        /// </summary>
-        /// <param name="parameterTypes">The parameter types.</param>
-        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
+        /// <inheritdoc/>
         public IMethodBuilder Params(params Type[] parameterTypes)
         {
             this.ThrowIfDefined();
@@ -113,11 +105,7 @@ namespace FluentIL.Builders
             return this.parms.Any(p => p.ParameterName == parameterName);
         }
 
-        /// <summary>
-        /// Sets the methods attributes.
-        /// </summary>
-        /// <param name="attributes">The attributes.</param>
-        /// <returns>The method builder.</returns>
+        /// <inheritdoc/>
         public IMethodBuilder MethodAttributes(MethodAttributes attributes)
         {
             this.ThrowIfDefined();
@@ -186,12 +174,7 @@ namespace FluentIL.Builders
             return this.NewGenericParameters(parameterNames, (Action<IGenericParameterBuilder[]>) null);
         }
 
-        /// <summary>
-        /// Defines generic parameters.
-        /// </summary>
-        /// <param name="parameterNames">The names of the parameters.</param>
-        /// <param name="action">The action to update the parameters</param>
-        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
+        /// <inheritdoc/>
         public IMethodBuilder NewGenericParameters(string[] parameterNames, Action<IGenericParameterBuilder[]> action)
         {
             this.genericParameterBuilders = this.genericParameterBuilders ?? new List<FluentGenericParameterBuilder>();
@@ -212,21 +195,22 @@ namespace FluentIL.Builders
             return this;
         }
 
-        /// <summary>
-        /// Gets a generic parameter builder.
-        /// </summary>
-        /// <param name="parameterName">The generic parameter name.</param>
-        /// <returns>A <see cref="GenericTypeParameterBuilder"/>.</returns>
+        /// <inheritdoc/>
         public GenericTypeParameterBuilder GetGenericParameter(string parameterName)
         {
             return this.genericParameters
                 .FirstOrDefault(g => g.Name == parameterName);
         }
 
-        /// <summary>
-        /// Defines the method.
-        /// </summary>
-        /// <returns>A <see cref="MethodInfo"/> instance.</returns>
+        /// <inheritdoc/>
+        public IMethodBuilder SetCustomAttribute(CustomAttributeBuilder customAttribute)
+        {
+            this.customAttributes = this.customAttributes ?? new List<CustomAttributeBuilder>();
+            this.customAttributes.Add(customAttribute);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public MethodBuilder Define()
         {
             if (this.methodBuilder != null)
@@ -259,8 +243,13 @@ namespace FluentIL.Builders
             int parmIndex = 0;
             foreach (var parm in this.parms)
             {
-                this.methodBuilder.DefineParameter(++parmIndex, parm.Attributes, parm.ParameterName);
+                var paramBuilder = this.methodBuilder
+                    .DefineParameter(++parmIndex, parm.Attributes, parm.ParameterName);
+
+                parm.CustomAttributes.SetCustomAttributes(a => paramBuilder.SetCustomAttribute(a));
             }
+
+            this.customAttributes.SetCustomAttributes(a => this.methodBuilder.SetCustomAttribute(a));
 
             DebugOutput.WriteLine("");
             DebugOutput.WriteLine("=======================================");

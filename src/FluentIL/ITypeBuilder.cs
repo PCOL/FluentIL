@@ -186,6 +186,13 @@ namespace FluentIL
         ITypeBuilder NewNestedType(string typeName);
 
         /// <summary>
+        /// Sets a custom attribute.
+        /// </summary>
+        /// <param name="customAttribute">The custom attribute.</param>
+        /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
+        ITypeBuilder SetCustomAttribute(CustomAttributeBuilder customAttribute);
+
+        /// <summary>
         /// Defines the <see cref="TypeBuilder"/>.
         /// </summary>
         /// <returns>A <see cref="TypeBuilder"/> instance.</returns>
