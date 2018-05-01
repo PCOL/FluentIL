@@ -22,5 +22,7 @@
     <Content Include="ModuleMethodUnitTests.cs" />
     <Content Include="BoxUnBoxUnitTests.cs" />
     <Content Include="ConstructorUnitTests.cs" />
+    <Content Include="EmitForEachUnitTests.cs" />
+    <Content Include="EmitForUnitTests.cs" />
   </ItemGroup>
 </Project>

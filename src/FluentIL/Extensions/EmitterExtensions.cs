@@ -810,17 +810,35 @@ namespace FluentIL
             ILocal localLength,
             Action<ILocal> action)
         {
+            return emitter
+                .For(
+                    localLength,
+                    (IEmitter il, ILocal index) => action(index));
+        }
+
+        /// <summary>
+        /// Emits IL to perform a for loop over an array without element loading.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="localLength">The local variable holding the length.</param>
+        /// <param name="action">An action to allow the injecting of the loop code.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter For(
+            this IEmitter emitter,
+            ILocal localLength,
+            Action<IEmitter, ILocal> action)
+        {
             emitter
                 .DefineLabel(out ILabel beginLoop)
                 .DefineLabel(out ILabel loopCheck)
-                .DeclareLocal(typeof(int), out ILocal index)
+                .DeclareLocal<int>("index", out ILocal index)
 
                 .LdcI4_0()
                 .StLoc(index)
                 .Br(loopCheck)
                 .MarkLabel(beginLoop);
 
-            action(index);
+            action(emitter, index);
 
             return emitter
                 .Nop()
@@ -848,8 +866,26 @@ namespace FluentIL
             Action<ILocal, ILocal> action)
         {
             return emitter
-                .DeclareLocal(localArray.LocalType.GetElementType(), out ILocal itemLocal)
-                .DeclareLocal(typeof(int), out ILocal lengthLocal)
+                .For(
+                    localArray,
+                    (il, index, item) => action(index, item));
+        }
+
+        /// <summary>
+        /// Emits IL to perform a for loop over an array with element loading.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="localArray">The local variable holding the array.</param>
+        /// <param name="action">An action to allow the injecting of the loop code.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter For(
+            this IEmitter emitter,
+            ILocal localArray,
+            Action<IEmitter, ILocal, ILocal> action)
+        {
+            return emitter
+                .DeclareLocal(localArray.LocalType.GetElementType(), "item", out ILocal itemLocal)
+                .DeclareLocal<int>("length", out ILocal lengthLocal)
 
                 .LdLoc(localArray)
                 .LdLen()
@@ -867,7 +903,7 @@ namespace FluentIL
                             .StLoc(itemLocal)
                             .Nop();
 
-                        action(index, itemLocal);
+                        action(emitter, index, itemLocal);
                     });
         }
 
@@ -875,76 +911,142 @@ namespace FluentIL
         /// Emits IL to perform a for loop over an array.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="local">The local variable holding the array.</param>
+        /// <param name="localEnumerable">The local variable holding the enumerable object.</param>
         /// <param name="action">An action to allow the injecting of the loop code.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
-        public static IEmitter ForEach(this IEmitter emitter, ILocal local, Action<ILocal> action)
+        public static IEmitter ForEach(
+            this IEmitter emitter,
+            ILocal localEnumerable,
+            Action<ILocal> action)
         {
-            var localType = local.LocalType;
+            return emitter
+                .ForEach(
+                    localEnumerable,
+                    (item, breakAction) => action(item));
+        }
+
+        /// <summary>
+        /// Emits IL to perform a for loop over an array.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localEnumerable">The local variable holding the enumerable object.</param>
+        /// <param name="action">An action to allow the injecting of the loop code.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter ForEach(
+            this IEmitter emitter,
+            ILocal localEnumerable,
+            Action<IEmitter, ILocal> action)
+        {
+            return emitter
+                .ForEach(
+                    localEnumerable,
+                    (il, item, breakAction) => action(il, item));
+        }
+
+        /// <summary>
+        /// Emits IL to perform a for loop over an enumerable object.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localEnumerable">The local variable holding the enumerable object.</param>
+        /// <param name="action">An action to allow the injecting of the loop code.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter ForEach(
+            this IEmitter emitter,
+            ILocal localEnumerable,
+            Action<ILocal, Action> action)
+        {
+            return emitter
+                .ForEach(
+                    localEnumerable,
+                    (il, item, breakLoop) => action(item, breakLoop));
+        }
+
+        /// <summary>
+        /// Emits IL to perform a for loop over an enumerable object.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localEnumerable">The local variable holding the enumerable instance`.</param>
+        /// <param name="action">An action to allow the injecting of the loop code.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter ForEach(
+            this IEmitter emitter,
+            ILocal localEnumerable,
+            Action<IEmitter, ILocal, Action> action)
+        {
+            emitter
+                .DefineLabel("loopEnd", out ILabel loopEnd);
+
+            var localType = localEnumerable.LocalType;
             if (localType.IsArray == true)
             {
-                return emitter.For(local, action);
+                emitter.For(
+                    localEnumerable,
+                    (item) =>
+                    {
+                        action(emitter, item, () => emitter.Br(loopEnd));
+                    });
             }
-
-            if (localType.IsGenericType == false ||
-                typeof(IEnumerable<>).MakeGenericType(localType.GetGenericArguments()).IsAssignableFrom(local.LocalType) == false)
+            else if (localType.IsGenericType == false ||
+                typeof(IEnumerable<>).MakeGenericType(localType.GetGenericArguments()).IsAssignableFrom(localEnumerable.LocalType) == false)
             {
                 throw new InvalidOperationException("Not a enumerable type");
             }
+            else
+            {
+                var enumerableType = localType.GetGenericArguments()[0];
+                var enumeratorType = typeof(IEnumerator<>).MakeGenericType(enumerableType);
 
-            Type enumerableType = localType.GetGenericArguments()[0];
-            Type enumeratorType = typeof(IEnumerator<>).MakeGenericType(enumerableType);
+                var getEnumerator = typeof(IEnumerable<>).MakeGenericType(enumerableType).GetMethod("GetEnumerator");
+                var getCurrent = enumeratorType.GetProperty("Current").GetGetMethod();
+                var moveNext = typeof(IEnumerator).GetMethod("MoveNext");
 
-            MethodInfo getEnumerator = typeof(IEnumerable<>).MakeGenericType(enumerableType).GetMethod("GetEnumerator");
-            MethodInfo getCurrent = enumeratorType.GetProperty("Current").GetGetMethod();
-            MethodInfo moveNext = typeof(IEnumerator).GetMethod("MoveNext");
+                emitter
+                    .DefineLabel("loopStart", out ILabel loopStart)
+                    .DefineLabel("loopCheck", out ILabel loopCheck)
+                    .DefineLabel("endFinally", out ILabel endFinally)
+
+                    .DeclareLocal(enumeratorType, "localEnumerator", out ILocal localEnumerator)
+                    .DeclareLocal(enumerableType, "localItem", out ILocal localItem)
+
+                    .LdLocS(localEnumerable)
+                    .CallVirt(getEnumerator)
+                    .StLocS(localEnumerator)
+
+                    .Try(out ILabel beginEx)
+
+                    .Br(loopCheck)
+                    .MarkLabel(loopStart)
+                    .LdLoc(localEnumerator)
+                    .CallVirt(getCurrent)
+                    .StLocS(localItem)
+                    .Nop();
+
+                action(emitter, localItem, () => emitter.Leave(loopEnd));
+
+                emitter
+                    .Nop()
+                    .MarkLabel(loopCheck)
+                    .LdLoc(localEnumerator)
+                    .CallVirt(moveNext)
+                    .BrTrue(loopStart)
+
+                    .Leave(loopEnd)
+
+                    .Finally()
+
+                    .LdLoc(localEnumerator)
+                    .BrFalse(endFinally)
+
+                    .LdLoc(localEnumerator)
+                    .CallVirt(DisposeMethodInfo)
+
+                    .Nop()
+                    .MarkLabel(endFinally)
+
+                    .EndExceptionBlock();
+            }
 
             emitter
-                .DefineLabel("loopStart", out ILabel loopStart)
-                .DefineLabel("loopCheck", out ILabel loopCheck)
-                .DefineLabel("loopEnd", out ILabel loopEnd)
-                .DefineLabel("endFinally", out ILabel endFinally)
-
-                .DeclareLocal(enumeratorType, "localEnumerator", out ILocal localEnumerator)
-                .DeclareLocal(enumerableType, "localItem", out ILocal localItem)
-
-                .LdLocS(local)
-                .CallVirt(getEnumerator)
-                .StLocS(localEnumerator)
-
-                .Try(out ILabel beginEx)
-
-                .Br(loopCheck)
-                .MarkLabel(loopStart)
-                .LdLoc(localEnumerator)
-                .CallVirt(getCurrent)
-                .StLocS(localItem)
-                .Nop();
-
-            action(localItem);
-
-            emitter
-                .Nop()
-                .MarkLabel(loopCheck)
-                .LdLoc(localEnumerator)
-                .CallVirt(moveNext)
-                .BrTrue(loopStart)
-
-                .Leave(loopEnd)
-
-                .Finally()
-
-                .LdLoc(localEnumerator)
-                .BrFalse(endFinally)
-
-                .LdLoc(localEnumerator)
-                .CallVirt(DisposeMethodInfo)
-
-                .Nop()
-                .MarkLabel(endFinally)
-
-                .EndExceptionBlock()
-
                 .Nop()
                 .MarkLabel(loopEnd);
 

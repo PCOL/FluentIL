@@ -62,7 +62,7 @@ namespace FluentILUnitTests
         }
 
         [TestMethod]
-        public void Test()
+        public void SetPropertyWithPrivateSetter_UsingASetMethod()
         {
             var typeBuilder = TypeFactory
                 .Default
@@ -76,7 +76,7 @@ namespace FluentILUnitTests
             var property = typeBuilder
                 .NewProperty<string>("Value")
                 .Setter(m => m
-                    .Public()
+                    .Private()
                     .Body()
                     .LdArg0()
                     .LdArg1()
@@ -102,9 +102,8 @@ namespace FluentILUnitTests
             var type = typeBuilder.CreateType();
             var obj = Activator.CreateInstance(type);
 
-            setValue.Define().Invoke(obj, new object[] { "Test" });
-
-            var value = (string)property.Define().GetGetMethod().Invoke(obj, null);
+            type.GetMethod("SetValue").Invoke(obj, new object[] { "Test" });
+            var value = type.GetProperty("Value").GetValue(obj);
 
             Assert.AreEqual("Test", value);
         }

@@ -10,7 +10,7 @@ namespace FluentILUnitTests
         [TestMethod]
         public void CreateSimpleGenericType()
         {
-            DebugOutput.Output = new ConsoleOutput();
+            //DebugOutput.Output = new ConsoleOutput();
 
             var testTypeBuilder = TypeFactory
                 .Default

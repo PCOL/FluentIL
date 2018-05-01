@@ -6,6 +6,7 @@
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Runtime.CompilerServices;
+    using FluentIL.Builders;
 
     /// <summary>
     /// Reflection extension methods.
@@ -686,6 +687,17 @@
             }
 
             return true;
-        }        
+        }
+
+        /// <summary>
+        /// Builds <see cref="MethodInfo"/> instances.
+        /// </summary>
+        /// <param name="type">The type to build a <see cref="MethodInfo"/> for.</param>
+        /// <param name="methodName">The name of the method.</param>
+        /// <returns>A <see cref="MethodInfoBuilder"/> instance.</returns>
+        public static MethodInfoBuilder BuildMethodInfo(this Type type, string methodName)
+        {
+            return new MethodInfoBuilder(type, methodName);
+        }
     }
 }
