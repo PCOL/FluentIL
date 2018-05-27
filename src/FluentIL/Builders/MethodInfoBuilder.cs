@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace FluentIL.Builders
 {
+    /// <summary>
+    /// Represents a <see cref="MethodInfo"/> builder.
+    /// </summary>
     public class MethodInfoBuilder
     {
         /// <summary>

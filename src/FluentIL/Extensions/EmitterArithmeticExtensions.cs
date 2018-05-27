@@ -43,6 +43,8 @@ namespace FluentIL
         /// Adds two values and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Add(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -66,6 +68,8 @@ namespace FluentIL
         /// Adds two integers, performs an overflow check, and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter AddOvf(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -89,6 +93,8 @@ namespace FluentIL
         /// Adds two unsigned integer values, performs an overflow check, and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter AddOvfUn(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -112,6 +118,8 @@ namespace FluentIL
         /// Subtracts one value from another and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Sub(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -135,6 +143,8 @@ namespace FluentIL
         /// Subtracts one integer value from another, performs an overflow check, and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter SubOvf(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -158,6 +168,8 @@ namespace FluentIL
         /// Subtracts one integer value from another, performs an overflow check, and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter SubOvfUn(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -181,6 +193,8 @@ namespace FluentIL
         /// Multiplies two values and pushes the result on the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Mul(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -204,6 +218,8 @@ namespace FluentIL
         /// Multiplies two integer values, performs an overflow check, and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter MulOvf(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -227,6 +243,8 @@ namespace FluentIL
         /// Multiplies two unsigned integer values, performs an overflow check, and pushes the result onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter MulOvfUn(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -250,6 +268,8 @@ namespace FluentIL
         /// Divides two values and pushes the result as a floating-point (type F) or quotient (type int32) onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Div(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -273,6 +293,8 @@ namespace FluentIL
         /// Divides two unsigned integer values and pushes the result (int32) onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DivUn(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -296,6 +318,8 @@ namespace FluentIL
         /// Divides two values and pushes the remainder onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Rem(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {
@@ -319,6 +343,8 @@ namespace FluentIL
         /// Divides two unsigned values and pushes the remainder onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="localValue1">The first local value.</param>
+        /// <param name="localValue2">The second local value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter RemUn(this IEmitter emitter, ILocal localValue1, ILocal localValue2)
         {

@@ -25,7 +25,6 @@ namespace FluentIL
         /// <summary>
         /// Specifies the parameters name.
         /// </summary>
-        /// <typeparam name="name">The parameters name.</typeparam>
         /// <returns>The <see cref="IParameterBuilder"/> instance.</returns>
         IParameterBuilder Name(string parameterName);
 

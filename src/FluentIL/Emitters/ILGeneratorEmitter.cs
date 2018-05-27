@@ -17,7 +17,7 @@ namespace FluentIL.Emitters
         private ILGenerator ilGen;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="ILGeneratorBuilder"/> class.
+        /// Initialises a new instance of the <see cref="ILGeneratorEmitter"/> class.
         /// </summary>
         /// <param name="ilGen">The <see cref="ILGenerator"/> to use.</param>
         public ILGeneratorEmitter(ILGenerator ilGen)

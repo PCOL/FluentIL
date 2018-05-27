@@ -123,6 +123,7 @@ namespace FluentIL
         /// Adds a parameter.
         /// </summary>
         /// <param name="builder">A <see cref="IConstructorBuilder"/> instance.</param>
+        /// <param name="parameterName">The parameter name.null</param>
         /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
         public static IConstructorBuilder Param<T>(this IConstructorBuilder builder, string parameterName)
         {

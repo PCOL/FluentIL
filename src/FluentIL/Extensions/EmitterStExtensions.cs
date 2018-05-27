@@ -12,10 +12,10 @@ namespace FluentIL
     public static class EmitterStExtensions
     {
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in an argument.
+        /// Emits IL to store the value at the top of the evaluation stack in an argument.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
+        /// <param name="index">A arguments index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StArg(this IEmitter emitter, short index)
         {
@@ -23,10 +23,10 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in an argument.
+        /// Emits IL to store the value at the top of the evaluation stack in an argument.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
+        /// <param name="index">A arguments index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StArgS(this IEmitter emitter, byte index)
         {
@@ -34,10 +34,11 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in an argument.
+        /// Emits IL to store the value at the top of the evaluation stack in an argument.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
+        /// <param name="localValue">A local</param>
+        /// <param name="index">A arguments index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StArg(this IEmitter emitter, ILocal localValue, short index)
         {
@@ -47,10 +48,11 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in an argument.
+        /// Emits IL to store the value at the top of the evaluation stack in an argument.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
+        /// <param name="localValue">A local</param>
+        /// <param name="index">A arguments index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StArgS(this IEmitter emitter, ILocal localValue, byte index)
         {
@@ -60,7 +62,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in a local.
+        /// Emits IL to store the value at the top of the evaluation stack in a local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="local">A local</param>
@@ -71,7 +73,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in a local.
+        /// Emits IL to store the value at the top of the evaluation stack in a local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="local">A local</param>
@@ -82,7 +84,51 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in a local.
+        /// Emits IL to store the value at the top of the evaluation stack in first local.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="local">A local</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
+        public static IEmitter StLoc0(this IEmitter emitter, ILocal local)
+        {
+            return emitter.Emit(OpCodes.Stloc_0, local);
+        }
+
+        /// <summary>
+        /// Emits IL to store the value at the top of the evaluation stack in second local.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="local">A local</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
+        public static IEmitter StLoc1(this IEmitter emitter, ILocal local)
+        {
+            return emitter.Emit(OpCodes.Stloc_1, local);
+        }
+
+        /// <summary>
+        /// Emits IL to store the object at the top of the evaluation stack in third local.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="local">A local</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
+        public static IEmitter StLoc2(this IEmitter emitter, ILocal local)
+        {
+            return emitter.Emit(OpCodes.Stloc_2, local);
+        }
+
+        /// <summary>
+        /// Emits IL to store the value at the top of the evaluation stack in fourth local.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="local">A local</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
+        public static IEmitter StLoc3(this IEmitter emitter, ILocal local)
+        {
+            return emitter.Emit(OpCodes.Stloc_3, local);
+        }
+
+        /// <summary>
+        /// Emits IL to store the value at the top of the evaluation stack in a field.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="field">A field</param>
@@ -93,7 +139,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to store the object at the top of the evaluation stack in a local.
+        /// Emits IL to store the value at the top of the evaluation stack in a field.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
         /// <param name="field">A field</param>
@@ -101,6 +147,28 @@ namespace FluentIL
         public static IEmitter StFld(this IEmitter emitter, FieldInfo field)
         {
             return emitter.Emit(OpCodes.Stfld, field);
+        }
+
+        /// <summary>
+        /// Emits IL to store the value at the top of the evaluation stack in a static field.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="field">A field</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
+        public static IEmitter StSFld(this IEmitter emitter, IFieldBuilder field)
+        {
+            return emitter.Emit(OpCodes.Stsfld, field);
+        }
+
+        /// <summary>
+        /// Emits IL to store the value at the top of the evaluation stack in a static field.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>.</param>
+        /// <param name="field">A field</param>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
+        public static IEmitter StSFld(this IEmitter emitter, FieldInfo field)
+        {
+            return emitter.Emit(OpCodes.Stsfld, field);
         }
 
         /// <summary>
@@ -224,7 +292,7 @@ namespace FluentIL
 
                 case TypeCode.Single:
                     return emitter.StIndR4();
-                    
+
                 case TypeCode.Double:
                     return emitter.StIndR8();
 

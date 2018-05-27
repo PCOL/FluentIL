@@ -26,7 +26,7 @@ namespace FluentIL.Builders
         private FieldBuilder fieldBuilder;
 
         /// <summary>
-        /// Initialises a new instance of <see cref="FieldBuilderImpl"/> class.
+        /// Initialises a new instance of <see cref="FluentFieldBuilder"/> class.
         /// </summary>
         /// <param name="fieldName">The field name.</param>
         /// <param name="fieldType">The field type.</param>

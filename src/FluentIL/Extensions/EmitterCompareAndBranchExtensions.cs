@@ -625,7 +625,6 @@ namespace FluentIL
         /// otherwise 0 (int32) is pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="target">The target instruction.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Ceq(this IEmitter emitter)
         {
@@ -637,7 +636,6 @@ namespace FluentIL
         /// otherwise 0 (int32) is pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="target">The target instruction.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Cgt(this IEmitter emitter)
         {
@@ -649,7 +647,6 @@ namespace FluentIL
         /// otherwise 0 (int32) is pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="target">The target instruction.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter CgtUn(this IEmitter emitter)
         {
@@ -661,7 +658,6 @@ namespace FluentIL
         /// otherwise 0 (int32) is pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="target">The target instruction.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Clt(this IEmitter emitter)
         {
@@ -673,7 +669,6 @@ namespace FluentIL
         /// otherwise 0 (int32) is pushed onto the evaluation stack
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="target">The target instruction.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter CltUn(this IEmitter emitter)
         {

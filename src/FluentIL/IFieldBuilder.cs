@@ -4,6 +4,9 @@ namespace FluentIL
     using System.Reflection;
     using System.Reflection.Emit;
 
+    /// <summary>
+    /// Defines the field builder interface.
+    /// </summary>
     public interface IFieldBuilder
     {
         /// <summary>
@@ -21,8 +24,17 @@ namespace FluentIL
         /// </summary>
         FieldAttributes FieldAttributes { get; set; }
 
+        /// <summary>
+        /// Sets the fields attributes.
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
         IFieldBuilder Attributes(FieldAttributes attributes);
 
+        /// <summary>
+        /// Defines the field builder.
+        /// </summary>
+        /// <returns>A <see cref="FieldBuilder"/>.</returns>
         FieldBuilder Define();
     }
 }

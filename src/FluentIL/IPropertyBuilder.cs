@@ -4,6 +4,9 @@ namespace FluentIL
     using System.Reflection;
     using System.Reflection.Emit;
 
+    /// <summary>
+    /// Defines the property builder interface.
+    /// </summary>
     public interface IPropertyBuilder
     {
         /// <summary>

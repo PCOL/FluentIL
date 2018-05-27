@@ -16,7 +16,7 @@ namespace FluentIL.Builders
         private Dictionary<string, FluentModuleBuilder> modules = new Dictionary<string, FluentModuleBuilder>();
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AssemblyBuilderImpl"/> class.
+        /// Initialises a new instance of the <see cref="FluentAssemblyBuilder"/> class.
         /// </summary>
         /// <param name="assemblyBuilder">A <see cref="AssemblyBuilder"/> instance.</param>
         public FluentAssemblyBuilder(AssemblyBuilder assemblyBuilder)
@@ -33,7 +33,7 @@ namespace FluentIL.Builders
         /// Defines a module.
         /// </summary>
         /// <param name="moduleName">The name of the module.</param>
-        /// <returns>A <see cref="IModuleBuilder"> instance.</returns>
+        /// <returns>A <see cref="IModuleBuilder" /> instance.</returns>
         public IModuleBuilder NewDynamicModule(string moduleName)
         {
             FluentModuleBuilder impl;

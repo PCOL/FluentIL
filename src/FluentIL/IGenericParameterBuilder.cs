@@ -3,6 +3,9 @@ namespace FluentIL
     using System;
     using System.Reflection;
 
+    /// <summary>
+    /// Defines the generic parameter builder interface.
+    /// </summary>
     public interface IGenericParameterBuilder
     {
         /// <summary>
@@ -27,7 +30,7 @@ namespace FluentIL
         /// <summary>
         /// Sets the interfaces a type must implement in order to be substituted for the type parameter.
         /// </summary>
-        /// <typeparam name="interfaceType">The interface type.</typeparam>
+        /// <typeparam name="T">The interface type.</typeparam>
         /// <returns>The <see cref="IGenericParameterBuilder"/> instance.</returns>
         IGenericParameterBuilder InterfaceType<T>();
 

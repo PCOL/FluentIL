@@ -93,6 +93,7 @@ namespace FluentIL
         /// Emits the IL to load the address of a local onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="local">A local.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocA(this IEmitter emitter, ILocal local)
         {
@@ -104,6 +105,7 @@ namespace FluentIL
         /// Emits the IL to load the address of a local onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="index">A locals index.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocA(this IEmitter emitter, int index)
         {
@@ -115,6 +117,7 @@ namespace FluentIL
         /// Emits IL to load the address of a local onto the evaluation stack (short form).
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="local">The local.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocAS(this IEmitter emitter, ILocal local)
         {
@@ -132,6 +135,7 @@ namespace FluentIL
         /// Emits IL to load the address of a local onto the evaluation stack (short form).
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="index">A locals index.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocAS(this IEmitter emitter, byte index)
         {
@@ -366,6 +370,7 @@ namespace FluentIL
         /// Emits the IL to indirectly copy a value type onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="type">The type.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdObj(this IEmitter emitter, Type type)
         {

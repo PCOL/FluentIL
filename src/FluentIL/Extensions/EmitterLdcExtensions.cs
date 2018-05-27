@@ -9,7 +9,7 @@ namespace FluentIL
     public static class EmitterLdcExtensions
     {
         /// <summary>
-        /// 
+        /// Emits the IL to push a supplied value onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter"></param>
         /// <param name="value"></param>
@@ -20,7 +20,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 0 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -30,7 +30,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 1 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -40,7 +40,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 2 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -50,7 +50,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 3 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -60,7 +60,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 4 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -70,7 +70,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 5 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -80,7 +80,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 6 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -90,7 +90,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 7 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -100,7 +100,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// 
+        /// Emits the IL to push the value 8 onto the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -123,16 +123,18 @@ namespace FluentIL
         /// Pushes the supplied int8 value onto the evaluation stack as an int32, short form.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="value">A value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdcI4_S(this IEmitter emitter, byte value)
         {
             return emitter.Emit(OpCodes.Ldc_I4_S, value);
         }
-        
+
         /// <summary>
         /// Pushes a supplied value of type int64 onto the evaluation stack as an int64.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="value">A value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdcI8(this IEmitter emitter, long value)
         {
@@ -143,6 +145,7 @@ namespace FluentIL
         /// Pushes a supplied value of type float32 onto the evaluation stack as type F (float).
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="value">A value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdcR4(this IEmitter emitter, float value)
         {
@@ -153,6 +156,7 @@ namespace FluentIL
         /// Pushes a supplied value of type float64 onto the evaluation stack as type F (float).
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="value">A value.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdcR8(this IEmitter emitter, double value)
         {

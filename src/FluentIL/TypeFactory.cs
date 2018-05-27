@@ -5,6 +5,9 @@ namespace FluentIL
     using System.Reflection;
     using System.Reflection.Emit;
 
+    /// <summary>
+    /// Represents a type factory.
+    /// </summary>
     public class TypeFactory
     {
         /// <summary>
@@ -28,7 +31,7 @@ namespace FluentIL
         private IModuleBuilder moduleBuilder;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref=""/> class.
+        /// Initialises a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="assemblyName">The assembly name.</param>
         /// <param name="moduleName">The module name.</param>

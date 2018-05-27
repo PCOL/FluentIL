@@ -10,7 +10,7 @@ namespace FluentIL.Emitters
 
     /// <summary>
     /// A debug implementation of the <see cref="IEmitter"/> interface to allow
-    /// IL to be written to a <see cref="IDebugOutout"/> implemenation.
+    /// IL to be written to a <see cref="IDebugOutput"/> implemenation.
     /// </summary>
     internal class DebugEmitter
         : IEmitter

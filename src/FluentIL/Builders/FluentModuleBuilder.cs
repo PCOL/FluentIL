@@ -16,7 +16,7 @@ namespace FluentIL.Builders
         private readonly ModuleBuilder moduleBuilder;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="ModuleBuilderImpl"/> class.
+        /// Initialises a new instance of the <see cref="FluentModuleBuilder"/> class.
         /// </summary>
         /// <param name="moduleBuilder">A module builder.</param>
         public FluentModuleBuilder(ModuleBuilder moduleBuilder)

@@ -23,13 +23,13 @@ namespace FluentIL.Builders
         /// Initialises a new instance of the <see cref="FluentGenericParameterBuilder"/> class.
         /// </summary>
         /// <param name="parameterName">The paramter name.</param>
-        /// <param name="builderAction">The builder action.</param>
+        /// <param name="defineFunc">The builder action.</param>
         public FluentGenericParameterBuilder(
             string parameterName,
-            Func<string, GenericTypeParameterBuilder> define)
+            Func<string, GenericTypeParameterBuilder> defineFunc)
         {
             this.ParameterName = parameterName;
-            this.define = define;
+            this.define = defineFunc;
         }
 
         /// <summary>

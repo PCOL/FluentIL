@@ -4,6 +4,9 @@ namespace FluentIL
     using System.Reflection;
     using System.Reflection.Emit;
 
+    /// <summary>
+    /// Defines the method builder interface.
+    /// </summary>
     public interface IMethodBuilder
     {
         /// <summary>
@@ -40,7 +43,7 @@ namespace FluentIL
         /// <summary>
         /// Sets the methods return type.
         /// </summary>
-        /// <typeparam name="T">The return type.</typeparam>
+        /// <typeparam name="TReturn">The return type.</typeparam>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         IMethodBuilder Returns<TReturn>();
 
@@ -54,10 +57,10 @@ namespace FluentIL
         /// <summary>
         /// Adds a parameter to the method.
         /// </summary>
-        /// <typeparam name="T">The parameters type.</typeparam>
+        /// <typeparam name="TParam">The parameters type.</typeparam>
         /// <param name="parameterName">The parameters name.</param>
-        /// <param name="attrs">The parameters attributes.`</param>
-        /// <returns></returns>
+        /// <param name="attrs">The parameters attributes.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instsnce.</returns>
         IMethodBuilder Param<TParam>(string parameterName, ParameterAttributes attrs = ParameterAttributes.None);
 
         /// <summary>

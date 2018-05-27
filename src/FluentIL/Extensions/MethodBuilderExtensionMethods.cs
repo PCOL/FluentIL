@@ -13,7 +13,7 @@ namespace FluentIL
         /// Indicates that the method is accessible to any object for which this object is in scope.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Public(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.Public;
@@ -24,7 +24,7 @@ namespace FluentIL
         /// Indicates that the method is accessible only to the current class.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Private(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.Private;
@@ -35,7 +35,7 @@ namespace FluentIL
         /// Indicates that the method is virtual.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Virtual(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.Virtual;
@@ -46,7 +46,7 @@ namespace FluentIL
         /// Indicates that the method hides by name and signature; otherwise, by name only.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder HideBySig(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.HideBySig;
@@ -57,7 +57,7 @@ namespace FluentIL
         /// Indicates that the method
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder SpecialName(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.SpecialName;
@@ -68,7 +68,7 @@ namespace FluentIL
         /// Indicates that the method
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder RTSpecialName(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.RTSpecialName;
@@ -79,7 +79,7 @@ namespace FluentIL
         /// Indicates that the method always gets a new slot in the vtable.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder NewSlot(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.NewSlot;
@@ -90,7 +90,7 @@ namespace FluentIL
         /// Indicates that the method is defined on the type; otherwise, it is defined per instance.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Static(this IMethodBuilder builder)
         {
             builder.Attributes |= MethodAttributes.Static;
@@ -100,8 +100,8 @@ namespace FluentIL
         /// <summary>
         /// Defines a parameter.
         /// </summary>
-        /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Param<TParam>(this IMethodBuilder methodBuilder)
         {
             return methodBuilder.Param<TParam>(null);
@@ -110,10 +110,10 @@ namespace FluentIL
         /// <summary>
         /// Defines a parameter.
         /// </summary>
-        /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
+        /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
         /// <param name="parameterName">The name of parameter.</param>
         /// <param name="attrs">The parameters attribtes</param>
-        /// <returns>The <see cref="IMethoBuilder"/> instance.</returns>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Param<TParam>(this IMethodBuilder methodBuilder, string parameterName, ParameterAttributes attrs = ParameterAttributes.None)
         {
             return methodBuilder.Param(typeof(TParam), parameterName, attrs);

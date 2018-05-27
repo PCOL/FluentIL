@@ -42,7 +42,7 @@ namespace FluentIL.Builders
         private PropertyBuilder propertyBuilder;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="PropertyBuilderImpl"/> class.
+        /// Initialises a new instance of the <see cref="FluentPropertyBuilder"/> class.
         /// </summary>
         /// <param name="typeBuilder">A <see cref="ITypeBuilder"/> instance.</param>
         /// <param name="propertyName">The name of the property.</param>

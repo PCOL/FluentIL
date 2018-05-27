@@ -16,6 +16,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="moduleBuilder">A <see cref="ModuleBuilder"/> instance.</param>
         /// <param name="methodName">The name of the method.</param>
+        /// <param name="returnType">The return type.</param>
         /// <returns>A <see cref="IModuleBuilder"/> instance.</returns>
         public static IMethodBuilder DefineGlobalMethod(
             this ModuleBuilder moduleBuilder,
@@ -33,7 +34,6 @@ namespace FluentIL
         /// <typeparam name="TReturn">The return type.</typeparam>
         /// <param name="moduleBuilder">A <see cref="ModuleBuilder"/> instance.</param>
         /// <param name="methodName">The name of the method.</param>
-        /// <param name="returnType">The return type.</param>
         /// <returns>A <see cref="IModuleBuilder"/> instance.</returns>
         public static IMethodBuilder DefineGlobalMethod<TReturn>(
             this ModuleBuilder moduleBuilder,

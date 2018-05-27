@@ -181,7 +181,7 @@ namespace FluentIL
         /// <summary>
         /// Defines a nest type.
         /// </summary>
-        /// <param name="typeName"><The type name/param>
+        /// <param name="typeName">The type name.</param>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder NewNestedType(string typeName);
 

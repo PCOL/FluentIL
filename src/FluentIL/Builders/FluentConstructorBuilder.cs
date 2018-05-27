@@ -8,7 +8,7 @@ namespace FluentIL.Builders
     using FluentIL.Emitters;
 
     /// <summary>
-    /// An implementation of the <see cref=""IConstructorBuilder/> interface.
+    /// An implementation of the <see cref="IConstructorBuilder"/> interface.
     /// </summary>
     internal class FluentConstructorBuilder
         : IConstructorBuilder

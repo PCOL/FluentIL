@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix>alpha7</VersionSuffix>
+    <VersionSuffix>alpha8</VersionSuffix>
     <PackageId>Fluent.IL</PackageId>
     <Authors>pcol</Authors>
     <AssemblyTitle>Fluent.IL</AssemblyTitle>
@@ -15,6 +15,8 @@
     <DebugType>portable</DebugType>
     <AssemblyName>FluentIL</AssemblyName>
     <NetStandardImplicitPackageVersion>2.0.0</NetStandardImplicitPackageVersion>
+    <CodeAnalysisRuleSet>../../ca.ruleset</CodeAnalysisRuleSet>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Reflection" Version="4.3.0" />

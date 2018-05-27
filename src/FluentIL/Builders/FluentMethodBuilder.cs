@@ -7,6 +7,9 @@ namespace FluentIL.Builders
     using System.Reflection.Emit;
     using FluentIL.Emitters;
 
+    /// <summary>
+    /// Implementation of the <see cref="IMethodBuilder"/> interface.
+    /// </summary>
     public class FluentMethodBuilder
         : IMethodBuilder
     {
