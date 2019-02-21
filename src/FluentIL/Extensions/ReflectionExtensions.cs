@@ -14,6 +14,139 @@
     public static class ReflectionExtensions
     {
         /// <summary>
+        /// Gets a method action.
+        /// </summary>
+        /// <typeparam name="T">The first paremeter type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Action<T> GetMethodAction<T>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T) });
+            return (Action<T>)methodInfo.CreateDelegate(typeof(Action<T>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method action.
+        /// </summary>
+        /// <typeparam name="T1">The first paremeter type.</typeparam>
+        /// <typeparam name="T2">The second paremeter type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Action<T1, T2> GetMethodAction<T1, T2>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T1), typeof(T2) });
+            return (Action<T1, T2>)methodInfo.CreateDelegate(typeof(Action<T1, T2>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method action.
+        /// </summary>
+        /// <typeparam name="T1">The first paremeter type.</typeparam>
+        /// <typeparam name="T2">The second paremeter type.</typeparam>
+        /// <typeparam name="T3">The third paremeter type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Action<T1, T2, T3> GetMethodAction<T1, T2, T3>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T1), typeof(T2), typeof(T3) });
+            return (Action<T1, T2, T3>)methodInfo.CreateDelegate(typeof(Action<T1, T2, T3>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method action.
+        /// </summary>
+        /// <typeparam name="T1">The first paremeter type.</typeparam>
+        /// <typeparam name="T2">The second paremeter type.</typeparam>
+        /// <typeparam name="T3">The third paremeter type.</typeparam>
+        /// <typeparam name="T4">The fourth paremeter type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Action<T1, T2, T3, T4> GetMethodAction<T1, T2, T3, T4>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) });
+            return (Action<T1, T2, T3, T4>)methodInfo.CreateDelegate(typeof(Action<T1, T2, T3, T4>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method <see cref="Func{TResult}"/>.
+        /// </summary>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Func<TResult> GetMethodFunc<TResult>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, Type.EmptyTypes);
+            return (Func<TResult>)methodInfo.CreateDelegate(typeof(Func<TResult>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method <see cref="Func{TResult}"/>.
+        /// </summary>
+        /// <typeparam name="T">The first parameter type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Func<T, TResult> GetMethodFunc<T, TResult>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T) });
+            return (Func<T, TResult>)methodInfo.CreateDelegate(typeof(Func<T, TResult>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method <see cref="Func{TResult}"/>.
+        /// </summary>
+        /// <typeparam name="T1">The first paremeter type.</typeparam>
+        /// <typeparam name="T2">The second paremeter type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Func<T1, T2, TResult> GetMethodFunc<T1, T2, TResult>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T1), typeof(T2) });
+            return (Func<T1, T2, TResult>)methodInfo.CreateDelegate(typeof(Func<T1, T2, TResult>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method <see cref="Func{TResult}"/>.
+        /// </summary>
+        /// <typeparam name="T1">The first paremeter type.</typeparam>
+        /// <typeparam name="T2">The second paremeter type.</typeparam>
+        /// <typeparam name="T3">The third paremeter type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Func<T1, T2, T3, TResult> GetMethodFunc<T1, T2, T3, TResult>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T1), typeof(T2), typeof(T3) });
+            return (Func<T1, T2, T3, TResult>)methodInfo.CreateDelegate(typeof(Func<T1, T2, T3, TResult>), instance);
+        }
+
+        /// <summary>
+        /// Gets a method <see cref="Func{TResult}"/>.
+        /// </summary>
+        /// <typeparam name="T1">The first paremeter type.</typeparam>
+        /// <typeparam name="T2">The second paremeter type.</typeparam>
+        /// <typeparam name="T3">The third paremeter type.</typeparam>
+        /// <typeparam name="T4">The fourth paremeter type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="instance">The object to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <returns>The delegate.</returns>
+        public static Func<T1, T2, T3, T4, TResult> GetMethodFunc<T1, T2, T3, T4, TResult>(this object instance, string methodName)
+        {
+            var methodInfo = instance.GetType().GetMethod(methodName, new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) });
+            return (Func<T1, T2, T3, T4, TResult>)methodInfo.CreateDelegate(typeof(Func<T1, T2, T3, T4, TResult>), instance);
+        }
+
+        /// <summary>
         /// Gets a generic method by name.
         /// </summary>
         /// <typeparam name="T">The methods generic argument.</typeparam>

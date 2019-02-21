@@ -148,7 +148,7 @@ namespace FluentIL.Emitters
         {
             local = null;
             this.emitter?.DeclareLocal(localType, localName, out local);
-            this.debugOutput.WriteLineColor(ConsoleColor.Yellow, "Local - [{0}] {1} ({2})", this.index, localType.Name, localName);
+            this.debugOutput.WriteLineColor(ConsoleColor.Yellow, "Local - [{0}] {1} ({2})", this.index++, localType.Name, localName);
             return this;
         }
 
@@ -456,7 +456,7 @@ namespace FluentIL.Emitters
         {
             this.emitter?.Emit(opcode, label);
             this.OutputOpCode(opcode);
-            this.debugOutput.WriteLine("\t{0}", label.Name);
+            this.debugOutput.WriteLineColor(ConsoleColor.Cyan, "\t[{0}]", label.Name);
             return this;
         }
 
@@ -598,8 +598,7 @@ namespace FluentIL.Emitters
         public IEmitter MarkLabel(ILabel label)
         {
             this.emitter?.MarkLabel(label);
-            this.OutputILOffset();
-            this.debugOutput.WriteLine("\t[{0}]", label.Name);
+            this.debugOutput.WriteLineColor(ConsoleColor.Cyan, "[{0}]", label.Name);
             return this;
         }
 

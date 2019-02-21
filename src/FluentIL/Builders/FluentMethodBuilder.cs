@@ -13,22 +13,49 @@ namespace FluentIL.Builders
     public class FluentMethodBuilder
         : IMethodBuilder
     {
+        /// <summary>
+        /// A reference to the function that creates the <see cref="MethodBuilder"/>.
+        /// </summary>
         private readonly Func<string, MethodAttributes, CallingConventions, Type, Type[], Type[], Type[], Type[][], Type[][], MethodBuilder> defineMethod;
 
+        /// <summary>
+        /// The methods name.
+        /// </summary>
         private string methodName;
 
+        /// <summary>
+        /// The methods calling convention.
+        /// </summary>
         private CallingConventions callingConvention;
 
+        /// <summary>
+        /// The methods return type.
+        /// </summary>
         private Type returnType;
 
+        /// <summary>
+        /// The methods parameters. 
+        /// </summary>
         private List<FluentParameterBuilder> parms = new List<FluentParameterBuilder>();
 
+        /// <summary>
+        /// The methods generic arguments.
+        /// </summary>
         private List<FluentGenericParameterBuilder> genericParameterBuilders;
 
+        /// <summary>
+        /// A generic type parameter builder.
+        /// </summary>
         private GenericTypeParameterBuilder[] genericParameters;
 
+        /// <summary>
+        /// The methods method builder.
+        /// </summary>
         private MethodBuilder methodBuilder;
 
+        /// <summary>
+        /// The methods custom attributes.
+        /// </summary>
         private List<CustomAttributeBuilder> customAttributes;
 
         /// <summary>

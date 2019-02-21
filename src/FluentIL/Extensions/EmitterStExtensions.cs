@@ -87,44 +87,40 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in first local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
-        public static IEmitter StLoc0(this IEmitter emitter, ILocal local)
+        public static IEmitter StLoc0(this IEmitter emitter)
         {
-            return emitter.Emit(OpCodes.Stloc_0, local);
+            return emitter.Emit(OpCodes.Stloc_0);
         }
 
         /// <summary>
         /// Emits IL to store the value at the top of the evaluation stack in second local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
-        public static IEmitter StLoc1(this IEmitter emitter, ILocal local)
+        public static IEmitter StLoc1(this IEmitter emitter)
         {
-            return emitter.Emit(OpCodes.Stloc_1, local);
+            return emitter.Emit(OpCodes.Stloc_1);
         }
 
         /// <summary>
         /// Emits IL to store the object at the top of the evaluation stack in third local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
-        public static IEmitter StLoc2(this IEmitter emitter, ILocal local)
+        public static IEmitter StLoc2(this IEmitter emitter)
         {
-            return emitter.Emit(OpCodes.Stloc_2, local);
+            return emitter.Emit(OpCodes.Stloc_2);
         }
 
         /// <summary>
         /// Emits IL to store the value at the top of the evaluation stack in fourth local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
-        public static IEmitter StLoc3(this IEmitter emitter, ILocal local)
+        public static IEmitter StLoc3(this IEmitter emitter)
         {
-            return emitter.Emit(OpCodes.Stloc_3, local);
+            return emitter.Emit(OpCodes.Stloc_3);
         }
 
         /// <summary>
