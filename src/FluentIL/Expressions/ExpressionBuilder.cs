@@ -32,6 +32,11 @@ namespace FluentIL.Expressions
         private readonly Stack<object> arguments = new Stack<object>();
 
         /// <summary>
+        /// A field names stack.
+        /// </summary>
+        private Stack<string> fieldNames = new Stack<string>();
+
+        /// <summary>
         /// The last expression type.
         /// </summary>
         private ExpressionType? lastExpressionType;
@@ -58,6 +63,38 @@ namespace FluentIL.Expressions
         public ExpressionBuilder(IEmitter emitter)
         {
             this.emitter = emitter;
+        }
+
+        /// <summary>
+        /// Gets the store true label. 
+        /// </summary>
+        private ILabel StoreTrueLabel
+        {
+            get
+            {
+                if (this.storeTrueLabel == null)
+                {
+                    this.emitter.DefineLabel("storeTrue", out this.storeTrueLabel);
+                }
+
+                return this.storeTrueLabel;
+            }
+        }
+
+        /// <summary>
+        /// Gets the store false label. 
+        /// </summary>
+        private ILabel StoreFalseLabel
+        {
+            get
+            {
+                if (this.storeFalseLabel == null)
+                {
+                    this.emitter.DefineLabel("storeFalse", out this.storeFalseLabel);
+                }
+
+                return this.storeFalseLabel;
+            }
         }
 
         /// <summary>
@@ -108,6 +145,159 @@ namespace FluentIL.Expressions
                 .MarkLabel(endifLabel);
         }
 
+        /// <summary>
+        /// Emits a while loop.
+        /// </summary>
+        /// <param name="expression">The while expression.</param>
+        /// <param name="action">The action to execute.</param>
+        public void EmitWhile(LambdaExpression expression, Action<IEmitter> action)
+        {
+            this.emitter
+                .DeclareLocal<bool>("result", out ILocal result)
+                .DefineLabel("storeTrue", out this.storeTrueLabel)
+                .DefineLabel("storeFalse", out this.storeFalseLabel)
+                .DefineLabel("storeResult", out this.storeResultLabel)
+                .DefineLabel("while", out ILabel whileLabel)
+                .DefineLabel("whiletest", out ILabel whileTestLabel)
+                .DefineLabel("endwhile", out ILabel endwhileLabel)
+                .Nop()
+                .Br(whileTestLabel)
+                .MarkLabel(whileLabel)
+                .Nop();
+
+            action(this.emitter);
+
+            this.emitter
+                .Nop()
+                .MarkLabel(whileTestLabel);
+
+            Visit(expression.Body);
+
+            this.emitter
+                .BrS(this.storeResultLabel)
+                .Nop()
+                .MarkLabel(this.storeTrueLabel)
+                .LdcI4_1()
+                .BrS(this.storeResultLabel)
+                .MarkLabel(this.storeFalseLabel)
+                .LdcI4_0()
+                .MarkLabel(this.storeResultLabel)
+                .StLoc(result)
+                .Nop()
+                .LdLoc(result)
+                .BrTrue(whileLabel)
+                .MarkLabel(endwhileLabel)
+                .Nop();
+        }
+
+        /// <summary>
+        /// Emits a do while loop.
+        /// </summary>
+        /// <param name="expression">The do while expression.</param>
+        /// <param name="action">The action to execute.</param>
+        public void EmitDoWhile(LambdaExpression expression, Action<IEmitter> action)
+        {
+            this.emitter
+                .DeclareLocal<bool>("result", out ILocal result)
+                .DefineLabel("storeTrue", out this.storeTrueLabel)
+                .DefineLabel("storeFalse", out this.storeFalseLabel)
+                .DefineLabel("storeResult", out this.storeResultLabel)
+                .DefineLabel("doWhile", out ILabel startWhileLabel)
+                .DefineLabel("doWhileTest", out ILabel whileTestLabel)
+                .DefineLabel("endDoWhile", out ILabel endWhileLabel)
+                .Nop()
+                .MarkLabel(startWhileLabel)
+                .Nop();
+
+            action(this.emitter);
+
+            this.emitter
+                .Nop()
+                .MarkLabel(whileTestLabel);
+
+            Visit(expression.Body);
+
+            this.emitter
+                .BrS(this.storeResultLabel)
+                .Nop()
+                .MarkLabel(this.storeTrueLabel)
+                .LdcI4_1()
+                .BrS(this.storeResultLabel)
+                .MarkLabel(this.storeFalseLabel)
+                .LdcI4_0()
+                .MarkLabel(this.storeResultLabel)
+                .StLoc(result)
+                .Nop()
+                .LdLoc(result)
+                .BrTrue(startWhileLabel)
+                .MarkLabel(endWhileLabel)
+                .Nop();
+        }
+
+        /// <summary>
+        /// Emits a for loop.
+        /// </summary>
+        /// <param name="initialiser">The initialiser expression.</param>
+        /// <param name="condition">The condition expression.</param>
+        /// <param name="iterator">The iterator expression.</param>
+        /// <param name="action">The action to execute.</param>
+        internal void EmitFor(LambdaExpression initialiser, LambdaExpression condition, LambdaExpression iterator, Action<IEmitter> action)
+        {
+            this.emitter
+                .DeclareLocal<bool>("result", out ILocal result)
+                .DefineLabel("storeResult", out this.storeResultLabel)
+                .DefineLabel("loopStart", out ILabel loopStartLabel)
+                .DefineLabel("loopTest", out ILabel loopTestLabel)
+                .DefineLabel("loopEnd", out ILabel loopEndLabel)
+                .Nop();
+
+            this.Visit(initialiser.Body);
+
+            this.emitter
+                .Br(loopTestLabel)
+                .MarkLabel(loopStartLabel)
+                .Nop();
+
+            action(this.emitter);
+
+            Visit(iterator.Body);
+
+            this.emitter
+                .Nop()
+                .MarkLabel(loopTestLabel);
+
+            this.Visit(condition.Body);
+
+            if (this.storeTrueLabel != null ||
+                this.storeFalseLabel != null)
+            {
+                this.emitter
+                    .BrS(this.storeResultLabel);
+
+                if (this.storeTrueLabel != null)
+                {
+                    this.emitter
+                        .MarkLabel(this.storeTrueLabel)
+                        .LdcI4_1()
+                        .BrS(this.storeResultLabel);
+                }
+
+                if (this.storeFalseLabel != null)
+                {
+                    this.emitter
+                        .MarkLabel(this.storeFalseLabel)
+                        .LdcI4_0();
+                }
+            }
+
+            this.emitter
+                .MarkLabel(this.storeResultLabel)
+                .StLoc(result)
+                .LdLoc(result)
+                .BrTrue(loopStartLabel)
+                .Nop();
+        }
+
         /// <inheritdoc />
         protected override Expression VisitBinary(BinaryExpression node)
         {
@@ -120,7 +310,13 @@ namespace FluentIL.Expressions
             Type compareType = node.Left.Type;
 
             Visit(node.Left);
-           
+
+            if (node.NodeType == ExpressionType.OrElse ||
+                node.NodeType == ExpressionType.AndAlso)
+            {
+                this.lastExpressionType = null;
+            }
+
             Visit(node.Right);
 
             if (node.NodeType != ExpressionType.OrElse &&
@@ -138,6 +334,7 @@ namespace FluentIL.Expressions
             if (node.NodeType == ExpressionType.Constant ||
                 node.NodeType == ExpressionType.MemberAccess)
             {
+                this.fieldNames.Push(node.Member.Name);
                 Visit(node.Expression);
             }
 
@@ -202,9 +399,7 @@ namespace FluentIL.Expressions
             }
             else
             {
-                FieldInfo fieldInfo = valueType.GetFields().FirstOrDefault();
-
-                object value = fieldInfo.GetValue(node.Value);
+                object value = this.GetValue(node.Value);
                 if (value is ILocal local)
                 {
                     this.arguments.Push(local);
@@ -216,6 +411,25 @@ namespace FluentIL.Expressions
             }
 
             return node;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private object GetValue(object input)
+        {
+            var type = input.GetType();
+
+            var fieldName = this.fieldNames.Pop();
+            var fieldInfo = type.GetField(fieldName);
+            if (fieldInfo != null)
+            {
+                return fieldInfo.GetValue(input);
+            }
+
+            return null;
         }
 
         /// <inheritdoc />
@@ -262,11 +476,11 @@ namespace FluentIL.Expressions
                         {
                             if (this.lastExpressionType == ExpressionType.AndAlso)
                             {
-                                this.emitter.BrFalseS(this.storeFalseLabel);
+                                this.emitter.BrFalseS(this.StoreFalseLabel);
                             }
                             else
                             {
-                                this.emitter.BrTrueS(this.storeTrueLabel);
+                                this.emitter.BrTrueS(this.StoreTrueLabel);
                             }
                         }
                     }
@@ -278,11 +492,11 @@ namespace FluentIL.Expressions
                         }
                         else if (this.lastExpressionType == ExpressionType.AndAlso)
                         {
-                            this.emitter.BneUnS(this.storeFalseLabel);
+                            this.emitter.BneUnS(this.StoreFalseLabel);
                         }
                         else
                         {
-                            this.emitter.Beq(this.storeTrueLabel);
+                            this.emitter.Beq(this.StoreTrueLabel);
                         }
                     }
 
@@ -291,15 +505,19 @@ namespace FluentIL.Expressions
                 case ExpressionType.NotEqual:
                     if (last == true)
                     {
-                        this.emitter.CgtUn();
+                        //this.emitter.CgtUn();
+                        this.emitter
+                            .Ceq()
+                            .LdcI4_0()
+                            .Ceq();
                     }
                     else if (this.lastExpressionType == ExpressionType.AndAlso)
                     {
-                        this.emitter.Beq(this.storeFalseLabel);
+                        this.emitter.Beq(this.StoreFalseLabel);
                     }
                     else
                     {
-                        this.emitter.BneUnS(this.storeTrueLabel);
+                        this.emitter.BneUnS(this.StoreTrueLabel);
                     }
 
                     break;
@@ -307,15 +525,15 @@ namespace FluentIL.Expressions
                 case ExpressionType.GreaterThan:
                     if (last == true)
                     {
-                        this.emitter.Clt();
+                        this.emitter.Cgt();
                     }
                     else if (this.lastExpressionType == ExpressionType.AndAlso)
                     {
-                        this.emitter.BleS(this.storeFalseLabel);
+                        this.emitter.BleS(this.StoreFalseLabel);
                     }
                     else
                     {
-                        this.emitter.BgtS(this.storeTrueLabel);
+                        this.emitter.BgtS(this.StoreTrueLabel);
                     }
 
                     break;
@@ -330,11 +548,11 @@ namespace FluentIL.Expressions
                     }
                     else if (this.lastExpressionType == ExpressionType.AndAlso)
                     {
-                        this.emitter.BltS(this.storeFalseLabel);
+                        this.emitter.BltS(this.StoreFalseLabel);
                     }
                     else
                     {
-                        this.emitter.BgeS(this.storeTrueLabel);
+                        this.emitter.BgeS(this.StoreTrueLabel);
                     }
 
                     break;
@@ -342,15 +560,15 @@ namespace FluentIL.Expressions
                 case ExpressionType.LessThan:
                     if (last == true)
                     {
-                        this.emitter.Cgt();
+                        this.emitter.Clt();
                     }
                     else if (this.lastExpressionType == ExpressionType.AndAlso)
                     {
-                        this.emitter.BgeS(this.storeFalseLabel);
+                        this.emitter.BgeS(this.StoreFalseLabel);
                     }
                     else
                     {
-                        this.emitter.BltS(this.storeTrueLabel);
+                        this.emitter.BltS(this.StoreTrueLabel);
                     }
 
                     break;
@@ -365,11 +583,11 @@ namespace FluentIL.Expressions
                     }
                     else if (this.lastExpressionType == ExpressionType.AndAlso)
                     {
-                        this.emitter.BgtS(this.storeFalseLabel);
+                        this.emitter.BgtS(this.StoreFalseLabel);
                     }
                     else
                     {
-                        this.emitter.BleS(this.storeTrueLabel);
+                        this.emitter.BleS(this.StoreTrueLabel);
                     }
 
                     break;
@@ -379,8 +597,6 @@ namespace FluentIL.Expressions
                     break;
 
             }
-
-            this.lastExpressionType = null;
         }
     }
 }

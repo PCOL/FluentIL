@@ -284,7 +284,7 @@ namespace FluentIL
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Box<T>(this IEmitter emitter)
-            where T : class
+            where T : struct
         {
             return emitter.Box(typeof(T));
         }
@@ -642,11 +642,41 @@ namespace FluentIL
         /// Emits a <see cref="OpCodes.Callvirt"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="method"></param>
+        /// <param name="method">The <see cref="MethodInfo"/> of the method to call.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter CallVirt(this IEmitter emitter, MethodInfo method)
         {
             return emitter.Emit(OpCodes.Callvirt, method);
+        }
+
+        /// <summary>
+        /// Emits the IL to increment the contents of a local by one.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="local">The local to increment.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Inc(this IEmitter emitter, ILocal local)
+        {
+            return emitter
+                .LdLoc(local)
+                .LdcI4_1()
+                .Add()
+                .StLoc(local);
+        }
+
+        /// <summary>
+        /// Emits the IL to decrement the contents of a local by one.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="local">The local to increment.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Dec(this IEmitter emitter, ILocal local)
+        {
+            return emitter
+                .LdLoc(local)
+                .LdcI4_1()
+                .Sub()
+                .StLoc(local);
         }
 
         /// <summary>

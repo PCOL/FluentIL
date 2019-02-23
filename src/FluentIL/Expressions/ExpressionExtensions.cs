@@ -27,7 +27,13 @@ namespace FluentIL.Expressions
             typeof(EmitterLdExtensions).GetMethod("LdLoc1", new[] { typeof(IEmitter) }),
             typeof(EmitterLdExtensions).GetMethod("LdLoc2", new[] { typeof(IEmitter) }),
             typeof(EmitterLdExtensions).GetMethod("LdLoc3", new[] { typeof(IEmitter) }),
+            typeof(EmitterStExtensions).GetMethod("StLoc", new[] { typeof(IEmitter), typeof(ILocal) }),
+            typeof(EmitterStExtensions).GetMethod("StLoc0", new[] { typeof(IEmitter) }),
+            typeof(EmitterStExtensions).GetMethod("StLoc1", new[] { typeof(IEmitter) }),
+            typeof(EmitterStExtensions).GetMethod("StLoc2", new[] { typeof(IEmitter) }),
+            typeof(EmitterStExtensions).GetMethod("StLoc3", new[] { typeof(IEmitter) }),
             typeof(EmitterLdExtensions).GetMethod("LdFld", new[] { typeof(IEmitter), typeof(IFieldBuilder) }),
+            typeof(EmitterStExtensions).GetMethod("StFld", new[] { typeof(IEmitter), typeof(IFieldBuilder) }),
             typeof(EmitterLdExtensions).GetMethod("LdNull", new[] { typeof(IEmitter) }),
             typeof(EmitterLdcExtensions).GetMethod("LdcI4", new[] { typeof(IEmitter), typeof(int) }),
             typeof(EmitterLdcExtensions).GetMethod("LdcI4_0", new[] { typeof(IEmitter) }),
@@ -39,8 +45,12 @@ namespace FluentIL.Expressions
             typeof(EmitterLdcExtensions).GetMethod("LdcI4_6", new[] { typeof(IEmitter) }),
             typeof(EmitterLdcExtensions).GetMethod("LdcI4_7", new[] { typeof(IEmitter) }),
             typeof(EmitterLdcExtensions).GetMethod("LdcI4_8", new[] { typeof(IEmitter) }),
+            typeof(EmitterArithmeticExtensions).GetMethod("Add", new[] { typeof(IEmitter) }),
+            typeof(EmitterArithmeticExtensions).GetMethod("Sub", new[] { typeof(IEmitter) }),
+            typeof(EmitterExtensions).GetMethod("Inc", new[] { typeof(IEmitter), typeof(ILocal) }),
+            typeof(EmitterExtensions).GetMethod("Dec", new[] { typeof(IEmitter), typeof(ILocal) }),
         };
-
+        
         /// <summary>
         /// Emits an expression method.
         /// </summary>
@@ -49,7 +59,10 @@ namespace FluentIL.Expressions
         /// <param name="arguments">A reference to the argument stack.</param>
         internal static void EmitMethod(this IEmitter emitter, MethodInfo expressionMethod, Stack<object> arguments)
         {
-            if (expressionMethod.DeclaringType == typeof(IExpression))
+            if (expressionMethod.DeclaringType == typeof(IExpression) ||
+                expressionMethod.DeclaringType == typeof(IInitialiser) ||
+                expressionMethod.DeclaringType == typeof(ICondition) ||
+                expressionMethod.DeclaringType == typeof(IIterator))
             {
                 if (expressionMethod.Name != "Value")
                 {

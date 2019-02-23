@@ -153,9 +153,9 @@
         /// <param name="type">The type to search for the method.</param>
         /// <param name="name">The name of the method.</param>
         /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
-        public static MethodInfo GetMethod<T>(this Type type, string name)
+        public static MethodInfo GetGenericMethod<T>(this Type type, string name)
         {
-            return type.GetMethod(name, typeof(T));
+            return type.GetGenericMethod(name, typeof(T));
         }
 
         /// <summary>
@@ -166,9 +166,38 @@
         /// <param name="type">The type to search for the method.</param>
         /// <param name="name">The name of the method.</param>
         /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
-        public static MethodInfo GetMethod<T1, T2>(this Type type, string name)
+        public static MethodInfo GetGenericMethod<T1, T2>(this Type type, string name)
         {
-            return type.GetMethod(name, typeof(T1), typeof(T2));
+            return type.GetGenericMethod(name, typeof(T1), typeof(T2));
+        }
+
+        /// <summary>
+        /// Gets a generic method by name.
+        /// </summary>
+        /// <typeparam name="T1">The methods first generic argument.</typeparam>
+        /// <typeparam name="T2">The methods second generic argument.</typeparam>
+        /// <typeparam name="T3">The methods third generic argument.</typeparam>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The name of the method.</param>
+        /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
+        public static MethodInfo GetGenericMethod<T1, T2, T3>(this Type type, string name)
+        {
+            return type.GetGenericMethod(name, typeof(T1), typeof(T2), typeof(T3));
+        }
+
+        /// <summary>
+        /// Gets a generic method by name.
+        /// </summary>
+        /// <typeparam name="T1">The methods first generic argument.</typeparam>
+        /// <typeparam name="T2">The methods second generic argument.</typeparam>
+        /// <typeparam name="T3">The methods third generic argument.</typeparam>
+        /// <typeparam name="T4">The methods fourth generic argument.</typeparam>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The name of the method.</param>
+        /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
+        public static MethodInfo GetGenericMethod<T1, T2, T3, T4>(this Type type, string name)
+        {
+            return type.GetGenericMethod(name, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
         }
 
         /// <summary>
@@ -579,6 +608,14 @@
             return returnValue;
         }
 
+        /// <summary>
+        /// Finds a method.
+        /// </summary>
+        /// <param name="methods">A list of <see cref="MethodInfo"/> instances.</param>
+        /// <param name="genArgs">A list of generic arguments.</param>
+        /// <param name="parameters">A list of parameters.</param>
+        /// <param name="attributeType">An attribute type.</param>
+        /// <returns>A <see cref="MethodInfo"/> if found; otherwise null.</returns>
         private static MethodInfo FindMethod(IEnumerable<MethodInfo> methods, Type[] genArgs, ParameterInfo[] parameters, Type attributeType)
         {
             return methods.Select(
@@ -595,7 +632,21 @@
                 .FirstOrDefault();
         }
 
-        private static MethodInfo FindExtensionMethod(IEnumerable<MethodInfo> methods, Type[] genArgs, ParameterInfo[] parameters, Type extensionType, Type attributeType)
+        /// <summary>
+        /// Finds an extension method.
+        /// </summary>
+        /// <param name="methods">A list of <see cref="MethodInfo"/> instance.</param>
+        /// <param name="genArgs">A list of generic type arguments.</param>
+        /// <param name="parameters">A list of parameters.</param>
+        /// <param name="extensionType">The extension type.</param>
+        /// <param name="attributeType">An attribute type.</param>
+        /// <returns>A <see cref="MethodInfo"/> if found; otherwise null.</returns>
+        private static MethodInfo FindExtensionMethod(
+            IEnumerable<MethodInfo> methods,
+            Type[] genArgs,
+            ParameterInfo[] parameters,
+            Type extensionType,
+            Type attributeType)
         {
             return methods.Select(
                 m => new
@@ -647,18 +698,32 @@
             return ParameterTypesMatch(parameters, 0, parameterTypes, 0, parameterTypes.Length);
         }
 
-        private static bool ParameterTypesMatch(ParameterInfo[] source, int sourceIndex, Type[] dest, int destIndex, int length)
+        /// <summary>
+        /// Checks a parameter list against a type list to see if they match.
+        /// </summary>
+        /// <param name="parameters">The parameter list.</param>
+        /// <param name="parametersStartIndex">The parameter list index to start at.</param>
+        /// <param name="parameterTypes">The parameter type list.</param>
+        /// <param name="parameterTypesStartIndex">The parameter type list index to start at.</param>
+        /// <param name="length">The number of parameters to check.</param>
+        /// <returns>True if the lists are similar; otherwise false.</returns>
+        private static bool ParameterTypesMatch(
+            ParameterInfo[] parameters,
+            int parametersStartIndex,
+            Type[] parameterTypes,
+            int parameterTypesStartIndex,
+            int length)
         {
-            if (source.Length - sourceIndex < length ||
-                dest.Length - destIndex < length)
+            if (parameters.Length - parametersStartIndex < length ||
+                parameterTypes.Length - parameterTypesStartIndex < length)
             {
                 return false;
             }
 
             for (int i = 0; i < length; i++)
             {
-                if (source[sourceIndex + i].ParameterType.IsGenericParameter == false &&
-                    source[sourceIndex + i].ParameterType.IsSimilarType(dest[destIndex + i]) == false)
+                if (parameters[parametersStartIndex + i].ParameterType.IsGenericParameter == false &&
+                    parameters[parametersStartIndex + i].ParameterType.IsSimilarType(parameterTypes[parameterTypesStartIndex + i]) == false)
                 {
                     return false;
                 }
@@ -679,6 +744,16 @@
             return ParameterTypesMatchOrAttribute(source, 0, dest, 0, source.Length, attribute);
         }
 
+        /// <summary>
+        /// Checks if two parameter lists have similar types or the parameter has an attribute.
+        /// </summary>
+        /// <param name="source">The first parameter list.</param>
+        /// <param name="sourceIndex">The first start index.</param>
+        /// <param name="dest">The second parameter list.</param>
+        /// <param name="destIndex">The second start index.</param>
+        /// <param name="length">The number of parameters to check.</param>
+        /// <param name="attribute">The attribute to check for.</param>
+        /// <returns>True if they are similar or they have the atrribute; otherwise false.</returns>
         private static bool ParameterTypesMatchOrAttribute(ParameterInfo[] source, int sourceIndex, ParameterInfo[] dest, int destIndex, int length, Type attribute = null)
         {
             ////if (source.Length != dest.Length)
@@ -715,7 +790,7 @@
         /// <param name="thisType">The <see cref="Type"/> being compared with.</param>
         /// <param name="type">The <see cref="Type"/> being compared.</param>
         /// <returns>True if they are similar; otherwise false.</returns>
-        private static bool IsSimilarType(this Type thisType, Type type)
+        public static bool IsSimilarType(this Type thisType, Type type)
         {
             // Ignore any 'ref' types
             if (thisType.IsByRef)
@@ -767,7 +842,14 @@
             return false;
         }
 
-        private static MethodInfo GetMethod(this Type type, string name, params Type[] genericTypes)
+        /// <summary>
+        /// Gets a named method from a type with specific generic type arguments.
+        /// </summary>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The method name.</param>
+        /// <param name="genericTypes">A list of generic type arguments.</param>
+        /// <returns>A <see cref="MethodInfo"/> if found; otherwise null.</returns>
+        private static MethodInfo GetGenericMethod(this Type type, string name, params Type[] genericTypes)
         {
             MethodInfo mi = type
                 .GetMethods()
@@ -786,16 +868,22 @@
             return mi;
         }
 
-        private static bool TypeNamesMatch(Type[] source, Type[] dest)
+        /// <summary>
+        /// Checks if two Type arrays match.
+        /// </summary>
+        /// <param name="array1">The first type array.</param>
+        /// <param name="array2">The second type array.</param>
+        /// <returns></returns>
+        private static bool TypeNamesMatch(Type[] array1, Type[] array2)
         {
-            if (source.Length != dest.Length)
+            if (array1.Length != array2.Length)
             {
                 return false;
             }
 
-            for (int i = 0; i < source.Length; i++)
+            for (int i = 0; i < array1.Length; i++)
             {
-                if (source[i].Name != dest[i].Name)
+                if (array1[i].Name != array2[i].Name)
                 {
                     return false;
                 }
