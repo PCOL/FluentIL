@@ -13,7 +13,7 @@ namespace FluentIL.Expressions
     /// <summary>
     /// Used to build expressions.
     /// </summary>
-    public class ExpressionBuilder
+    internal class ExpressionBuilder
         : ExpressionVisitor
     {
         /// <summary>
