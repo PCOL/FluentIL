@@ -26,7 +26,7 @@
         /// <param name="args">Program arguments.</param>
         public static void Main(string[] args)
         {
-            // FluentIL.DebugOutput.Output = new ConsoleOutput();
+            //FluentIL.DebugOutput.Output = new ConsoleOutput();
 
             IfExample();
             WhileExample();

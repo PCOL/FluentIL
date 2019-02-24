@@ -116,14 +116,9 @@ namespace FluentIL.Expressions
 
             Visit(expression.Body);
 
+            this.EmitStoreTrueFalse();
+
             this.emitter
-                .BrS(this.storeResultLabel)
-                .Nop()
-                .MarkLabel(this.storeTrueLabel)
-                .LdcI4_1()
-                .BrS(this.storeResultLabel)
-                .MarkLabel(this.storeFalseLabel)
-                .LdcI4_0()
                 .MarkLabel(this.storeResultLabel)
                 .StLoc(result)
                 .Nop()
@@ -173,14 +168,9 @@ namespace FluentIL.Expressions
 
             Visit(expression.Body);
 
+            this.EmitStoreTrueFalse();
+
             this.emitter
-                .BrS(this.storeResultLabel)
-                .Nop()
-                .MarkLabel(this.storeTrueLabel)
-                .LdcI4_1()
-                .BrS(this.storeResultLabel)
-                .MarkLabel(this.storeFalseLabel)
-                .LdcI4_0()
                 .MarkLabel(this.storeResultLabel)
                 .StLoc(result)
                 .Nop()
@@ -217,14 +207,9 @@ namespace FluentIL.Expressions
 
             Visit(expression.Body);
 
+            this.EmitStoreTrueFalse();
+
             this.emitter
-                .BrS(this.storeResultLabel)
-                .Nop()
-                .MarkLabel(this.storeTrueLabel)
-                .LdcI4_1()
-                .BrS(this.storeResultLabel)
-                .MarkLabel(this.storeFalseLabel)
-                .LdcI4_0()
                 .MarkLabel(this.storeResultLabel)
                 .StLoc(result)
                 .Nop()
@@ -268,6 +253,21 @@ namespace FluentIL.Expressions
 
             this.Visit(condition.Body);
 
+            this.EmitStoreTrueFalse();
+
+            this.emitter
+                .MarkLabel(this.storeResultLabel)
+                .StLoc(result)
+                .LdLoc(result)
+                .BrTrue(loopStartLabel)
+                .Nop();
+        }
+
+        /// <summary>
+        /// Emits the IL to store the true and false.
+        /// </summary>
+        private void EmitStoreTrueFalse()
+        {
             if (this.storeTrueLabel != null ||
                 this.storeFalseLabel != null)
             {
@@ -289,13 +289,6 @@ namespace FluentIL.Expressions
                         .LdcI4_0();
                 }
             }
-
-            this.emitter
-                .MarkLabel(this.storeResultLabel)
-                .StLoc(result)
-                .LdLoc(result)
-                .BrTrue(loopStartLabel)
-                .Nop();
         }
 
         /// <inheritdoc />
