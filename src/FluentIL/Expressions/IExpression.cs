@@ -1,5 +1,7 @@
 namespace FluentIL.Expressions
 {
+    using System;
+    using System.Reflection;
     using FluentIL;
 
     /// <summary>
@@ -258,5 +260,20 @@ namespace FluentIL.Expressions
         /// <typeparam name="T">The value type.</typeparam>
         /// <returns>The value.</returns>
         T Value<T>();
+
+        /// <summary>
+        /// Returns the value on top of the evaluation stack.
+        /// </summary>
+        /// <param name="type">The value type.</param>
+        /// <returns>The value.</returns>
+        object Value(Type type);
+
+        /// <summary>
+        /// Calls a method.
+        /// </summary>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="methodInfo">The method to call.</param>
+        /// <returns>The result.</returns>
+        TResult Call<TResult>(MethodInfo methodInfo);
     }
 }

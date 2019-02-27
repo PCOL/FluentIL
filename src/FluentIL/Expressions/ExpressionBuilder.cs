@@ -106,7 +106,8 @@ namespace FluentIL.Expressions
         public void EmitIF(LambdaExpression expression, Action<IEmitter> trueAction, Action<IEmitter> falseAction = null)
         {
             this.emitter
-                .DeclareLocal<bool>("result", out ILocal result)
+                .Comment("IF")
+                .DeclareLocal<bool>("ifResult", out ILocal result)
                 .DefineLabel("storeTrue", out this.storeTrueLabel)
                 .DefineLabel("storeFalse", out this.storeFalseLabel)
                 .DefineLabel("storeResult", out this.storeResultLabel)
@@ -137,7 +138,8 @@ namespace FluentIL.Expressions
             falseAction?.Invoke(this.emitter);
 
             this.emitter
-                .MarkLabel(endifLabel);
+                .MarkLabel(endifLabel)
+                .Comment("END-IF");
         }
 
         /// <summary>
@@ -148,7 +150,8 @@ namespace FluentIL.Expressions
         public void EmitWhile(LambdaExpression expression, Action<IEmitter> action)
         {
             this.emitter
-                .DeclareLocal<bool>("result", out ILocal result)
+                .Comment("WHILE")
+                .DeclareLocal<bool>("whileResult", out ILocal result)
                 .DefineLabel("storeTrue", out this.storeTrueLabel)
                 .DefineLabel("storeFalse", out this.storeFalseLabel)
                 .DefineLabel("storeResult", out this.storeResultLabel)
@@ -177,7 +180,8 @@ namespace FluentIL.Expressions
                 .LdLoc(result)
                 .BrTrue(whileLabel)
                 .MarkLabel(endwhileLabel)
-                .Nop();
+                .Nop()
+                .Comment("END-WHILE");
         }
 
         /// <summary>
@@ -188,7 +192,8 @@ namespace FluentIL.Expressions
         public void EmitDoWhile(LambdaExpression expression, Action<IEmitter> action)
         {
             this.emitter
-                .DeclareLocal<bool>("result", out ILocal result)
+                .Comment("DO")
+                .DeclareLocal<bool>("doResult", out ILocal result)
                 .DefineLabel("storeTrue", out this.storeTrueLabel)
                 .DefineLabel("storeFalse", out this.storeFalseLabel)
                 .DefineLabel("storeResult", out this.storeResultLabel)
@@ -216,7 +221,8 @@ namespace FluentIL.Expressions
                 .LdLoc(result)
                 .BrTrue(startWhileLabel)
                 .MarkLabel(endWhileLabel)
-                .Nop();
+                .Nop()
+                .Comment("END-DO");
         }
 
         /// <summary>
@@ -229,7 +235,8 @@ namespace FluentIL.Expressions
         internal void EmitFor(LambdaExpression initialiser, LambdaExpression condition, LambdaExpression iterator, Action<IEmitter> action)
         {
             this.emitter
-                .DeclareLocal<bool>("result", out ILocal result)
+                .Comment("FOR")
+                .DeclareLocal<bool>("forResult", out ILocal result)
                 .DefineLabel("storeResult", out this.storeResultLabel)
                 .DefineLabel("loopStart", out ILabel loopStartLabel)
                 .DefineLabel("loopTest", out ILabel loopTestLabel)
@@ -260,7 +267,8 @@ namespace FluentIL.Expressions
                 .StLoc(result)
                 .LdLoc(result)
                 .BrTrue(loopStartLabel)
-                .Nop();
+                .Nop()
+                .Comment("END-FOR");
         }
 
         /// <summary>
@@ -392,6 +400,7 @@ namespace FluentIL.Expressions
             }
             else
             {
+//Console.WriteLine("Node: {0}, Type: {1}", node.NodeType, node.ToString());
                 object value = this.GetValue(node.Value);
                 if (value is ILocal local)
                 {
@@ -400,6 +409,10 @@ namespace FluentIL.Expressions
                 else if (value is IFieldBuilder field)
                 {
                     this.arguments.Push(field);
+                }
+                else
+                {
+                    this.arguments.Push(value);
                 }
             }
 
@@ -414,21 +427,27 @@ namespace FluentIL.Expressions
         private object GetValue(object input)
         {
             var type = input.GetType();
-
-            var fieldName = this.fieldNames.Pop();
-            var fieldInfo = type.GetField(fieldName);
-            if (fieldInfo != null)
+            
+            if (this.fieldNames.Any() == true)
             {
-                return fieldInfo.GetValue(input);
+                var fieldName = this.fieldNames.Pop();
+                var fieldInfo = type.GetField(fieldName);
+                if (fieldInfo != null)
+                {
+                    return fieldInfo.GetValue(input);
+                }
+                
+                return null;
             }
 
-            return null;
+            return input;
         }
 
         /// <inheritdoc />
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            if (node.Object.NodeType == ExpressionType.Call)
+            if (node.Object != null &&
+                node.Object.NodeType == ExpressionType.Call)
             {
                 Visit(node.Object);    
             }

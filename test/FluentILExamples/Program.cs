@@ -1,6 +1,8 @@
 ﻿namespace FluentILExamples
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using FluentIL;
@@ -20,18 +22,101 @@
         /// </summary>
         private static MethodInfo ConsoleWriteLineStringObjectObject = typeof(Console).GetMethodWithParameters("WriteLine", BindingFlags.Public | BindingFlags.Static, new[] { typeof(string), typeof(object), typeof(object) });
 
+        private static readonly MethodInfo AnyTMethod =
+            typeof(Enumerable)
+                .BuildMethodInfo("Any")
+                .IsGenericDefinition()
+                .HasParameterTypes(typeof(IEnumerable<>))
+                .FirstOrDefault();
+
         /// <summary>
         /// Program entry point.
         /// </summary>
         /// <param name="args">Program arguments.</param>
         public static void Main(string[] args)
         {
-            //FluentIL.DebugOutput.Output = new ConsoleOutput();
+            FluentIL.DebugOutput.Output = new ConsoleOutput();
 
-            IfExample();
-            WhileExample();
-            DoExample();
-            ForExample();
+            // IfExample();
+            // WhileExample();
+            // DoExample();
+            // ForExample();
+
+            //GlobalMethod();
+
+            IfNotNullOrEmptyExample();
+        }
+
+        private static void GlobalMethod()
+        {
+            var globalMethod = TypeFactory
+                .Default
+                .NewGlobalMethod("GlobalMethod");
+
+            globalMethod
+                .Param<int>("arg")
+                .Returns<bool>()
+                .Public()
+                .Static()
+                .Body(il => il
+                    .DeclareLocal<bool>(out ILocal result)
+                    .LdcI4_0()
+                    .StLoc0()
+                    .Nop()
+                    .If(e => e.LdArg0<int>() == 10,
+                        m => m
+                            .LdcI4_1()
+                            .StLoc0())
+                    .Nop()
+                    .LdLoc(result)
+                    .Ret());
+
+            var methodBuilder = globalMethod.Define();
+            
+            TypeFactory.Default.CreateGlobalFunctions();
+
+
+            var methodInfo = TypeFactory.Default.GetMethod("GlobalMethod");
+            var method = (Func<int, bool>)methodInfo.CreateDelegate(typeof(Func<int, bool>));
+
+            Console.WriteLine("10 == 10 : {0}", method(20));
+        }
+
+        private static void IfNotNullOrEmptyExample()
+        {
+            Console.WriteLine("If Not Null Or Empty Example");
+            Console.WriteLine();
+
+            var typeBuilder = TypeFactory
+                .Default
+                .NewType("IfNotNullOrEmptyExampleType");
+
+            typeBuilder.NewDefaultConstructor(MethodAttributes.Public);
+
+            typeBuilder
+                .NewMethod("IfNotNullOrEmptyExample")
+                .Param<IEnumerable<string>>("arg")
+                .Returns<bool>()
+                .Public()
+                .Body(il => il
+                    .DeclareLocal<bool>("result", out ILocal result)
+                    .LdcI4_0()
+                    .StLoc0()
+                    .Nop()
+                    .If(e => e.LdArg1<IEnumerable<string>>() == null || e.LdArg1<IEnumerable<string>>().Any() == false,
+                        ifil => ifil
+                            .LdcI4_1()
+                            .StLoc0())
+                    .LdLoc0()
+                    .Ret());
+
+            var mytype = typeBuilder.CreateType();
+            var instance = Activator.CreateInstance(mytype);
+            var method = instance.GetMethodFunc<IEnumerable<string>, bool>("IfNotNullOrEmptyExample");
+            
+            Console.WriteLine("null = {0}", method(null));
+            Console.WriteLine("Empty = {0}", method(Enumerable.Empty<string>()));
+            Console.WriteLine("list = {0}", method(new[] { "a", "b", "c" }));
         }
 
         private static void IfExample()

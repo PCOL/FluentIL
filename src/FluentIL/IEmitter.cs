@@ -341,5 +341,12 @@ namespace FluentIL
         /// <param name="usingNamespace">The namespace to emit.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter UsingNamespace(string usingNamespace);
+
+        /// <summary>
+        /// Emits nothing. Used to allow comments to be added to a debug output class.
+        /// </summary>
+        /// <param name="comment">A comment.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        IEmitter Comment(string comment);
     }
 }

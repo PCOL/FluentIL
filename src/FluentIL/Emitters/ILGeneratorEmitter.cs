@@ -329,5 +329,11 @@ namespace FluentIL.Emitters
             this.ilGen.UsingNamespace(usingNamespace);
             return this;
         }
+
+        /// <inheritdoc/>
+        public IEmitter Comment(string comment)
+        {
+            return this;
+        }
     }
 }

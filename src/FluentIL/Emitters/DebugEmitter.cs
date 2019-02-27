@@ -620,23 +620,47 @@ namespace FluentIL.Emitters
             return this;
         }
 
+        /// <inheritdoc/>
+        public IEmitter Comment(string comment)
+        {
+            this.debugOutput.WriteLineColor(ConsoleColor.Green, "// {0}", comment);
+            return this;
+        }
+
+        /// <summary>
+        /// Output the IL offset.
+        /// </summary>
         private void OutputILOffset()
         {
             this.debugOutput.Write(this.offset.ToString("0x0000000"));
             this.offset = this.emitter?.ILOffset ?? 0;
         }
 
+        /// <summary>
+        /// Outputs the <see cref="OpCode"/>.
+        /// </summary>
+        /// <param name="opcode">An OpCode.</param>
         private void OutputOpCode(OpCode opcode)
         {
             this.OutputILOffset();
             this.debugOutput.Write("\t{0}", opcode);
         }
 
+        /// <summary>
+        /// Outputs an error.
+        /// </summary>
+        /// <param name="format">A format string.</param>
+        /// <param name="args">A list of arguments.</param>
         private void WriteError(string format, params object[] args)
         {
             this.debugOutput.WriteColor(ConsoleColor.Red, format, args);
         }
 
+        /// <summary>
+        /// Outputs an error.
+        /// </summary>
+        /// <param name="format">A format string.</param>
+        /// <param name="args">A list of arguments.</param>
         private void WriteLineError(string format, params object[] args)
         {
             this.debugOutput.WriteLineColor(ConsoleColor.Red, format, args);
