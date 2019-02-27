@@ -120,6 +120,14 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc/>
+        public IMethodBuilder Param(IParameterBuilder parameter)
+        {
+            this.ThrowIfDefined();
+            this.parms.Add((FluentParameterBuilder)parameter);
+            return this;
+        }
+
+        /// <inheritdoc/>
         public IMethodBuilder Params(params Type[] parameterTypes)
         {
             this.ThrowIfDefined();
@@ -130,9 +138,41 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc/>
+        public IMethodBuilder Params(params IParameterBuilder[] parameters)
+        {
+            this.ThrowIfDefined();
+            this.parms = parameters
+                .Cast<FluentParameterBuilder>()
+                .ToList();
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IParameterBuilder CreateParam<TParam>(string parameterName, ParameterAttributes attrs = ParameterAttributes.None)
+        {
+            return this.CreateParam(typeof(TParam), parameterName, attrs);
+        }
+
+        /// <inheritdoc/>
+        public IParameterBuilder CreateParam(Type parameterType, string parameterName, ParameterAttributes attrs = ParameterAttributes.None)
+        {
+            this.ThrowIfDefined();
+            return new FluentParameterBuilder(
+                    parameterType,
+                    parameterName,
+                    attrs);
+        }
+
+        /// <inheritdoc/>
         public bool HasParameter(string parameterName)
         {
             return this.parms.Any(p => p.ParameterName == parameterName);
+        }
+
+        /// <inheritdoc/>
+        public IParameterBuilder GetParameter(string parameterName)
+        {
+            return this.parms.FirstOrDefault(p => p.ParameterName == parameterName);
         }
 
         /// <inheritdoc/>
@@ -262,7 +302,7 @@ namespace FluentIL.Builders
             if (this.genericParameterBuilders != null)
             {
                 this.genericParameters = this.methodBuilder.DefineGenericParameters(
-                    this.genericParameterBuilders.Select(g => g.ParameterName).ToArray());
+                this.genericParameterBuilders.Select(g => g.ParameterName).ToArray());
 
                 for (int i = 0; i < this.genericParameterBuilders.Count; i++)
                 {
@@ -283,9 +323,13 @@ namespace FluentIL.Builders
 
             DebugOutput.WriteLine("");
             DebugOutput.WriteLine("=======================================");
-            DebugOutput.WriteLine("New Method {0}({1})",
-                this.methodBuilder.Name,
-                string.Join(", ", this.parms.Select(p => $"{p.ParameterType} {p.ParameterName}")));
+            DebugOutput.Write($"New Method {this.methodBuilder.Name}");
+            if (this.methodBuilder.IsGenericMethodDefinition == true)
+            {
+                DebugOutput.Write($"<{string.Join(", ", this.methodBuilder.GetGenericArguments().Select(t => t.Name))}>");
+            }
+
+            DebugOutput.WriteLine($"({string.Join(", ", this.parms.Select(p => $"{p.ParameterType} {p.ParameterName}"))})");
             DebugOutput.WriteLine("Calling Convention: {0}", this.methodBuilder.CallingConvention);
             DebugOutput.WriteLine("Attributes: {0}", this.Attributes);
             DebugOutput.WriteLine("");

@@ -80,6 +80,13 @@ namespace FluentIL
         IMethodBuilder Param(Action<IParameterBuilder> action);
 
         /// <summary>
+        /// Adds a parameter to the method.
+        /// </summary>
+        /// <param name="parameter">A parameter builder.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
+        IMethodBuilder Param(IParameterBuilder parameter);
+
+        /// <summary>
         /// Defines the methods parameters.
         /// </summary>
         /// <param name="parameterTypes">The parameter types.</param>
@@ -87,11 +94,43 @@ namespace FluentIL
         IMethodBuilder Params(params Type[] parameterTypes);
 
         /// <summary>
+        /// Defines the methods parameters.
+        /// </summary>
+        /// <param name="parameters">A list of parameter builders.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
+        IMethodBuilder Params(params IParameterBuilder[] parameters);
+
+        /// <summary>
+        /// Creates a parameter.
+        /// </summary>
+        /// <typeparam name="TParam">The parameters type.</typeparam>
+        /// <param name="parameterName">The parameters name.</param>
+        /// <param name="attrs">The parameters attributes.</param>
+        /// <returns>The <see cref="IParameterBuilder"/> instsnce.</returns>
+        IParameterBuilder CreateParam<TParam>(string parameterName, ParameterAttributes attrs = ParameterAttributes.None);
+
+        /// <summary>
+        /// Creates a parameter.
+        /// </summary>
+        /// <param name="parameterType">The parameters type.</param>
+        /// <param name="parameterName">The parameters name.`</param>
+        /// <param name="attrs">The parameters attribute.</param>
+        /// <returns>The <see cref="IParameterBuilder"/> instance.</returns>
+        IParameterBuilder CreateParam(Type parameterType, string parameterName, ParameterAttributes attrs = ParameterAttributes.None);
+
+        /// <summary>
         /// Checks if the method has a named parameter.
         /// </summary>
         /// <param name="parameterName">The parameter name.</param>
-        /// <returns>True if it has; otherwisw false.</returns>
+        /// <returns>True if it has; otherwise false.</returns>
         bool HasParameter(string parameterName);
+
+        /// <summary>
+        /// Gets a named parameter.
+        /// </summary>
+        /// <param name="parameterName">The parameter name.</param>
+        /// <returns>A <see cref="IParameterBuilder"/> if found; otherwise null.</returns>
+        IParameterBuilder GetParameter(string parameterName);
 
         /// <summary>
         /// Defines a generic parameter.
