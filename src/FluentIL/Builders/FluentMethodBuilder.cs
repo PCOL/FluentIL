@@ -5,6 +5,7 @@ namespace FluentIL.Builders
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
+    using System.Runtime.CompilerServices;
     using FluentIL.Emitters;
 
     /// <summary>
@@ -288,6 +289,13 @@ namespace FluentIL.Builders
                 return this.methodBuilder;
             }
 
+            int parmCount = this.parms.Count;
+            Type[] parameterTypes = new Type[parmCount];
+            for (int i = 0; i < parmCount; i++)
+            {
+                parameterTypes[i] = this.parms[i].ParameterType;
+            }
+
             this.methodBuilder = this.defineMethod(
                     this.methodName,
                     this.Attributes,
@@ -295,7 +303,7 @@ namespace FluentIL.Builders
                     this.returnType,
                     null,
                     null,
-                    this.parms.Select(p => p.ParameterType).ToArray(),
+                    parameterTypes,
                     null,
                     null);
 
@@ -329,7 +337,7 @@ namespace FluentIL.Builders
                 DebugOutput.Write($"<{string.Join(", ", this.methodBuilder.GetGenericArguments().Select(t => t.Name))}>");
             }
 
-            DebugOutput.WriteLine($"({string.Join(", ", this.parms.Select(p => $"{p.ParameterType} {p.ParameterName}"))})");
+            DebugOutput.WriteLine($"({string.Join(", ", this.parms.Select(p => $"{p.Attributes} {p.ParameterType} {p.ParameterName}"))})");
             DebugOutput.WriteLine("Calling Convention: {0}", this.methodBuilder.CallingConvention);
             DebugOutput.WriteLine("Attributes: {0}", this.Attributes);
             DebugOutput.WriteLine("");

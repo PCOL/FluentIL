@@ -56,5 +56,56 @@ namespace FluentILUnitTests
             var res = method(start, increment);
             Assert.AreEqual(expectedResult, res);
         }
+
+        [TestMethod]
+        [DataRow(0, 10, 100)]
+        public void Test2(int start, int increment, int expectedResult)
+        {
+            DebugOutput.Output = new ConsoleOutput();
+
+             var methodName = $"Method_{Guid.NewGuid()}";
+
+            var testTypeBuilder = TypeFactory
+                .Default
+                .NewType($"TestType_{Guid.NewGuid()}")
+                .Public();
+
+            testTypeBuilder
+                .NewMethod(methodName)
+                .Param<int>("start")
+                .Param<int>("increment")
+                .Param(Type.GetType("System.Int32&"), "counter", ParameterAttributes.Out)
+                .Returns<int>()
+                .Public()
+                .Body(il => il
+                    .DeclareLocal<int>(out ILocal result)
+                    .DeclareLocal<int>(out ILocal counter)
+                    .LdArg1()
+                    .StLoc1()
+                    .Nop()
+                    .For(i => i.LdcI4_0().StLoc(counter),
+                        e => e.LdLoc<int>(counter) < 10,
+                        i => i.Inc(counter),
+                        i => i
+                            .LdLoc0()
+                            .LdArg2()
+                            .Add()
+                            .StLoc0())
+                    .LdArg3()
+                    .LdLoc1()
+                    .StIndI4()
+                    .LdLoc0()
+                    .Ret()
+                );
+
+            var type = testTypeBuilder.CreateType();
+            var methodInfo = type.GetMethod(methodName, new[] { typeof(int), typeof(int), Type.GetType("System.Int32&") });
+            var instance = Activator.CreateInstance(type);
+            var method = (MethodDelegate)Delegate.CreateDelegate(typeof(MethodDelegate), instance, methodInfo);
+
+            var res = method(start, increment, out int ctr);
+            Assert.AreEqual(expectedResult, res);
+            Assert.AreEqual(10, ctr);
+        }
     }
 }
