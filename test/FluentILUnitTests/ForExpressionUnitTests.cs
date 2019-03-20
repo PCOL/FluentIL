@@ -8,7 +8,9 @@ namespace FluentILUnitTests
     [TestClass]
     public class ForExpressionUnitTests
     {
-        public delegate int MethodDelegate(int start, int increment, out int counter);
+        public delegate int Test2Delegate(int start, int increment, out int counter);
+
+        public delegate int Test3Delegate(int start, int increment, ref int counter);
 
         [TestMethod]
         [DataRow(0, 10, 100)]
@@ -74,7 +76,7 @@ namespace FluentILUnitTests
                 .NewMethod(methodName)
                 .Param<int>("start")
                 .Param<int>("increment")
-                .Param(Type.GetType("System.Int32&"), "counter", ParameterAttributes.Out)
+                .OutParam<int>("counter")
                 .Returns<int>()
                 .Public()
                 .Body(il => il
@@ -99,13 +101,68 @@ namespace FluentILUnitTests
                 );
 
             var type = testTypeBuilder.CreateType();
-            var methodInfo = type.GetMethod(methodName, new[] { typeof(int), typeof(int), Type.GetType("System.Int32&") });
+            var methodInfo = type.GetMethod(methodName, new[] { typeof(int), typeof(int), typeof(int).MakeByRefType() });
             var instance = Activator.CreateInstance(type);
-            var method = (MethodDelegate)Delegate.CreateDelegate(typeof(MethodDelegate), instance, methodInfo);
+            var method = (Test2Delegate)Delegate.CreateDelegate(typeof(Test2Delegate), instance, methodInfo);
 
             var res = method(start, increment, out int ctr);
             Assert.AreEqual(expectedResult, res);
             Assert.AreEqual(10, ctr);
+        }
+
+        [TestMethod]
+        [DataRow(0, 10, 0, 100, 100)]
+        [DataRow(0, 10, 100, 100, 200)]
+        public void Test3(int start, int increment, int ctr, int expectedResult, int expectedCounter)
+        {
+            DebugOutput.Output = new ConsoleOutput();
+
+             var methodName = $"Method_{Guid.NewGuid()}";
+
+            var testTypeBuilder = TypeFactory
+                .Default
+                .NewType($"TestType_{Guid.NewGuid()}")
+                .Public();
+
+            testTypeBuilder
+                .NewMethod(methodName)
+                .Param<int>("start")
+                .Param<int>("increment")
+                .RefParam<int>("counter")
+                .Returns<int>()
+                .Public()
+                .Body(il => il
+                    .DeclareLocal<int>(out ILocal result)
+                    .DeclareLocal<int>(out ILocal counter)
+                    .LdArg1()
+                    .StLoc1()
+                    .Nop()
+                    .For(i => i.LdcI4_0().StLoc(counter),
+                        e => e.LdLoc<int>(counter) < 10,
+                        i => i.Inc(counter),
+                        i => i
+                            .LdLoc0()
+                            .LdArg2()
+                            .Add()
+                            .StLoc0()
+                            .LdArg3()
+                            .Dup()
+                            .LdIndI4()
+                            .LdArg2()
+                            .Add()
+                            .StIndI4())
+                    .LdLoc0()
+                    .Ret()
+                );
+
+            var type = testTypeBuilder.CreateType();
+            var methodInfo = type.GetMethod(methodName, new[] { typeof(int), typeof(int), typeof(int).MakeByRefType() });
+            var instance = Activator.CreateInstance(type);
+            var method = (Test3Delegate)Delegate.CreateDelegate(typeof(Test3Delegate), instance, methodInfo);
+
+            var res = method(start, increment, ref ctr);
+            Assert.AreEqual(expectedResult, res);
+            Assert.AreEqual(expectedCounter, ctr);
         }
     }
 }

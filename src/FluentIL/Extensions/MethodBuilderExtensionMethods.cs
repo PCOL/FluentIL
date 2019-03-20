@@ -120,6 +120,28 @@ namespace FluentIL
         }
 
         /// <summary>
+        /// Defines an out parameter.
+        /// </summary>
+        /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
+        /// <param name="parameterName">The name of parameter.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
+        public static IMethodBuilder OutParam<TParam>(this IMethodBuilder methodBuilder, string parameterName)
+        {
+            return methodBuilder.Param(typeof(TParam).MakeByRefType(), parameterName, ParameterAttributes.Out);
+        }
+
+        /// <summary>
+        /// Defines an ref parameter.
+        /// </summary>
+        /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
+        /// <param name="parameterName">The name of parameter.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
+        public static IMethodBuilder RefParam<TParam>(this IMethodBuilder methodBuilder, string parameterName)
+        {
+            return methodBuilder.Param(typeof(TParam).MakeByRefType(), parameterName, ParameterAttributes.None);
+        }
+
+        /// <summary>
         ///
         /// </summary>
         /// <param name="methodBuilder">A <see cref="MethodBuilder"/> instance.</param>
