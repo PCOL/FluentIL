@@ -17,6 +17,7 @@ namespace FluentIL
         /// <summary>
         /// Gets the methods body.
         /// </summary>
+        /// <returns>A <see cref="IEmitter"/>.</returns>
         IEmitter Body();
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace FluentIL
         /// <summary>
         /// Sets the methods atrributes.
         /// </summary>
-        /// <param name="attributes"></param>
+        /// <param name="attributes">The method attributes.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         IMethodBuilder MethodAttributes(MethodAttributes attributes);
 
@@ -67,7 +68,7 @@ namespace FluentIL
         /// Adds a parameter to the method.
         /// </summary>
         /// <param name="parameterType">The parameters type.</param>
-        /// <param name="parameterName">The parameters name.`</param>
+        /// <param name="parameterName">The parameters name.</param>
         /// <param name="attrs">The parameters attribute.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         IMethodBuilder Param(Type parameterType, string parameterName, ParameterAttributes attrs = ParameterAttributes.None);
@@ -113,7 +114,7 @@ namespace FluentIL
         /// Creates a parameter.
         /// </summary>
         /// <param name="parameterType">The parameters type.</param>
-        /// <param name="parameterName">The parameters name.`</param>
+        /// <param name="parameterName">The parameters name.</param>
         /// <param name="attrs">The parameters attribute.</param>
         /// <returns>The <see cref="IParameterBuilder"/> instance.</returns>
         IParameterBuilder CreateParam(Type parameterType, string parameterName, ParameterAttributes attrs = ParameterAttributes.None);
@@ -142,8 +143,8 @@ namespace FluentIL
         /// <summary>
         /// Defines a generic parameter.
         /// </summary>
-        /// <param name="parameterName"></param>
-        /// <param name="parameterBuilder"></param>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <param name="parameterBuilder">A generic parameter builder action. </param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         IMethodBuilder NewGenericParameter(string parameterName, Action<IGenericParameterBuilder> parameterBuilder);
 
@@ -158,15 +159,15 @@ namespace FluentIL
         /// Defines generic parameters.
         /// </summary>
         /// <param name="parameterNames">The names of the parameters.</param>
-        /// <param name="action">The action to update the parameters</param>
+        /// <param name="action">The action to update the parameters.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         IMethodBuilder NewGenericParameters(string[] parameterNames, Action<IGenericParameterBuilder[]> action);
 
         /// <summary>
-        ///
+        /// Gets a generic parameter.
         /// </summary>
         /// <param name="parameterName">The parameter name.</param>
-        /// <returns></returns>
+        /// <returns>A <se cref="GenericTypeParameterBuilder"/> instance if found; otherwise null.</returns>
         GenericTypeParameterBuilder GetGenericParameter(string parameterName);
 
         /// <summary>
@@ -175,6 +176,13 @@ namespace FluentIL
         /// <param name="customAttribute">The custom attribute.</param>
         /// <returns>The <see cref="MethodInfo"/> instance.</returns>
         IMethodBuilder SetCustomAttribute(CustomAttributeBuilder customAttribute);
+
+        /// <summary>
+        /// Sets the methods implementation flags.
+        /// </summary>
+        /// <param name="attributes">The attributes.</param>
+        /// <returns>The <see cref="MethodInfo"/> instance.</returns>
+        IMethodBuilder SetImplementationFlags(MethodImplAttributes attributes);
 
         /// <summary>
         /// Defines the method.

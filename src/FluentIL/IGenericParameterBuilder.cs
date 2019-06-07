@@ -2,6 +2,7 @@ namespace FluentIL
 {
     using System;
     using System.Reflection;
+    using System.Reflection.Emit;
 
     /// <summary>
     /// Defines the generic parameter builder interface.
@@ -72,5 +73,11 @@ namespace FluentIL
         /// </summary>
         /// <returns>The <see cref="IGenericParameterBuilder"/> instance.</returns>
         IGenericParameterBuilder ReferenceType();
+
+        /// <summary>
+        /// Defines the generic parameter.
+        /// </summary>
+        /// <returns>The <see cref="GenericTypeParameterBuilder"/> instance.</returns>
+        GenericTypeParameterBuilder Define();
     }
 }

@@ -60,7 +60,7 @@ namespace FluentIL
                 (name,
                 attributes,
                 callingConvention,
-                rType,
+                returnType,
                 returnTypeRequiredCustomModifiers,
                 returnTypeOptionalCustomModifiers,
                 parameterTypes,
@@ -71,7 +71,7 @@ namespace FluentIL
                         name,
                         attributes |= MethodAttributes.Static,
                         callingConvention,
-                        rType,
+                        returnType,
                         returnTypeRequiredCustomModifiers,
                         returnTypeOptionalCustomModifiers,
                         parameterTypes,
@@ -104,14 +104,14 @@ namespace FluentIL
         /// <summary>
         /// Emits IL to check if the passed in local variable is null or not, executing the emitted body if not.
         /// </summary>
-        /// <param name="ilGen">The <see cref="IEmitter"/> to use.</param>
+        /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="local">The locval variable to check.</param>
         /// <param name="emitBody">A function to emit the IL to be executed if the object is not null.</param>
         /// <param name="emitElse">A function to emit the IL to be executed if the object is null.</param>
         /// <returns>The passed in <see cref="IEmitter"/>.</returns>
-        public static IEmitter IfNotNull(this IEmitter ilGen, ILocal local, Action<IEmitter> emitBody, Action<IEmitter> emitElse = null)
+        public static IEmitter IfNotNull(this IEmitter emitter, ILocal local, Action<IEmitter> emitBody, Action<IEmitter> emitElse = null)
         {
-            return ilGen
+            return emitter
                 .Emit(OpCodes.Ldloc, local)
                 .IfNotNull(emitBody, emitElse);
         }
@@ -181,7 +181,7 @@ namespace FluentIL
         {
             var builder = new ExpressionBuilder(emitter);
             builder.EmitWhile(expression, action);
-            return emitter;            
+            return emitter;
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace FluentIL
         {
             var builder = new ExpressionBuilder(emitter);
             builder.EmitDoWhile(expression, action);
-            return emitter;            
+            return emitter;
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace FluentIL
         {
             var builder = new ExpressionBuilder(emitter);
             builder.EmitFor(initialiser, condition, iterator, action);
-            return emitter;            
+            return emitter;
         }
     }
 }

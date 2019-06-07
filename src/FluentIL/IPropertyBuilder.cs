@@ -34,6 +34,7 @@ namespace FluentIL
         /// <summary>
         /// Gets or adds the property get method builder.
         /// </summary>
+        /// <param name="action">A method builder action.</param>
         /// <returns>The <see cref="IPropertyBuilder"/> instance.</returns>
         IPropertyBuilder Getter(Action<IMethodBuilder> action = null);
 
@@ -46,6 +47,7 @@ namespace FluentIL
         /// <summary>
         /// Gets or adds the property set method builder.
         /// </summary>
+        /// <param name="action">A method builder action.</param>
         /// <returns>The <see cref="IPropertyBuilder"/> instance.</returns>
         IPropertyBuilder Setter(Action<IMethodBuilder> action = null);
 

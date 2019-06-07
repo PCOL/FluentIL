@@ -224,18 +224,21 @@ namespace FluentIL.Expressions
         /// <summary>
         /// Loads a long value onto the top of the evaluation stack.
         /// </summary>
+        /// <param name="value">The value.</param>
         /// <returns>The value.</returns>
         long LdcI8(long value);
 
         /// <summary>
         /// Loads a double value onto the top of the evaluation stack.
         /// </summary>
+        /// <param name="value">The value.</param>
         /// <returns>The value.</returns>
         float LdcR4(float value);
 
         /// <summary>
         /// Loads a double value onto the top of the evaluation stack.
         /// </summary>
+        /// <param name="value">The value.</param>
         /// <returns>The value.</returns>
         double LdcR8(double value);
 

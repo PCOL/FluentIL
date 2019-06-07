@@ -36,6 +36,11 @@ namespace FluentIL.Builders
         private ConstructorBuilder ctor;
 
         /// <summary>
+        /// The method implementation attributes.
+        /// </summary>
+        private MethodImplAttributes methodImplAttributes;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="FluentConstructorBuilder"/> class.
         /// </summary>
         /// <param name="define">A constructor definition function.</param>
@@ -105,6 +110,20 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc />
+        public IConstructorBuilder SetMethodAttributes(MethodAttributes attributes)
+        {
+            this.MethodAttributes = attributes;
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IConstructorBuilder SetImplementationFlags(MethodImplAttributes attributes)
+        {
+            this.methodImplAttributes = attributes;
+            return this;
+        }
+
+        /// <inheritdoc />
         public ConstructorBuilder Define()
         {
             if (this.ctor != null)
@@ -126,6 +145,8 @@ namespace FluentIL.Builders
                 {
                     this.ctor.DefineParameter(++i, parm.Attributes, parm.ParameterName);
                 }
+
+                this.ctor.SetImplementationFlags(this.methodImplAttributes);
             }
             else if (this.defineDefault != null)
             {

@@ -31,7 +31,7 @@ namespace FluentIL
         private IModuleBuilder moduleBuilder;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="TypeFactory"/> class.
+        /// Initializes a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="assemblyName">The assembly name.</param>
         /// <param name="moduleName">The module name.</param>
@@ -41,7 +41,7 @@ namespace FluentIL
             Utility.ThrowIfArgumentNullEmptyOrWhitespace(moduleName, nameof(moduleName));
 
             this.assemblyCache = new AssemblyBuilderCache();
-            this.assemblyBuilder =  this.assemblyCache.GetOrCreateAssemblyBuilder(assemblyName);
+            this.assemblyBuilder = this.assemblyCache.GetOrCreateAssemblyBuilder(assemblyName);
             this.moduleBuilder = this.assemblyBuilder.NewDynamicModule(moduleName);
         }
 
@@ -76,10 +76,57 @@ namespace FluentIL
         }
 
         /// <summary>
+        /// Defines a named delegate type.
+        /// </summary>
+        /// <typeparam name="TReturn">The return type.</typeparam>
+        /// <param name="typeName">The name of the delegate type.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <returns>The delegate type.</returns>
+        public Type NewDelegateType<TReturn>(string typeName, Type[] parameterTypes)
+        {
+            return this.NewDelegateType(typeName, parameterTypes, typeof(TReturn));
+        }
+
+        /// <summary>
+        /// Defines a named delegate type.
+        /// </summary>
+        /// <param name="typeName">The name of the delegate type.</param>
+        /// <param name="parameterTypes">The parameter types.</param>
+        /// <param name="returnType">The return type.</param>
+        /// <returns>The delegate type.</returns>
+        public Type NewDelegateType(string typeName, Type[] parameterTypes, Type returnType)
+        {
+            var typeBuilder = this.moduleBuilder
+                .NewType(typeName)
+                .Attributes(TypeAttributes.Class | TypeAttributes.Public | TypeAttributes.Sealed | TypeAttributes.AnsiClass | TypeAttributes.AutoClass)
+                .InheritsFrom<MulticastDelegate>();
+
+            typeBuilder.NewConstructor()
+                .RTSpecialName()
+                .HideBySig()
+                .Public()
+                .CallingConvention(CallingConventions.Standard)
+                .Param<object>("object")
+                .Param<IntPtr>("method")
+                .SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
+
+            typeBuilder.NewMethod("Invoke")
+                .Public()
+                .HideBySig()
+                .NewSlot()
+                .Virtual()
+                .Returns(returnType)
+                .Params(parameterTypes)
+                .SetImplementationFlags(MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
+
+            return typeBuilder.CreateType();
+        }
+
+        /// <summary>
         /// Defines a global method.
         /// </summary>
         /// <param name="methodName">The method name.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="IMethodBuilder"/> instance.</returns>
         public IMethodBuilder NewGlobalMethod(string methodName)
         {
             return this.moduleBuilder.NewGlobalMethod(methodName);

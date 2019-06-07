@@ -666,7 +666,7 @@ namespace FluentIL
 
         /// <summary>
         /// Compares the unsigned or unordered values value1 and value2. If value1 is less than value2, then the integer value 1 (int32) is pushed onto the evaluation stack;
-        /// otherwise 0 (int32) is pushed onto the evaluation stack
+        /// otherwise 0 (int32) is pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>

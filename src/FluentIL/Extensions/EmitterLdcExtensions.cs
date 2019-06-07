@@ -11,8 +11,8 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to push a supplied value onto the top of the evaluation stack.
         /// </summary>
-        /// <param name="emitter"></param>
-        /// <param name="value"></param>
+        /// <param name="emitter">An <see cref="IEmitter"/> instance.</param>
+        /// <param name="value">The value to load.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdcI4(this IEmitter emitter, int value)
         {

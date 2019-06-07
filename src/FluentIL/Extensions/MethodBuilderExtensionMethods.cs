@@ -54,7 +54,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Indicates that the method
+        /// Indicates that the method.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
@@ -65,7 +65,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Indicates that the method
+        /// Indicates that the method.
         /// </summary>
         /// <param name="builder">A <see cref="IMethodBuilder"/> instance.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
@@ -100,6 +100,7 @@ namespace FluentIL
         /// <summary>
         /// Defines a parameter.
         /// </summary>
+        /// <typeparam name="TParam">The parameter type.</typeparam>
         /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Param<TParam>(this IMethodBuilder methodBuilder)
@@ -110,9 +111,10 @@ namespace FluentIL
         /// <summary>
         /// Defines a parameter.
         /// </summary>
+        /// <typeparam name="TParam">The parameter type.</typeparam>
         /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
         /// <param name="parameterName">The name of parameter.</param>
-        /// <param name="attrs">The parameters attribtes</param>
+        /// <param name="attrs">The parameters attribtes.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
         public static IMethodBuilder Param<TParam>(this IMethodBuilder methodBuilder, string parameterName, ParameterAttributes attrs = ParameterAttributes.None)
         {
@@ -122,6 +124,7 @@ namespace FluentIL
         /// <summary>
         /// Defines an out parameter.
         /// </summary>
+        /// <typeparam name="TParam">The parameter type.</typeparam>
         /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
         /// <param name="parameterName">The name of parameter.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
@@ -133,6 +136,7 @@ namespace FluentIL
         /// <summary>
         /// Defines an ref parameter.
         /// </summary>
+        /// <typeparam name="TParam">The parameter type.</typeparam>
         /// <param name="methodBuilder">A <see cref="IMethodBuilder"/> instance.</param>
         /// <param name="parameterName">The name of parameter.</param>
         /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
@@ -142,7 +146,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        ///
+        /// Returns a <see cref="IEmitter"/> for the method body.
         /// </summary>
         /// <param name="methodBuilder">A <see cref="MethodBuilder"/> instance.</param>
         /// <returns>An <see cref="IEmitter"/> instance.</returns>
@@ -150,13 +154,13 @@ namespace FluentIL
         {
             DebugOutput.WriteLine("Body:");
 
-            var ilEmitter = new ILGeneratorEmitter(methodBuilder.GetILGenerator());
+            var emitter = new ILGeneratorEmitter(methodBuilder.GetILGenerator());
             if (DebugOutput.Output == null)
             {
-                return ilEmitter;
+                return emitter;
             }
 
-            return new DebugEmitter(ilEmitter, DebugOutput.Output);
+            return new DebugEmitter(emitter, DebugOutput.Output);
         }
     }
 }

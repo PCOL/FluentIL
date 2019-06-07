@@ -44,7 +44,9 @@
 
             //GlobalMethod();
 
-            IfNotNullOrEmptyExample();
+            //IfNotNullOrEmptyExample();
+
+            DynamicMethodExample();
         }
 
         private static void GlobalMethod()
@@ -290,6 +292,65 @@
             var method = instance.GetMethodAction<int>("ForExample");
 
             method(10);
+        }
+
+        private delegate void TestDelegate();
+
+        private static void DynamicMethodExample()
+        {
+            var methodFactory = new DynamicMethodFactory();
+
+            var methodBuilder = methodFactory
+                .NewDynamicMethod("test", typeof(Program))
+                .Body(m => m
+                    .EmitWriteLine("Hello")
+                    .Ret());
+            
+            TestDelegate test = (TestDelegate) methodBuilder.Create(typeof(TestDelegate));
+            test.Invoke();
+
+            var methodBuilder1 = methodFactory
+                .NewDynamicMethod("test", typeof(Program))
+                .Body(m => m
+                    .EmitWriteLine("Hello")
+                    .Ret());
+
+            var test1 = methodBuilder1.CreateAction();
+            test1.Invoke();
+
+            var methodBuilder2 = methodFactory
+                .NewDynamicMethod("test", typeof(Program))
+                .Param<int>("arg1")
+                .Body(m => m
+                    .DeclareLocal<int>("test", out ILocal local)
+                    .LdArg0()
+                    .StLoc0()
+                    .EmitWriteLine("Hello")
+                    .WriteLineLoc(local)
+                    .Ret());
+
+            var test2 = methodBuilder2.CreateAction<int>();
+            test2.Invoke(1);
+
+            var methodBuilder3 = methodFactory
+                .NewDynamicMethod("test3", typeof(Program))
+                .Param<int>("arg1")
+                .Param<int>("arg2")
+                .Returns<int>()
+                .Body(m => m
+                    .DeclareLocal<int>("test", out ILocal local)
+                    .LdArg0()
+                    .LdArg1()
+                    .Add()
+                    .StLoc0()
+                    .EmitWriteLine("Hello")
+                    .WriteLineLoc(local)
+                    .LdLoc0()
+                    .Ret());
+
+            var test3 = methodBuilder3.CreateFunc<int, int, int>();
+            var sum = test3.Invoke(1, 2);
+            Console.WriteLine("Sum: {0}", sum);
         }
     }
 }

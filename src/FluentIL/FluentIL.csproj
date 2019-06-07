@@ -20,64 +20,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="$(ProjectDir)..\..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="System.Reflection.Emit" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.0.4" />
     <PackageReference Include="Microsoft.DotNet.InternalAbstractions" Version="1.0.0" />
-    <Content Include="ILabel.cs" />
-    <Content Include="AssemblyBuilderCache.cs" />
-    <Content Include="AssemblyCache.cs" />
-    <Content Include="ConsoleOutput.cs" />
-    <Content Include="DebugOutput.cs" />
-    <Content Include="IAdaptedLabel.cs" />
-    <Content Include="IAssemblyBuilder.cs" />
-    <Content Include="IConstructorBuilder.cs" />
-    <Content Include="IDebugOutput.cs" />
-    <Content Include="IEmitter.cs" />
-    <Content Include="IEventBuilder.cs" />
-    <Content Include="IFieldBuilder.cs" />
-    <Content Include="IGenericParameterBuilder.cs" />
-    <Content Include="ILocal.cs" />
-    <Content Include="IMethodBuilder.cs" />
-    <Content Include="IModuleBuilder.cs" />
-    <Content Include="IParameterBuilder.cs" />
-    <Content Include="IPropertyBuilder.cs" />
-    <Content Include="ITypeBuilder.cs" />
-    <Content Include="Builders\ArrayBuilder.cs" />
-    <Content Include="Builders\FluentAssemblyBuilder.cs" />
-    <Content Include="Builders\FluentConstructorBuilder.cs" />
-    <Content Include="Builders\FluentEventBuilder.cs" />
-    <Content Include="Builders\FluentFieldBuilder.cs" />
-    <Content Include="Builders\FluentGenericParameterBuilder.cs" />
-    <Content Include="Builders\FluentMethodBuilder.cs" />
-    <Content Include="Builders\FluentModuleBuilder.cs" />
-    <Content Include="Builders\FluentParameterBuilder.cs" />
-    <Content Include="Builders\FluentPropertyBuilder.cs" />
-    <Content Include="Builders\FluentTypeBuilder.cs" />
-    <Content Include="Emitters\DebugEmitter.cs" />
-    <Content Include="Emitters\ILGeneratorEmitter.cs" />
-    <Content Include="Emitters\LabelAdapter.cs" />
-    <Content Include="Emitters\LocalAdpater.cs" />
-    <Content Include="Extensions\ConstructorBuilderExtensionMethods.cs" />
-    <Content Include="Extensions\FieldBuilderExtensionMethods.cs" />
-    <Content Include="Extensions\MethodBuilderExtensionMethods.cs" />
-    <Content Include="Extensions\ParameterInfoExtensions.cs" />
-    <Content Include="Extensions\PropertyExtensionMethods.cs" />
-    <Content Include="Extensions\ReflectionEmitExtensions.cs" />
-    <Content Include="Extensions\ReflectionExtensions.cs" />
-    <Content Include="Extensions\TypeBuilderExtensionMethods.cs" />
-    <Content Include="Extensions\TypeExtensions.cs" />
-    <Content Include="TypeFactory.cs" />
-    <Content Include="Utility.cs" />
-    <Content Include="IAdaptedLocal.cs" />
-    <Content Include="Extensions\EmitterArrayExtensions.cs" />
-    <Content Include="Extensions\EmitterArithmeticExtensions.cs" />
-    <Content Include="Extensions\EmitterCompareAndBranchExtensions.cs" />
-    <Content Include="Extensions\EmitterConvExtensions.cs" />
-    <Content Include="Extensions\EmitterExtensions.cs" />
-    <Content Include="Extensions\EmitterLdcExtensions.cs" />
-    <Content Include="Extensions\EmitterLdExtensions.cs" />
-    <Content Include="Extensions\EmitterStExtensions.cs" />
-    <Content Include="Builders\MethodInfoBuilder.cs" />
+    <PackageReference Include="Stylecop.Analyzers" Version="1.1.118" />
   </ItemGroup>
 </Project>

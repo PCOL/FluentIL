@@ -37,7 +37,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in an argument.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="localValue">A local</param>
+        /// <param name="localValue">A local.</param>
         /// <param name="index">A arguments index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StArg(this IEmitter emitter, ILocal localValue, short index)
@@ -51,7 +51,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in an argument.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="localValue">A local</param>
+        /// <param name="localValue">A local.</param>
         /// <param name="index">A arguments index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StArgS(this IEmitter emitter, ILocal localValue, byte index)
@@ -65,7 +65,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in a local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
+        /// <param name="local">A local.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StLoc(this IEmitter emitter, ILocal local)
         {
@@ -76,7 +76,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in a local.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="local">A local</param>
+        /// <param name="local">A local.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StLocS(this IEmitter emitter, ILocal local)
         {
@@ -127,7 +127,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in a field.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="field">A field</param>
+        /// <param name="field">A field.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StFld(this IEmitter emitter, IFieldBuilder field)
         {
@@ -138,7 +138,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in a field.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="field">A field</param>
+        /// <param name="field">A field.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StFld(this IEmitter emitter, FieldInfo field)
         {
@@ -149,7 +149,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in a static field.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="field">A field</param>
+        /// <param name="field">A static field.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StSFld(this IEmitter emitter, IFieldBuilder field)
         {
@@ -160,7 +160,7 @@ namespace FluentIL
         /// Emits IL to store the value at the top of the evaluation stack in a static field.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>.</param>
-        /// <param name="field">A field</param>
+        /// <param name="field">A static field.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StSFld(this IEmitter emitter, FieldInfo field)
         {
@@ -171,7 +171,7 @@ namespace FluentIL
         /// Emits the IL to copy a value of a specified type from the top of the evaluation stack
         /// into the supplied address.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="type">The type to store.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StObj(this IEmitter emitter, Type type)
@@ -182,7 +182,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value of type native int from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndI(this IEmitter emitter)
         {
@@ -192,7 +192,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value of type int8 from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndI1(this IEmitter emitter)
         {
@@ -202,7 +202,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value of type int16 from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndI2(this IEmitter emitter)
         {
@@ -212,7 +212,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value of type int32 from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndI4(this IEmitter emitter)
         {
@@ -222,7 +222,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value of type int64 from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndI8(this IEmitter emitter)
         {
@@ -232,7 +232,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value of type float32 from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndR4(this IEmitter emitter)
         {
@@ -242,7 +242,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value of type float64 from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndR8(this IEmitter emitter)
         {
@@ -252,7 +252,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a object reference from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StIndRef(this IEmitter emitter)
         {
@@ -262,7 +262,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to indirectly store a value from the top of the evaluation stack.
         /// </summary>
-	    /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="type">The type to store.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StInd(this IEmitter emitter, Type type)

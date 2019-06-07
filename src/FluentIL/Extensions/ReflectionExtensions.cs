@@ -869,11 +869,11 @@
         }
 
         /// <summary>
-        /// Checks if two Type arrays match.
+        /// Checks if two Type arrays match by name.
         /// </summary>
         /// <param name="array1">The first type array.</param>
         /// <param name="array2">The second type array.</param>
-        /// <returns></returns>
+        /// <returns>True if the types match; otherwise false.</returns>
         private static bool TypeNamesMatch(Type[] array1, Type[] array2)
         {
             if (array1.Length != array2.Length)
@@ -892,6 +892,12 @@
             return true;
         }
 
+        /// <summary>
+        /// Checks if two Type lists match.
+        /// </summary>
+        /// <param name="source">The first type array.</param>
+        /// <param name="dest">The second type array.</param>
+        /// <returns>True if the types match; otherwise false.</returns>
         private static bool TypeListsMatch(Type[] source, Type[] dest)
         {
             if (source.Length != dest.Length)

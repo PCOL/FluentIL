@@ -159,7 +159,7 @@ namespace FluentIL
         /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="propertyName">The property name.</param>
         /// <param name="propertyType">The property type.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter SetProperty(this IEmitter emitter, string propertyName, Type propertyType)
         {
             var setMethod = propertyType.GetProperty(propertyName).GetSetMethod();
@@ -173,7 +173,7 @@ namespace FluentIL
         /// <typeparam name="TProperty">The property type.</typeparam>
         /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="propertyName">The property name.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter SetProperty<TProperty>(this IEmitter emitter, string propertyName)
         {
             return emitter.SetProperty(propertyName, typeof(TProperty));

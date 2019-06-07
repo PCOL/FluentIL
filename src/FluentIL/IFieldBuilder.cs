@@ -27,8 +27,8 @@ namespace FluentIL
         /// <summary>
         /// Sets the fields attributes.
         /// </summary>
-        /// <param name="attributes"></param>
-        /// <returns></returns>
+        /// <param name="attributes">The field attributes.</param>
+        /// <returns>A <see cref="FieldBuilder"/>.</returns>
         IFieldBuilder Attributes(FieldAttributes attributes);
 
         /// <summary>

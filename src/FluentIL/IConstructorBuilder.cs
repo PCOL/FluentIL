@@ -17,12 +17,13 @@ namespace FluentIL
         /// <summary>
         /// Gets the constructors body emitter.
         /// </summary>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter Body();
 
         /// <summary>
         /// Sets the constructors calling convention.
         /// </summary>
-        /// <param name="callingConvention"></param>
+        /// <param name="callingConvention">The calling convention.</param>
         /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
         IConstructorBuilder CallingConvention(CallingConventions callingConvention);
 
@@ -38,7 +39,7 @@ namespace FluentIL
         /// <summary>
         /// Defines a constructor parameter.
         /// </summary>
-        /// <param name="action">Parameter builder action</param>
+        /// <param name="action">Parameter builder action.</param>
         /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
         IConstructorBuilder Param(Action<IParameterBuilder> action);
 
@@ -48,6 +49,20 @@ namespace FluentIL
         /// <param name="parameterTypes">The parameter types.</param>
         /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
         IConstructorBuilder Params(params Type[] parameterTypes);
+
+        /// <summary>
+        /// Sets the constructors atrributes.
+        /// </summary>
+        /// <param name="attributes">The attributes.</param>
+        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
+        IConstructorBuilder SetMethodAttributes(MethodAttributes attributes);
+
+        /// <summary>
+        /// Sets the constructors implementation attributes.
+        /// </summary>
+        /// <param name="attributes">The attributes.</param>
+        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
+        IConstructorBuilder SetImplementationFlags(MethodImplAttributes attributes);
 
         /// <summary>
         /// Defines the constructor.

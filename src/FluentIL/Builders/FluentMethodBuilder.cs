@@ -60,6 +60,11 @@ namespace FluentIL.Builders
         private List<CustomAttributeBuilder> customAttributes;
 
         /// <summary>
+        /// The method implementation attributes.
+        /// </summary>
+        private MethodImplAttributes methodImplAttributes;
+
+        /// <summary>
         /// Initialises a new instance of the <see cref="FluentMethodBuilder"/> class.
         /// </summary>
         /// <param name="methodName">The name of the method</param>
@@ -256,8 +261,9 @@ namespace FluentIL.Builders
                     (name) =>
                     {
                         this.Define();
-                        return this.GetGenericParameter(name);
+                        return this.GetGenericParameter(parameterName);
                     });
+
                 this.genericParameterBuilders.Add(builder);
             }
 
@@ -278,6 +284,13 @@ namespace FluentIL.Builders
         {
             this.customAttributes = this.customAttributes ?? new List<CustomAttributeBuilder>();
             this.customAttributes.Add(customAttribute);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IMethodBuilder  SetImplementationFlags(MethodImplAttributes attributes)
+        {
+            this.methodImplAttributes = attributes;
             return this;
         }
 
@@ -329,7 +342,9 @@ namespace FluentIL.Builders
 
             this.customAttributes.SetCustomAttributes(a => this.methodBuilder.SetCustomAttribute(a));
 
-            DebugOutput.WriteLine("");
+            this.methodBuilder.SetImplementationFlags(this.methodImplAttributes);
+
+            DebugOutput.WriteLine(string.Empty);
             DebugOutput.WriteLine("=======================================");
             DebugOutput.Write($"New Method {this.methodBuilder.Name}");
             if (this.methodBuilder.IsGenericMethodDefinition == true)
@@ -340,7 +355,7 @@ namespace FluentIL.Builders
             DebugOutput.WriteLine($"({string.Join(", ", this.parms.Select(p => $"{p.Attributes} {p.ParameterType} {p.ParameterName}"))})");
             DebugOutput.WriteLine("Calling Convention: {0}", this.methodBuilder.CallingConvention);
             DebugOutput.WriteLine("Attributes: {0}", this.Attributes);
-            DebugOutput.WriteLine("");
+            DebugOutput.WriteLine(string.Empty);
 
             return this.methodBuilder;
         }

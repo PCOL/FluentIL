@@ -434,6 +434,9 @@ namespace FluentIL.Builders
             }
         }
 
+        /// <summary>
+        /// Builds any generic parameters.
+        /// </summary>
         private void BuildGenericParameters()
         {
             this.Define();
@@ -465,7 +468,7 @@ namespace FluentIL.Builders
         /// <param name="parameterTypes">The methods parameter types.</param>
         /// <param name="parameterTypeRequiredCustomModifiers">The parameter types required custom modifiers.</param>
         /// <param name="parameterTypeOptionalCustomModifiers">The parameter types optional custom modifiers.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="MethodBuilder"/> instance.</returns>
         private MethodBuilder DefineMethod(
             string name,
             MethodAttributes attributes,

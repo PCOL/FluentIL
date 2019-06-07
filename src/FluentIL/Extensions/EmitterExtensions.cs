@@ -204,6 +204,7 @@ namespace FluentIL
         /// <summary>
         /// Constrains the type on which a virtual method call is made.
         /// </summary>
+        /// <typeparam name="T">The type to constrain to.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Constrained<T>(this IEmitter emitter)
@@ -281,6 +282,7 @@ namespace FluentIL
         /// <summary>
         /// Converts a value type to an object reference (type O).
         /// </summary>
+        /// <typeparam name="T">The type to box.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Box<T>(this IEmitter emitter)
@@ -293,7 +295,7 @@ namespace FluentIL
         /// Converts a value type to an object reference (type O).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="valueType">A value type</param>
+        /// <param name="valueType">A value type.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Box(this IEmitter emitter, Type valueType)
         {
@@ -309,7 +311,7 @@ namespace FluentIL
         /// Converts a value type to an object reference (type O).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="refType">A reference type</param>
+        /// <param name="refType">A reference type.</param>
         /// <param name="localValue">A local containing a value type.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Box(this IEmitter emitter, Type refType, ILocal localValue)
@@ -322,6 +324,7 @@ namespace FluentIL
         /// <summary>
         /// Converts the boxed representation of a value type to its unboxed form.
         /// </summary>
+        /// <typeparam name="T">The type to unbox.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Unbox<T>(this IEmitter emitter)
@@ -349,6 +352,7 @@ namespace FluentIL
         /// <summary>
         /// Converts the boxed representation of a type specified in the instruction to its unboxed form.
         /// </summary>
+        /// <typeparam name="T">The type to unbox.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter UnboxAny<T>(this IEmitter emitter)
@@ -377,7 +381,7 @@ namespace FluentIL
         /// Pushes a typed reference to an instance of a specific type onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="refType">A reference type</param>
+        /// <param name="refType">A reference type.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter MkRefAny(this IEmitter emitter, Type refType)
         {
@@ -410,6 +414,7 @@ namespace FluentIL
         /// <summary>
         /// Initializes each field of the value type at a specified address to a null reference or a 0 of the appropriate primitive type.
         /// </summary>
+        /// <typeparam name="T">The object type.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter InitObj<T>(this IEmitter emitter)
@@ -481,7 +486,7 @@ namespace FluentIL
         /// Emits IL to load the address of an objects virtual method onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="methodInfo"></param>
+        /// <param name="methodInfo">The method to load the address of.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdVirtFunc(this IEmitter emitter, MethodInfo methodInfo)
         {
@@ -492,7 +497,7 @@ namespace FluentIL
         /// Exits current method and jumps to specified method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="methodInfo"></param>
+        /// <param name="methodInfo">The method to jump to.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Jmp(this IEmitter emitter, MethodInfo methodInfo)
         {
@@ -503,7 +508,7 @@ namespace FluentIL
         /// Emits the IL to call a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="method"></param>
+        /// <param name="method">The method to call.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Call(this IEmitter emitter, MethodInfo method)
         {
@@ -514,7 +519,7 @@ namespace FluentIL
         /// Emits to call a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="method"></param>
+        /// <param name="method">The method to call.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Call(this IEmitter emitter, IMethodBuilder method)
         {
@@ -609,7 +614,7 @@ namespace FluentIL
         /// Emits a <see cref="OpCodes.Calli"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="method"></param>
+        /// <param name="method">The method to call.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Calli(this IEmitter emitter, IMethodBuilder method)
         {
@@ -620,7 +625,7 @@ namespace FluentIL
         /// Emits a <see cref="OpCodes.Calli"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="method"></param>
+        /// <param name="method">The method to call.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Calli(this IEmitter emitter, MethodInfo method)
         {
@@ -631,7 +636,7 @@ namespace FluentIL
         /// Emits a <see cref="OpCodes.Callvirt"/> to a method.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="method"></param>
+        /// <param name="method">The method to call.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter CallVirt(this IEmitter emitter, IMethodBuilder method)
         {
@@ -703,10 +708,10 @@ namespace FluentIL
                 .Call(TypeGetTypeFromHandle);
         }
 
-
         /// <summary>
         /// Emits the IL to perform an 'IsAssignableFrom' operation.
         /// </summary>
+        /// <typeparam name="T">The type..</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="local">A <see cref="LocalBuilder"/> to check.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -1092,7 +1097,7 @@ namespace FluentIL
         /// <typeparam name="T">The locals type.</typeparam>
         /// <param name="emitter">An emitter instance.</param>
         /// <param name="local">A variable to receive a local.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, out ILocal local)
         {
             emitter.DeclareLocal(typeof(T), out local);
@@ -1106,7 +1111,7 @@ namespace FluentIL
         /// <param name="emitter">An emitter instance.</param>
         /// <param name="localName">The name of the local.</param>
         /// <param name="local">A variable to receive a local.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, string localName, out ILocal local)
         {
             emitter.DeclareLocal(typeof(T), localName, out local);
@@ -1121,7 +1126,7 @@ namespace FluentIL
         /// <param name="localName">The name of the local.</param>
         /// <param name="pinned">The value indicating whether or not the local is pinned.</param>
         /// <param name="local">A variable to receive a local.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, string localName, bool pinned, out ILocal local)
         {
             emitter.DeclareLocal(typeof(T), localName, pinned, out local);
@@ -1135,8 +1140,8 @@ namespace FluentIL
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
         /// <param name="pinned">The value indicating whether or not the local is pinned.</param>
         /// <param name="local">A variable to receive a local.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
-        public static IEmitter DeclareLocal<T>(this IEmitter emitter,bool pinned, out ILocal local)
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter DeclareLocal<T>(this IEmitter emitter, bool pinned, out ILocal local)
         {
             emitter.DeclareLocal(typeof(T), pinned, out local);
             return emitter;
@@ -1146,7 +1151,7 @@ namespace FluentIL
         /// Starts a try block.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Try(this IEmitter emitter)
         {
             return emitter.BeginExceptionBlock(out ILabel label);
@@ -1157,7 +1162,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
         /// <param name="label">The label for the end of the block.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Try(this IEmitter emitter, out ILabel label)
         {
             return emitter.BeginExceptionBlock(out label);
@@ -1166,8 +1171,9 @@ namespace FluentIL
         /// <summary>
         /// Starts a catch block.
         /// </summary>
+        /// <typeparam name="TException">The exception type.</typeparam>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Catch<TException>(this IEmitter emitter)
             where TException : Exception
         {
@@ -1179,7 +1185,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
         /// <param name="exceptionType">The label for the end of the block.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Catch(this IEmitter emitter, Type exceptionType)
         {
             return emitter.BeginCatchBlock(exceptionType);
@@ -1191,7 +1197,7 @@ namespace FluentIL
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
         /// <param name="exceptionType">The label for the end of the block.</param>
         /// <param name="local">A <see cref="ILocal"/> to store the exception in.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Catch(this IEmitter emitter, Type exceptionType, ILocal local)
         {
             if (typeof(Exception).IsAssignableFrom(local.LocalType) == false)
@@ -1208,7 +1214,7 @@ namespace FluentIL
         /// Starts a finally block.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Finally(this IEmitter emitter)
         {
             return emitter.BeginFinallyBlock();
@@ -1218,7 +1224,7 @@ namespace FluentIL
         /// Starts a fault block.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Fault(this IEmitter emitter)
         {
             return emitter.BeginFaultBlock();
@@ -1228,7 +1234,7 @@ namespace FluentIL
         /// Starts a filter block.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Filter(this IEmitter emitter)
         {
             return emitter.BeginExceptFilterBlock();
@@ -1238,7 +1244,7 @@ namespace FluentIL
         /// Throws an exception.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Throw(this IEmitter emitter)
         {
             return emitter.Emit(OpCodes.Throw);
@@ -1247,10 +1253,10 @@ namespace FluentIL
         /// <summary>
         /// Throws an exception.
         /// </summary>
-        /// <typeparam name="TException">The exception type</typeparam>
+        /// <typeparam name="TException">The exception type.</typeparam>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
-        /// <param name="message">The exception message</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <param name="message">The exception message.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter ThrowException<TException>(
             this IEmitter emitter,
             string message)
@@ -1279,7 +1285,7 @@ namespace FluentIL
         /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="typeNameLocal">The <see cref="LocalBuilder"/> containing the type name.</param>
         /// <param name="dynamicOnly">A value indicating whether or not to only check for dynamically generated types.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter GetType(
             this IEmitter emitter,
             ILocal typeNameLocal,
@@ -1297,7 +1303,7 @@ namespace FluentIL
         /// <param name="emitter">The <see cref="IEmitter"/> to use.</param>
         /// <param name="typeName">The type name.</param>
         /// <param name="dynamicOnly">A value indicating whether or not to only check for dynamically generated types.</param>
-        /// <returns>The <see cref="IEmitter"/> instance</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter GetType(
             this IEmitter emitter,
             string typeName,

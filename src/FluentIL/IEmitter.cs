@@ -36,9 +36,9 @@ namespace FluentIL
         IEmitter BeginExceptionBlock(out ILabel label);
 
         /// <summary>
-        /// 
+        /// Begins an exception block.
         /// </summary>
-        /// <param name="label"></param>
+        /// <param name="label">A label.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter BeginExceptionBlock(ILabel label);
 
@@ -55,13 +55,13 @@ namespace FluentIL
         IEmitter BeginFinallyBlock();
 
         /// <summary>
-        /// Begins a scope
+        /// Begins a scope.
         /// </summary>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter BeginScope();
 
         /// <summary>
-        /// Declares a local
+        /// Declares a local.
         /// </summary>
         /// <param name="localType">The local type.</param>
         /// <param name="local">A variable to receive the local.</param>
@@ -113,7 +113,7 @@ namespace FluentIL
         /// <summary>
         /// Defines a label.
         /// </summary>
-        /// <param name="labelName"></param>
+        /// <param name="labelName">The label name.</param>
         /// <param name="label">A variable to receive the label.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter DefineLabel(string labelName, out ILabel label);
@@ -272,8 +272,8 @@ namespace FluentIL
         /// Emits IL to perform a <see cref="OpCodes.Call"/>.
         /// </summary>
         /// <param name="opcode">The <see cref="OpCodes.Call"/> opcode.</param>
-        /// <param name="methodInfo"></param>
-        /// <param name="optionalParameterTypes"></param>
+        /// <param name="methodInfo">The method to call.</param>
+        /// <param name="optionalParameterTypes">Optional parameter types.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter EmitCall(OpCode opcode, MethodInfo methodInfo, Type[] optionalParameterTypes);
 

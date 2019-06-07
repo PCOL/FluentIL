@@ -10,7 +10,7 @@ namespace FluentIL.Expressions
         /// </summary>
         /// <typeparam name="T">The locals type.</typeparam>
         /// <param name="local">A variable to receive a local.</param>
-        /// <returns>The <see cref="IInitialiser"/> instance</returns>
+        /// <returns>The <see cref="IInitialiser"/> instance.</returns>
         IInitialiser DeclareLocal<T>(out ILocal local);
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace FluentIL.Expressions
         /// <typeparam name="T">The locals type.</typeparam>
         /// <param name="localName">The name of the local.</param>
         /// <param name="local">A variable to receive a local.</param>
-        /// <returns>The <see cref="IInitialiser"/> instance</returns>
+        /// <returns>The <see cref="IInitialiser"/> instance.</returns>
         IInitialiser DeclareLocal<T>(string localName, out ILocal local);
 
         /// <summary>

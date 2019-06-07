@@ -89,6 +89,7 @@ namespace FluentIL
         /// <summary>
         /// Creates a field.
         /// </summary>
+        /// <typeparam name="T">The field type.</typeparam>
         /// <param name="typeBuilder">A type builder.</param>
         /// <param name="fieldName">The name of the field.</param>
         /// <returns>A field builder.</returns>
@@ -100,6 +101,7 @@ namespace FluentIL
         /// <summary>
         /// Creates a property.
         /// </summary>
+        /// <typeparam name="T">The property type.</typeparam>
         /// <param name="typeBuilder">A type builder.</param>
         /// <param name="propertyName">The name of the property.</param>
         /// <returns>A properrty builder.</returns>
@@ -111,6 +113,7 @@ namespace FluentIL
         /// <summary>
         /// Creates a method.
         /// </summary>
+        /// <typeparam name="TReturn">The return type.</typeparam>
         /// <param name="typeBuilder">A type builder.</param>
         /// <param name="name">The name of the method.</param>
         /// <returns>A method builder instance.</returns>

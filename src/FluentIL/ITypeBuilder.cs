@@ -24,21 +24,21 @@ namespace FluentIL
         /// <summary>
         /// Sets the <see cref="ITypeBuilder"/> attributes.
         /// </summary>
-        /// <param name="attributes"></param>
-        /// <returns></returns>
+        /// <param name="attributes">The type attributes.</param>
+        /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder Attributes(TypeAttributes attributes);
 
         /// <summary>
         /// Sets the <see cref="ITypeBuilder"/> base type.
         /// </summary>
-        /// <typeparam name="T">The base type</typeparam>
+        /// <typeparam name="T">The base type.</typeparam>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder InheritsFrom<T>();
 
         /// <summary>
         /// Sets the <see cref="ITypeBuilder"/> base type.
         /// </summary>
-        /// <param name="baseType">The base type</param>
+        /// <param name="baseType">The base type.</param>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder InheritsFrom(Type baseType);
 
@@ -113,13 +113,13 @@ namespace FluentIL
             string methodName,
             MethodAttributes attributes,
             CallingConventions callingConvention,
-       	    Type returnType);
+            Type returnType);
 
         /// <summary>
         /// Defines a method.
         /// </summary>
         /// <param name="methodName">The name of the method.</param>
-        /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
+        /// <returns>A <see cref="IMethodBuilder"/> instance.</returns>
         IMethodBuilder NewMethod(string methodName);
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="propertyName">The name of the property.</param>
         /// <param name="propertyType">The properties type.</param>
-        /// <returns></returns>
+        /// <returns>A <see cref="IPropertyBuilder"/> instance.</returns>
         IPropertyBuilder NewProperty(string propertyName, Type propertyType);
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="eventName">The name of the event.</param>
         /// <param name="eventType">The events type.</param>
-        /// <param name="eventBuilder">An <see cref="IEventBuilder"/> action</param>
+        /// <param name="eventBuilder">An <see cref="IEventBuilder"/> action.</param>
         /// <returns>The <see cref="ITypeBuilder"/> instance.</returns>
         ITypeBuilder NewEvent(string eventName, Type eventType, Action<IEventBuilder> eventBuilder);
 

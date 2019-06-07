@@ -50,7 +50,7 @@
         /// Sets the value of a named property.
         /// </summary>
         /// <param name="obj">The object to set the property on.</param>
-        /// <param name="propertyName">The name of the property to set</param>
+        /// <param name="propertyName">The name of the property to set.</param>
         /// <param name="propertyValue">The value to set the property to.</param>
         public static void SetPropertyValue(this object obj, string propertyName, object propertyValue)
         {
@@ -65,10 +65,10 @@
         }
 
         /// <summary>
-        /// Returns the representation an object as a string containing the properties with values
+        /// Returns the representation an object as a string containing the properties with values.
         /// </summary>
-        /// <param name="obj">The object</param>
-        /// <returns>String containing the object property values</returns>
+        /// <param name="obj">The object.</param>
+        /// <returns>String containing the object property values.</returns>
         public static string PropertyValuesAsString(this object obj)
         {
             string ret = string.Empty;

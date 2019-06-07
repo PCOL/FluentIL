@@ -20,7 +20,7 @@ namespace FluentIL.Builders
         private GenericTypeParameterBuilder builder;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentGenericParameterBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentGenericParameterBuilder"/> class.
         /// </summary>
         /// <param name="parameterName">The paramter name.</param>
         /// <param name="defineFunc">The builder action.</param>

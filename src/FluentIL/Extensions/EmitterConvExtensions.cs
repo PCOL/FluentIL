@@ -48,7 +48,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_I4);
         }
-        
+
         /// <summary>
         /// Converts the value on the top of the evaluation stack to int64.
         /// </summary>
@@ -68,7 +68,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I);
         }
-        
+
         /// <summary>
         /// Converts the signed value on top of the evaluation stack to signed int8 and extends it to int32, throwing OverflowException on overflow.
         /// </summary>
@@ -78,7 +78,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I1);
         }
-        
+
         /// <summary>
         /// Converts the signed value on top of the evaluation stack to signed int16 and extending it to int32, throwing OverflowException on overflow.
         /// </summary>
@@ -88,7 +88,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I2);
         }
-        
+
         /// <summary>
         /// Converts the signed value on top of the evaluation stack to signed int32, throwing OverflowException on overflow.
         /// </summary>
@@ -98,7 +98,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I4);
         }
-       
+
         /// <summary>
         /// Converts the signed value on top of the evaluation stack to signed int64, throwing OverflowException on overflow.
         /// </summary>
@@ -108,7 +108,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I8);
         }
-        
+
         /// <summary>
         /// Converts the unsigned value on top of the evaluation stack to signed native int, throwing OverflowException on overflow.
         /// </summary>
@@ -118,7 +118,7 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Conv_Ovf_I_Un);
         }
-        
+
         /// <summary>
         /// Converts the unsigned value on top of the evaluation stack to signed int8 and extends it to int32, throwing OverflowException on overflow.
         /// </summary>
