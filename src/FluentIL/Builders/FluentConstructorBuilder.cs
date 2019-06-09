@@ -41,19 +41,18 @@ namespace FluentIL.Builders
         private MethodImplAttributes methodImplAttributes;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentConstructorBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentConstructorBuilder"/> class.
         /// </summary>
         /// <param name="define">A constructor definition function.</param>
         public FluentConstructorBuilder(
-            Func<MethodAttributes, CallingConventions, Type[], Type[][], Type[][], ConstructorBuilder> define
-        )
+            Func<MethodAttributes, CallingConventions, Type[], Type[][], Type[][], ConstructorBuilder> define)
         {
             this.define = define;
             this.callingConvention = CallingConventions.HasThis;
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentConstructorBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentConstructorBuilder"/> class.
         /// </summary>
         /// <param name="define">A default constructor definition function.</param>
         public FluentConstructorBuilder(
@@ -156,7 +155,7 @@ namespace FluentIL.Builders
             DebugOutput.WriteLine("=======================================");
             DebugOutput.WriteLine("New Constructor ({0})", string.Join(", ", this.parameters.Select(p => $"{p.ParameterType} {p.ParameterName}")));
             DebugOutput.WriteLine("Calling Convention: {0}", this.callingConvention);
-            DebugOutput.WriteLine("");
+            DebugOutput.WriteLine(string.Empty);
 
             return this.ctor;
         }

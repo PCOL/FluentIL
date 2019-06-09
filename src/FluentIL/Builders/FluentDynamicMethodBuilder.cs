@@ -1,11 +1,11 @@
 namespace FluentIL.Builders
 {
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-    using System.Reflection;
     using System;
-    using FluentIL.Emitters;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
+    using System.Reflection.Emit;
+    using FluentIL.Emitters;
 
     /// <summary>
     /// Implementation of the <see cref="IDynamicMethodBuilder"/> interface.
@@ -29,17 +29,17 @@ namespace FluentIL.Builders
         private Type returnType;
 
         /// <summary>
-        /// The methods parameters. 
+        /// The methods parameters.
         /// </summary>
-        private List<FluentParameterBuilder> parms = new List<FluentParameterBuilder> ();
+        private List<FluentParameterBuilder> parms = new List<FluentParameterBuilder>();
 
         /// <summary>
         /// The dynamic method.
         /// </summary>
         private DynamicMethod dynamicMethod;
-        
+
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentDynamicMethodBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentDynamicMethodBuilder"/> class.
         /// </summary>
         /// <param name="methodName">The name of the method.</param>
         /// <param name="methodOwner">The methods owning type.</param>
@@ -62,18 +62,18 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc />
-        public IEmitter Body ()
+        public IEmitter Body()
         {
             this.Define();
 
             var il = this.dynamicMethod.GetILGenerator();
-            var ilEmitter = new ILGeneratorEmitter(il);
+            var emitter = new ILGeneratorEmitter(il);
             if (DebugOutput.Output == null)
             {
-                return ilEmitter;
+                return emitter;
             }
 
-            return new DebugEmitter(ilEmitter, DebugOutput.Output);
+            return new DebugEmitter(emitter, DebugOutput.Output);
         }
 
         /// <inheritdoc />
@@ -185,7 +185,7 @@ namespace FluentIL.Builders
                     parameterTypes[i] = this.parms[i].ParameterType;
                 }
 
-                this.dynamicMethod = new DynamicMethod (this.methodName, MethodAttributes.Public | MethodAttributes.Static, CallingConventions.Standard, this.returnType, parameterTypes, this.methodOwner, false);
+                this.dynamicMethod = new DynamicMethod(this.methodName, MethodAttributes.Public | MethodAttributes.Static, CallingConventions.Standard, this.returnType, parameterTypes, this.methodOwner, false);
 
                 /*
                 int parmIndex = 0;
@@ -198,7 +198,7 @@ namespace FluentIL.Builders
                 }
                 */
             }
-                
+
             return this.dynamicMethod;
         }
     }

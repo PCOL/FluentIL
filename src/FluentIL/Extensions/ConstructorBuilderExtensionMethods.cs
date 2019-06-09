@@ -122,8 +122,9 @@ namespace FluentIL
         /// <summary>
         /// Adds a parameter.
         /// </summary>
+        /// <typeparam name="T">The parameter type.</typeparam>
         /// <param name="builder">A <see cref="IConstructorBuilder"/> instance.</param>
-        /// <param name="parameterName">The parameter name.null</param>
+        /// <param name="parameterName">The parameter name.</param>
         /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
         public static IConstructorBuilder Param<T>(this IConstructorBuilder builder, string parameterName)
         {
@@ -140,13 +141,13 @@ namespace FluentIL
         {
             DebugOutput.WriteLine("Body:");
 
-            var ilEmitter = new ILGeneratorEmitter(constructorBuilder.GetILGenerator());
+            var emitter = new ILGeneratorEmitter(constructorBuilder.GetILGenerator());
             if (DebugOutput.Output == null)
             {
-                return ilEmitter;
+                return emitter;
             }
 
-            return new DebugEmitter(ilEmitter, DebugOutput.Output);
+            return new DebugEmitter(emitter, DebugOutput.Output);
         }
     }
 }

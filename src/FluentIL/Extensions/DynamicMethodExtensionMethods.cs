@@ -1,7 +1,7 @@
-using System;
-
 namespace FluentIL
 {
+    using System;
+
     /// <summary>
     /// <see cref="IDynamicMethodBuilder"/> extension methods.
     /// </summary>

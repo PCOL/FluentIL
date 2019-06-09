@@ -5,7 +5,7 @@ namespace FluentIL.Builders
     using System.Reflection.Emit;
 
     /// <summary>
-    /// Implementation of a <see cref="IModuleBuilder"/>
+    /// Implementation of a <see cref="IModuleBuilder"/>.
     /// </summary>
     internal class FluentModuleBuilder
         : IModuleBuilder
@@ -16,7 +16,7 @@ namespace FluentIL.Builders
         private readonly ModuleBuilder moduleBuilder;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentModuleBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentModuleBuilder"/> class.
         /// </summary>
         /// <param name="moduleBuilder">A module builder.</param>
         public FluentModuleBuilder(ModuleBuilder moduleBuilder)

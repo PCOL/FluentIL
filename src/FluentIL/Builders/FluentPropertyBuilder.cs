@@ -37,12 +37,12 @@ namespace FluentIL.Builders
         private CallingConventions callingConvention = CallingConventions.HasThis;
 
         /// <summary>
-        /// The defined property builder. 
+        /// The defined property builder.
         /// </summary>
         private PropertyBuilder propertyBuilder;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentPropertyBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentPropertyBuilder"/> class.
         /// </summary>
         /// <param name="typeBuilder">A <see cref="ITypeBuilder"/> instance.</param>
         /// <param name="propertyName">The name of the property.</param>
@@ -154,12 +154,12 @@ namespace FluentIL.Builders
                     this.propertyBuilder.SetSetMethod(this.SetMethod.Define());
                 }
 
-                DebugOutput.WriteLine("");
+                DebugOutput.WriteLine(string.Empty);
                 DebugOutput.WriteLine("=======================================");
                 DebugOutput.WriteLine("Property {0} Defined", this.name);
                 DebugOutput.WriteLine("Calling Convention: {0}", this.callingConvention);
                 DebugOutput.WriteLine("Attributes: {0}", this.propertyBuilder.Attributes);
-                DebugOutput.WriteLine("");
+                DebugOutput.WriteLine(string.Empty);
             }
 
             return this.propertyBuilder;

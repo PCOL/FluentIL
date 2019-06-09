@@ -25,7 +25,7 @@ namespace FluentIL.Expressions
         /// A reference to an emitter.
         /// </summary>
         private readonly IEmitter emitter;
-        
+
         /// <summary>
         /// An argument stack.
         /// </summary>
@@ -57,7 +57,7 @@ namespace FluentIL.Expressions
         private ILabel storeResultLabel;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="ExpressionBuilder"/> class.
+        /// Initializes a new instance of the <see cref="ExpressionBuilder"/> class.
         /// </summary>
         /// <param name="emitter">A reference to the emitter.</param>
         public ExpressionBuilder(IEmitter emitter)
@@ -66,7 +66,7 @@ namespace FluentIL.Expressions
         }
 
         /// <summary>
-        /// Gets the store true label. 
+        /// Gets the store true label.
         /// </summary>
         private ILabel StoreTrueLabel
         {
@@ -82,7 +82,7 @@ namespace FluentIL.Expressions
         }
 
         /// <summary>
-        /// Gets the store false label. 
+        /// Gets the store false label.
         /// </summary>
         private ILabel StoreFalseLabel
         {
@@ -115,7 +115,7 @@ namespace FluentIL.Expressions
                 .DefineLabel("else", out ILabel elseLabel)
                 .DefineLabel("endif", out ILabel endifLabel);
 
-            Visit(expression.Body);
+            this.Visit(expression.Body);
 
             this.EmitStoreTrueFalse();
 
@@ -169,7 +169,7 @@ namespace FluentIL.Expressions
                 .Nop()
                 .MarkLabel(whileTestLabel);
 
-            Visit(expression.Body);
+            this.Visit(expression.Body);
 
             this.EmitStoreTrueFalse();
 
@@ -210,7 +210,7 @@ namespace FluentIL.Expressions
                 .Nop()
                 .MarkLabel(whileTestLabel);
 
-            Visit(expression.Body);
+            this.Visit(expression.Body);
 
             this.EmitStoreTrueFalse();
 
@@ -252,7 +252,7 @@ namespace FluentIL.Expressions
 
             action(this.emitter);
 
-            Visit(iterator.Body);
+            this.Visit(iterator.Body);
 
             this.emitter
                 .Nop()
@@ -310,7 +310,7 @@ namespace FluentIL.Expressions
 
             Type compareType = node.Left.Type;
 
-            Visit(node.Left);
+            this.Visit(node.Left);
 
             if (node.NodeType == ExpressionType.OrElse ||
                 node.NodeType == ExpressionType.AndAlso)
@@ -318,14 +318,14 @@ namespace FluentIL.Expressions
                 this.lastExpressionType = null;
             }
 
-            Visit(node.Right);
+            this.Visit(node.Right);
 
             if (node.NodeType != ExpressionType.OrElse &&
                 node.NodeType != ExpressionType.AndAlso)
             {
-                ProcessOperator(node.NodeType, compareType);
+                this.ProcessOperator(node.NodeType, compareType);
             }
-            
+
             return node;
         }
 
@@ -336,7 +336,7 @@ namespace FluentIL.Expressions
                 node.NodeType == ExpressionType.MemberAccess)
             {
                 this.fieldNames.Push(node.Member.Name);
-                Visit(node.Expression);
+                this.Visit(node.Expression);
             }
 
             return node;
@@ -356,7 +356,7 @@ namespace FluentIL.Expressions
             {
                 this.emitter.LdcI4((bool)node.Value == true ? 1 : 0);
             }
-            if (valueType == typeof(byte))
+            else if (valueType == typeof(byte))
             {
                 this.emitter.LdcI4_S((byte)node.Value);
             }
@@ -400,7 +400,6 @@ namespace FluentIL.Expressions
             }
             else
             {
-//Console.WriteLine("Node: {0}, Type: {1}", node.NodeType, node.ToString());
                 object value = this.GetValue(node.Value);
                 if (value is ILocal local)
                 {
@@ -420,14 +419,14 @@ namespace FluentIL.Expressions
         }
 
         /// <summary>
-        /// 
+        /// Gets the value of an object.
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="input">The input object.</param>
+        /// <returns>The objects value.</returns>
         private object GetValue(object input)
         {
             var type = input.GetType();
-            
+
             if (this.fieldNames.Any() == true)
             {
                 var fieldName = this.fieldNames.Pop();
@@ -436,7 +435,7 @@ namespace FluentIL.Expressions
                 {
                     return fieldInfo.GetValue(input);
                 }
-                
+
                 return null;
             }
 
@@ -449,11 +448,11 @@ namespace FluentIL.Expressions
             if (node.Object != null &&
                 node.Object.NodeType == ExpressionType.Call)
             {
-                Visit(node.Object);    
+                this.Visit(node.Object);
             }
 
-            Visit(node.Arguments);
-            emitter.EmitMethod(node.Method, this.arguments);
+            this.Visit(node.Arguments);
+            this.emitter.EmitMethod(node.Method, this.arguments);
 
             return node;
         }
@@ -478,7 +477,7 @@ namespace FluentIL.Expressions
                 compareMethod = comparisonType.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static, null, new[] { comparisonType, comparisonType }, null);
             }
 
-            switch(expressionType)
+            switch (expressionType)
             {
                 case ExpressionType.Equal:
                     if (compareMethod != null)
@@ -517,7 +516,6 @@ namespace FluentIL.Expressions
                 case ExpressionType.NotEqual:
                     if (last == true)
                     {
-                        //this.emitter.CgtUn();
                         this.emitter
                             .Ceq()
                             .LdcI4_0()
@@ -607,7 +605,6 @@ namespace FluentIL.Expressions
                 case ExpressionType.Modulo:
                     this.emitter.Rem();
                     break;
-
             }
         }
     }

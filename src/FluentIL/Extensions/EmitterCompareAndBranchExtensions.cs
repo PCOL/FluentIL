@@ -59,7 +59,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Transfers control to a target instruction if two values on the top of the evaluation stack are equal. (Short form)
+        /// Transfers control to a target instruction if two values on the top of the evaluation stack are equal (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="target">The target instruction.</param>
@@ -70,7 +70,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Transfers control to a target instruction if two values are equal. (Short form)
+        /// Transfers control to a target instruction if two values are equal (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localValue1">The first value.</param>
@@ -111,9 +111,9 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .Bgt(target);
         }
-        
+
         /// <summary>
-        /// Transfers control to a target instruction if the first value on the evaluation stack is greater than the second value on the evaluaton stack. (Short form)
+        /// Transfers control to a target instruction if the first value on the evaluation stack is greater than the second value on the evaluaton stack (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="target">The target instruction.</param>
@@ -124,7 +124,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Transfers control to a target instruction if the first value is greater than the second value. (Short form)
+        /// Transfers control to a target instruction if the first value is greater than the second value (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localValue1">The first value.</param>
@@ -138,7 +138,7 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .BgtS(target);
         }
- 
+
         /// <summary>
         /// Transfers control to a target instruction if the first value is greater than the second value, when comparing unsigned integer values or unordered float values.
         /// </summary>
@@ -192,8 +192,7 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .BgtUnS(target);
         }
-        
- 
+
         /// <summary>
         /// Transfers control to a target instruction if the first value on the evaluation stack is greater than or equal to the second value on the evaluaton stack.
         /// </summary>
@@ -220,9 +219,9 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .Bge(target);
         }
- 
+
         /// <summary>
-        /// Transfers control to a target instruction if the first value on the evaluation stack is greater than or equal to the second value on the evaluaton stack. (Short form)
+        /// Transfers control to a target instruction if the first value on the evaluation stack is greater than or equal to the second value on the evaluaton stack (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="target">The target instruction.</param>
@@ -233,7 +232,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Transfers control to a target instruction if the first value is greater than or equal to the second value. (Short form)
+        /// Transfers control to a target instruction if the first value is greater than or equal to the second value (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localValue1">The first value.</param>
@@ -328,9 +327,9 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .Blt(target);
         }
-       
+
         /// <summary>
-        /// Transfers control to a target instruction if the first value on the evaluation stack is less than the second value on the evaluaton stack. (Short form)
+        /// Transfers control to a target instruction if the first value on the evaluation stack is less than the second value on the evaluaton stack (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="target">The target instruction.</param>
@@ -341,7 +340,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Transfers control to a target instruction if the first value is less than the second value. (Short form)
+        /// Transfers control to a target instruction if the first value is less than the second value (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localValue1">The first value.</param>
@@ -355,7 +354,7 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .BltS(target);
         }
- 
+
         /// <summary>
         /// Transfers control to a target instruction if the first value is less than the second value, when comparing unsigned integer values or unordered float values.
         /// </summary>
@@ -438,7 +437,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Transfers control to a target instruction if the first value on the evaluation stack is less than or equal to the second value on the evaluaton stack. (Short form)
+        /// Transfers control to a target instruction if the first value on the evaluation stack is less than or equal to the second value on the evaluaton stack (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="target">The target instruction.</param>
@@ -449,7 +448,7 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Transfers control to a target instruction if the first value is less than or equal to the second value. (Short form)
+        /// Transfers control to a target instruction if the first value is less than or equal to the second value (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localValue1">The first value.</param>
@@ -463,7 +462,7 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .BleS(target);
         }
- 
+
         /// <summary>
         /// Transfers control to a target instruction if the first value on the evaluation stack is less than or equal to the second value,
         /// when comparing unsigned integer values or unordered float values.
@@ -495,7 +494,7 @@ namespace FluentIL
 
         /// <summary>
         /// Transfers control to a target instruction if the first value on the evaluation stack is less than or equal to the second value,
-        /// when comparing unsigned integer values or unordered float values. (Short form)
+        /// when comparing unsigned integer values or unordered float values (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="target">The target instruction.</param>
@@ -507,7 +506,7 @@ namespace FluentIL
 
         /// <summary>
         /// Transfers control to a target instruction if the first value is less than or equal to the second value,
-        /// when comparing unsigned integer values or unordered float values. (Short form)
+        /// when comparing unsigned integer values or unordered float values (Short form).
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localValue1">The first value.</param>
@@ -548,7 +547,7 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .BneUn(target);
         }
-        
+
         /// <summary>
         /// Transfers control to a target instruction when two unsigned integer values or unordered float values are not equal.
         /// </summary>
@@ -575,46 +574,46 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .BneUnS(target);
         }
- 
-         /// <summary>
-        /// 
+
+        /// <summary>
+        /// Branches if the value on the top of the evaluation stack is true.
         /// </summary>
-        /// <param name="emitter"></param>
-        /// <param name="target"></param>
-        /// <returns>The <see cref="IEmitter"/>.</returns>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="target">The target label to jump to.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter BrTrue(this IEmitter emitter, ILabel target)
         {
             return emitter.Emit(OpCodes.Brtrue, target);
         }
 
         /// <summary>
-        /// 
+        /// Branches if the value on the top of the evaluation stack is true.
         /// </summary>
-        /// <param name="emitter"></param>
-        /// <param name="target"></param>
-        /// <returns>The <see cref="IEmitter"/>.</returns>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="target">The target label to jump to.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter BrTrueS(this IEmitter emitter, ILabel target)
         {
             return emitter.Emit(OpCodes.Brtrue_S, target);
         }
 
         /// <summary>
-        /// 
+        /// Branches if the value on the top of the evaluation stack is false.
         /// </summary>
-        /// <param name="emitter"></param>
-        /// <param name="target"></param>
-        /// <returns>The <see cref="IEmitter"/>.</returns>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="target">The target label to jump to.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter BrFalse(this IEmitter emitter, ILabel target)
         {
             return emitter.Emit(OpCodes.Brfalse, target);
         }
 
         /// <summary>
-        /// 
+        /// Branches if the value on the top of the evaluation stack is false.
         /// </summary>
-        /// <param name="emitter"></param>
-        /// <param name="target"></param>
-        /// <returns>The <see cref="IEmitter"/>.</returns>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="target">The target label to jump to.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter BrFalseS(this IEmitter emitter, ILabel target)
         {
             return emitter.Emit(OpCodes.Brfalse_S, target);
@@ -674,6 +673,5 @@ namespace FluentIL
         {
             return emitter.Emit(OpCodes.Clt_Un);
         }
-
     }
 }

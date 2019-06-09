@@ -12,7 +12,7 @@ namespace FluentIL
         /// <summary>
         /// Gets the IL offset.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The offset.</returns>
         int ILOffset { get; }
 
         /// <summary>

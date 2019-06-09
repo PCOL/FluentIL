@@ -66,7 +66,7 @@ namespace FluentIL.Expressions
         /// </summary>
         /// <returns>The <see cref="IIterator"/> instance.</returns>
         IIterator StLoc3();
-        
+
         /// <summary>
         /// Loads an <see cref="int"/> value on the top of the evaluation stack.
         /// </summary>

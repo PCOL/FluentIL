@@ -36,7 +36,7 @@ namespace FluentIL.Emitters
         private int index;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="DebugEmitter"/> class.
+        /// Initializes a new instance of the <see cref="DebugEmitter"/> class.
         /// </summary>
         /// <param name="emitter">The emitter to call through to.</param>
         /// <param name="debugOutput">The debug output to write to.</param>
@@ -191,7 +191,7 @@ namespace FluentIL.Emitters
                 return this;
             }
 
-            this.debugOutput.WriteLine("\t[{0}]",type.Name);
+            this.debugOutput.WriteLine("\t[{0}]", type.Name);
 
             return this;
         }
@@ -530,7 +530,6 @@ namespace FluentIL.Emitters
         /// <inheritdoc/>
         public IEmitter EmitWriteLine(string value)
         {
-
             this.LdStr(value);
             MethodInfo method = typeof(Console)
                 .GetMethod("WriteLine", new Type[] { typeof(string) });

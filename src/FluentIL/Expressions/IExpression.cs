@@ -105,7 +105,7 @@ namespace FluentIL.Expressions
         /// <param name="local">The local to load.</param>
         /// <returns>The local value.</returns>
         T LdLoc<T>(ILocal local);
-        
+
         /// <summary>
         /// Loads a local value onto the evaluaton stack.
         /// </summary>
@@ -145,101 +145,101 @@ namespace FluentIL.Expressions
         /// <summary>
         /// Loads a null value onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value null.</returns>
+        /// <returns>The loaded value.</returns>
         object LdNull();
 
         /// <summary>
         /// Loads an integer value onto the top of the evaluation stack.
         /// </summary>
         /// <param name="value">The value to load.</param>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4(int value);
 
         /// <summary>
         /// Loads the value 0 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_0();
 
         /// <summary>
         /// Loads the value 1 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_1();
 
         /// <summary>
         /// Loads the value 2 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_2();
 
         /// <summary>
         /// Loads the value 3 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_3();
 
         /// <summary>
         /// Loads the value 4 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_4();
 
         /// <summary>
         /// Loads the value 5 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_5();
 
         /// <summary>
         /// Loads the value 6 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_6();
 
         /// <summary>
         /// Loads the value 7 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_7();
 
         /// <summary>
         /// Loads the value 8 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_8();
 
         /// <summary>
         /// Loads the value of -1 onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_M1();
 
         /// <summary>
         /// Loads an int value onto the top of the evaluation stack.
         /// </summary>
-        /// <returns>The value.</returns>
+        /// <returns>The loaded value.</returns>
         int LdcI4_S();
 
         /// <summary>
         /// Loads a long value onto the top of the evaluation stack.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The value.</returns>
+        /// <param name="value">The value to load.</param>
+        /// <returns>The loaded value.</returns>
         long LdcI8(long value);
 
         /// <summary>
         /// Loads a double value onto the top of the evaluation stack.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The value.</returns>
+        /// <param name="value">The value to load.</param>
+        /// <returns>The loaded value.</returns>
         float LdcR4(float value);
 
         /// <summary>
         /// Loads a double value onto the top of the evaluation stack.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The value.</returns>
+        /// <param name="value">The value to load.</param>
+        /// <returns>The loaded value.</returns>
         double LdcR8(double value);
 
         /// <summary>

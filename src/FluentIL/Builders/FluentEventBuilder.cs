@@ -26,7 +26,7 @@ namespace FluentIL.Builders
         private readonly Func<string, EventAttributes, Type, EventBuilder> define;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentEventBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentEventBuilder"/> class.
         /// </summary>
         /// <param name="eventName">The events name.</param>
         /// <param name="eventType">The events type.</param>

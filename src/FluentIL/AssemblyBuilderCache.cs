@@ -57,7 +57,7 @@
         /// <summary>
         /// Returns a list of assmiblies.
         /// </summary>
-        /// <returns>A list of assemblies</returns>
+        /// <returns>A list of assemblies.</returns>
         public IEnumerable<Assembly> GetAssemblies()
         {
             return this.cache.Select(a => a.Value.AssemblyBuilder);

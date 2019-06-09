@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-
 namespace FluentIL.Builders
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// Represents a <see cref="MethodInfo"/> builder.
     /// </summary>
@@ -16,7 +16,7 @@ namespace FluentIL.Builders
         private IEnumerable<MethodInfo> methods;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="MethodInfoBuilder"/> class.
+        /// Initializes a new instance of the <see cref="MethodInfoBuilder"/> class.
         /// </summary>
         /// <param name="type">The type that the method belongs to.</param>
         /// <param name="methodName">The name of the method to find.</param>
@@ -93,7 +93,7 @@ namespace FluentIL.Builders
         /// Checks if the parameters match the types.
         /// </summary>
         /// <param name="parms">The methods parameters.</param>
-        /// <param name="types">The type list to match with.`</param>
+        /// <param name="types">The type list to match with.</param>
         /// <returns>True or false.</returns>
         private bool ParameterTypesMatch(ParameterInfo[] parms, Type[] types)
         {

@@ -14,38 +14,38 @@ namespace FluentIL.Emitters
         /// <summary>
         /// The <see cref="ILGenerator"/> to use.
         /// </summary>
-        private ILGenerator ilGen;
+        private ILGenerator generator;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="ILGeneratorEmitter"/> class.
+        /// Initializes a new instance of the <see cref="ILGeneratorEmitter"/> class.
         /// </summary>
-        /// <param name="ilGen">The <see cref="ILGenerator"/> to use.</param>
-        public ILGeneratorEmitter(ILGenerator ilGen)
+        /// <param name="generator">The <see cref="ILGenerator"/> to use.</param>
+        public ILGeneratorEmitter(ILGenerator generator)
         {
-            this.ilGen = ilGen;
+            this.generator = generator;
         }
 
         /// <inheritdoc/>
-        public int ILOffset => this.ilGen.ILOffset;
+        public int ILOffset => this.generator.ILOffset;
 
         /// <inheritdoc/>
         public IEmitter BeginCatchBlock(Type exceptionType)
         {
-            this.ilGen.BeginCatchBlock(exceptionType);
+            this.generator.BeginCatchBlock(exceptionType);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter BeginExceptFilterBlock()
         {
-            this.ilGen.BeginExceptFilterBlock();
+            this.generator.BeginExceptFilterBlock();
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter BeginExceptionBlock(out ILabel label)
         {
-            var actualLabel = this.ilGen.BeginExceptionBlock();
+            var actualLabel = this.generator.BeginExceptionBlock();
             label = new LabelAdapter(Guid.NewGuid().ToString(), actualLabel);
             return this;
         }
@@ -53,7 +53,7 @@ namespace FluentIL.Emitters
         /// <inheritdoc/>
         public IEmitter BeginExceptionBlock(ILabel label)
         {
-            var actualLabel = this.ilGen.BeginExceptionBlock();
+            var actualLabel = this.generator.BeginExceptionBlock();
             ((IAdaptedLabel)label).Label = actualLabel;
             return this;
         }
@@ -61,21 +61,21 @@ namespace FluentIL.Emitters
         /// <inheritdoc/>
         public IEmitter BeginFaultBlock()
         {
-            this.ilGen.BeginFaultBlock();
+            this.generator.BeginFaultBlock();
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter BeginFinallyBlock()
         {
-            this.ilGen.BeginFinallyBlock();
+            this.generator.BeginFinallyBlock();
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter BeginScope()
         {
-            this.ilGen.BeginScope();
+            this.generator.BeginScope();
             return this;
         }
 
@@ -100,7 +100,7 @@ namespace FluentIL.Emitters
         /// <inheritdoc/>
         public IEmitter DeclareLocal(Type localType, string localName, bool pinned, out ILocal local)
         {
-            var actualLocal = this.ilGen.DeclareLocal(localType, pinned);
+            var actualLocal = this.generator.DeclareLocal(localType, pinned);
             local = new LocalAdapter(localName, localType, actualLocal.LocalIndex, pinned, actualLocal);
             return this;
         }
@@ -108,7 +108,7 @@ namespace FluentIL.Emitters
         /// <inheritdoc/>
         public IEmitter DeclareLocal(ILocal local)
         {
-            var actualLocal = this.ilGen.DeclareLocal(local.LocalType, local.IsPinned);
+            var actualLocal = this.generator.DeclareLocal(local.LocalType, local.IsPinned);
             ((IAdaptedLocal)local).Local = actualLocal;
             return this;
         }
@@ -122,7 +122,7 @@ namespace FluentIL.Emitters
         /// <inheritdoc/>
         public IEmitter DefineLabel(string labelName, out ILabel label)
         {
-            var actualLabel = this.ilGen.DefineLabel();
+            var actualLabel = this.generator.DefineLabel();
             label = new LabelAdapter(labelName, actualLabel);
             return this;
         }
@@ -130,203 +130,203 @@ namespace FluentIL.Emitters
         /// <inheritdoc/>
         public IEmitter DefineLabel(ILabel label)
         {
-            ((IAdaptedLabel)label).Label = this.ilGen.DefineLabel();
+            ((IAdaptedLabel)label).Label = this.generator.DefineLabel();
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, Type type)
         {
-            this.ilGen.Emit(opcode, type);
+            this.generator.Emit(opcode, type);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, string str)
         {
-            this.ilGen.Emit(opcode, str);
+            this.generator.Emit(opcode, str);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, float arg)
         {
-            this.ilGen.Emit(opcode, arg);
+            this.generator.Emit(opcode, arg);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, sbyte arg)
         {
-            this.ilGen.Emit(opcode, arg);
+            this.generator.Emit(opcode, arg);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, MethodInfo methodInfo)
         {
-            this.ilGen.Emit(opcode, methodInfo);
+            this.generator.Emit(opcode, methodInfo);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, FieldInfo field)
         {
-            this.ilGen.Emit(opcode, field);
+            this.generator.Emit(opcode, field);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, IFieldBuilder field)
         {
-            this.ilGen.Emit(opcode, field.Define());
+            this.generator.Emit(opcode, field.Define());
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, ILabel[] labels)
         {
-            this.ilGen.Emit(opcode, labels?.Select(l => ((Label)((IAdaptedLabel)l).Label)).ToArray());
+            this.generator.Emit(opcode, labels?.Select(l => ((Label)((IAdaptedLabel)l).Label)).ToArray());
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, SignatureHelper signature)
         {
-            this.ilGen.Emit(opcode, signature);
+            this.generator.Emit(opcode, signature);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, ILocal local)
         {
-            this.ilGen.Emit(opcode, ((IAdaptedLocal)local)?.Local as LocalBuilder);
+            this.generator.Emit(opcode, ((IAdaptedLocal)local)?.Local as LocalBuilder);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, ConstructorInfo con)
         {
-            this.ilGen.Emit(opcode, con);
+            this.generator.Emit(opcode, con);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, long arg)
         {
-            this.ilGen.Emit(opcode, arg);
+            this.generator.Emit(opcode, arg);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, int arg)
         {
-            this.ilGen.Emit(opcode, arg);
+            this.generator.Emit(opcode, arg);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, short arg)
         {
-            this.ilGen.Emit(opcode, arg);
+            this.generator.Emit(opcode, arg);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, double arg)
         {
-            this.ilGen.Emit(opcode, arg);
+            this.generator.Emit(opcode, arg);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, byte arg)
         {
-            this.ilGen.Emit(opcode, arg);
+            this.generator.Emit(opcode, arg);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode)
         {
-            this.ilGen.Emit(opcode);
+            this.generator.Emit(opcode);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter Emit(OpCode opcode, ILabel label)
         {
-            this.ilGen.Emit(opcode, (Label)((IAdaptedLabel)label).Label);
+            this.generator.Emit(opcode, (Label)((IAdaptedLabel)label).Label);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter EmitCall(OpCode opcode, MethodInfo methodInfo, Type[] optionalParameterTypes)
         {
-            this.ilGen.EmitCall(opcode, methodInfo, optionalParameterTypes);
+            this.generator.EmitCall(opcode, methodInfo, optionalParameterTypes);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter EmitCalli(OpCode opcode, CallingConventions callingConvention, Type returnType, Type[] parameterTypes, Type[] optionalParameterTypes)
         {
-            this.ilGen.EmitCalli(opcode, callingConvention, returnType, parameterTypes, optionalParameterTypes);
+            this.generator.EmitCalli(opcode, callingConvention, returnType, parameterTypes, optionalParameterTypes);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter EmitWriteLine(FieldInfo fld)
         {
-            this.ilGen.EmitWriteLine(fld);
+            this.generator.EmitWriteLine(fld);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter EmitWriteLine(string value)
         {
-            this.ilGen.EmitWriteLine(value);
+            this.generator.EmitWriteLine(value);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter EmitWriteLine(ILocal local)
         {
-            this.ilGen.EmitWriteLine((LocalBuilder)((IAdaptedLocal)local).Local);
+            this.generator.EmitWriteLine((LocalBuilder)((IAdaptedLocal)local).Local);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter EndExceptionBlock()
         {
-            this.ilGen.EndExceptionBlock();
+            this.generator.EndExceptionBlock();
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter EndScope()
         {
-            this.ilGen.EndScope();
+            this.generator.EndScope();
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter MarkLabel(ILabel label)
         {
-            this.ilGen.MarkLabel((Label)((IAdaptedLabel)label).Label);
+            this.generator.MarkLabel((Label)((IAdaptedLabel)label).Label);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter ThrowException(Type excType)
         {
-            this.ilGen.ThrowException(excType);
+            this.generator.ThrowException(excType);
             return this;
         }
 
         /// <inheritdoc/>
         public IEmitter UsingNamespace(string usingNamespace)
         {
-            this.ilGen.UsingNamespace(usingNamespace);
+            this.generator.UsingNamespace(usingNamespace);
             return this;
         }
 

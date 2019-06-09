@@ -10,7 +10,7 @@ namespace FluentIL.Emitters
         IAdaptedLocal
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="LocalAdapter"/> class.
+        /// Initializes a new instance of the <see cref="LocalAdapter"/> class.
         /// </summary>
         /// <param name="name">The name of the local.</param>
         /// <param name="localType">The locals type.</param>

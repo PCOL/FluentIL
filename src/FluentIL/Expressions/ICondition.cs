@@ -40,7 +40,7 @@ namespace FluentIL.Expressions
         /// <typeparam name="T">The local type.</typeparam>
         /// <returns>The local value.</returns>
         T LdLoc3<T>();
-        
+
         /// <summary>
         /// Loads an integer value onto the top of the evaluation stack.
         /// </summary>

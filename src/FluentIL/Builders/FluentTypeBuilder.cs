@@ -12,30 +12,63 @@ namespace FluentIL.Builders
     internal class FluentTypeBuilder
         : ITypeBuilder
     {
+        /// <summary>
+        /// The module the type belongs to.
+        /// </summary>
         private readonly ModuleBuilder moduleBuilder;
 
+        /// <summary>
+        /// The name of the type.
+        /// </summary>
         private readonly string typeName;
 
+        /// <summary>
+        /// The function to define the type builder.
+        /// </summary>
         private readonly Func<string, TypeAttributes, Type, Type[], TypeBuilder> define;
 
+        /// <summary>
+        /// The base type.
+        /// </summary>
         private Type baseType;
 
+        /// <summary>
+        /// The type builder.
+        /// </summary>
         private TypeBuilder typeBuilder;
 
+        /// <summary>
+        /// A list of interfaces the type implements.
+        /// </summary>
         private List<Type> interfaces = new List<Type>();
 
+        /// <summary>
+        /// A list of actions to execute upon creation of the type builder.
+        /// </summary>
         private List<Action> actions = new List<Action>();
 
+        /// <summary>
+        /// A list of generic type parameters.
+        /// </summary>
         private List<FluentGenericParameterBuilder> genericParameters;
 
+        /// <summary>
+        /// A list of type attributes.
+        /// </summary>
         private List<CustomAttributeBuilder> customAttributes;
 
+        /// <summary>
+        /// The types information.
+        /// </summary>
         private TypeInfo typeInfo;
 
+        /// <summary>
+        /// A value indicating whether or not the generic parameters have been built.
+        /// </summary>
         private bool genericParemetersBuilt;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentTypeBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentTypeBuilder"/> class.
         /// </summary>
         /// <param name="moduleBuilder">A <see cref="ModuleBuilder"/> instance.</param>
         /// <param name="typeName">The name of the type.</param>
@@ -47,7 +80,7 @@ namespace FluentIL.Builders
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentTypeBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentTypeBuilder"/> class.
         /// </summary>
         /// <param name="typeName">The name of the type.</param>
         /// <param name="define">A function to define the <see cref="TypeBuilder"/>.</param>
@@ -142,8 +175,7 @@ namespace FluentIL.Builders
                             parms,
                             required,
                             optional);
-                }
-            );
+                });
 
             this.actions.Add(() => ctorBuilder.Define());
             return ctorBuilder;
@@ -166,8 +198,7 @@ namespace FluentIL.Builders
                         .Define()
                         .DefineDefaultConstructor(
                             attrs);
-                }
-            );
+                });
 
             ctorBuilder.MethodAttributes = constructorAttributes;
             this.actions.Add(() => ctorBuilder.Define());
@@ -234,7 +265,7 @@ namespace FluentIL.Builders
         /// <inheritdoc />
         public IMethodBuilder NewMethod(string methodName)
         {
-            var builder =  new FluentMethodBuilder(methodName, this.DefineMethod);
+            var builder = new FluentMethodBuilder(methodName, this.DefineMethod);
             this.actions.Add(() => builder.Define());
             return builder;
         }
@@ -386,7 +417,7 @@ namespace FluentIL.Builders
                 DebugOutput.WriteLine("Type '{0}' defined", this.typeName);
                 DebugOutput.WriteLine("Type Attributes: {0}", this.TypeAttributes);
                 DebugOutput.WriteLine("Base Type: {0}", this.baseType);
-                DebugOutput.WriteLine("Implements: {0}",string.Join(", ", this.interfaces.Select(i => i.Name)));
+                DebugOutput.WriteLine("Implements: {0}", string.Join(", ", this.interfaces.Select(i => i.Name)));
 
                 this.typeBuilder = this.moduleBuilder.DefineType(
                     this.typeName,
@@ -417,7 +448,7 @@ namespace FluentIL.Builders
                     action();
                 }
 
-                this.typeInfo =  this.typeBuilder.CreateTypeInfo();
+                this.typeInfo = this.typeBuilder.CreateTypeInfo();
             }
 
             return this.typeInfo.AsType();
@@ -449,7 +480,7 @@ namespace FluentIL.Builders
                 var genericParms = this.typeBuilder.DefineGenericParameters(
                     this.genericParameters.Select(g => g.ParameterName).ToArray());
 
-                for (int i = 0; i < genericParameters.Count; i++)
+                for (int i = 0; i < this.genericParameters.Count; i++)
                 {
                     this.genericParameters[i].Build(genericParms[i]);
                 }

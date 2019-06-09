@@ -12,14 +12,14 @@ namespace FluentIL.Builders
         : IParameterBuilder
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentParameterBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentParameterBuilder"/> class.
         /// </summary>
         public FluentParameterBuilder()
         {
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentParameterBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentParameterBuilder"/> class.
         /// </summary>
         /// <param name="parameterType">The parameters type.</param>
         /// <param name="parameterName">The parameters name.</param>
@@ -54,7 +54,7 @@ namespace FluentIL.Builders
         /// <inheritdoc/>
         public IParameterBuilder Type<T>()
         {
-            return Type(typeof(T));
+            return this.Type(typeof(T));
         }
 
         /// <inheritdoc/>

@@ -51,7 +51,7 @@ namespace FluentIL.Expressions
             typeof(EmitterExtensions).GetMethod("Dec", new[] { typeof(IEmitter), typeof(ILocal) }),
             typeof(EmitterExtensions).GetMethod("Call", new[] { typeof(IEmitter), typeof(MethodInfo) }),
         };
-        
+
         /// <summary>
         /// Emits an expression method.
         /// </summary>
@@ -74,7 +74,6 @@ namespace FluentIL.Expressions
                     }
 
                     var parameters = method.GetParameters();
-//Console.WriteLine("expresionMethod: {0}, parameters: {1}", expressionMethod.Name, string.Join(", ", parameters.Select(p => p.ParameterType.Name)));
                     object[] values = new object[parameters.Length];
                     values[0] = emitter;
                     if (parameters.Length > 1)

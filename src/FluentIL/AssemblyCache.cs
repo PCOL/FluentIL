@@ -35,6 +35,7 @@ namespace FluentIL
         /// <summary>
         /// Gets a list of loaded assemblies.
         /// </summary>
+        /// <param name="dynamicOnly">Optional value indicating whether only dynamic assemblies should be checked or not.</param>
         /// <returns>A list of assemblies.</returns>
         public static IEnumerable<Assembly> GetAssemblies(bool dynamicOnly = false)
         {

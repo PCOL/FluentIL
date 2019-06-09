@@ -35,7 +35,7 @@ namespace FluentIL.Builders
         private Type returnType;
 
         /// <summary>
-        /// The methods parameters. 
+        /// The methods parameters.
         /// </summary>
         private List<FluentParameterBuilder> parms = new List<FluentParameterBuilder>();
 
@@ -65,9 +65,9 @@ namespace FluentIL.Builders
         private MethodImplAttributes methodImplAttributes;
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="FluentMethodBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentMethodBuilder"/> class.
         /// </summary>
-        /// <param name="methodName">The name of the method</param>
+        /// <param name="methodName">The name of the method.</param>
         /// <param name="defineMethod">A function to define the <see cref="MethodBuilder"/>.</param>
         /// <param name="postAction">A function perform any post build actions.</param>
         internal FluentMethodBuilder(
@@ -247,7 +247,7 @@ namespace FluentIL.Builders
         /// <inheritdoc/>
         public IMethodBuilder NewGenericParameters(params string[] parameterNames)
         {
-            return this.NewGenericParameters(parameterNames, (Action<IGenericParameterBuilder[]>) null);
+            return this.NewGenericParameters(parameterNames, (Action<IGenericParameterBuilder[]>)null);
         }
 
         /// <inheritdoc/>
@@ -288,7 +288,7 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc />
-        public IMethodBuilder  SetImplementationFlags(MethodImplAttributes attributes)
+        public IMethodBuilder SetImplementationFlags(MethodImplAttributes attributes)
         {
             this.methodImplAttributes = attributes;
             return this;

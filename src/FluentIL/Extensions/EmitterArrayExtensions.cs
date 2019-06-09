@@ -13,7 +13,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the <see cref="OpCodes.Newarr"/> IL opcode.
         /// </summary>
-        /// <typeparam name="T">The array type</typeparam>
+        /// <typeparam name="T">The array type.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter NewArr<T>(this IEmitter emitter)
@@ -25,7 +25,7 @@ namespace FluentIL
         /// Emits the <see cref="OpCodes.Newarr"/> IL opcode.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="arrayType"></param>
+        /// <param name="arrayType">The array type.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter NewArr(this IEmitter emitter, Type arrayType)
         {
@@ -36,9 +36,9 @@ namespace FluentIL
         /// Emits the IL to create an array of a given length and type onto
         /// the top of the evaluation stack.
         /// </summary>
-        /// <typeparam name="T">The array type</typeparam>
+        /// <typeparam name="T">The array type.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="length"></param>
+        /// <param name="length">The array length.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter NewArr<T>(this IEmitter emitter, int length)
         {
@@ -46,12 +46,12 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to create an array of a given length and type onto 
+        /// Emits the IL to create an array of a given length and type onto
         /// the top of the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="arrayType"></param>
-        /// <param name="length"></param>
+        /// <param name="arrayType">The array type.</param>
+        /// <param name="length">The array length.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter NewArr(this IEmitter emitter, Type arrayType, int length)
         {
@@ -64,10 +64,10 @@ namespace FluentIL
         /// Emits the IL to create an array of a given length and type, and
         /// stores it in a given local.
         /// </summary>
-        /// <typeparam name="T">The array type</typeparam>
+        /// <typeparam name="T">The array type.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="length"></param>
-        /// <param name="localArray"></param>
+        /// <param name="length">The array length.</param>
+        /// <param name="localArray">The local to store the array in.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter NewArr<T>(this IEmitter emitter, int length, ILocal localArray)
         {
@@ -79,9 +79,9 @@ namespace FluentIL
         /// stores it in a given local.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="arrayType"></param>
-        /// <param name="length"></param>
-        /// <param name="localArray"></param>
+        /// <param name="arrayType">The array type.</param>
+        /// <param name="length">The array length.</param>
+        /// <param name="localArray">The local to store the array in.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter NewArr(this IEmitter emitter, Type arrayType, int length, ILocal localArray)
         {
@@ -129,6 +129,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the <see cref="OpCodes.Ldelem"/> opcode.
         /// </summary>
+        /// <typeparam name="T">The array element type.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdArrayElem<T>(this IEmitter emitter)
@@ -140,7 +141,7 @@ namespace FluentIL
         /// Emits the <see cref="OpCodes.Ldelem"/> opcode.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="elementType"></param>
+        /// <param name="elementType">The element type.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdArrayElem(this IEmitter emitter, Type elementType)
         {
@@ -150,6 +151,7 @@ namespace FluentIL
         /// <summary>
         /// Emits the IL to load and array element onto the top of the evalation stack.
         /// </summary>
+        /// <typeparam name="T">The array element type.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The index of the array element to load.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -163,7 +165,7 @@ namespace FluentIL
         /// Emits the IL to load and array element onto the top of the evalation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="elementType"></param>
+        /// <param name="elementType">The element type.</param>
         /// <param name="index">The index of the array element to load.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdArrayElem(this IEmitter emitter, Type elementType, int index)
@@ -220,7 +222,7 @@ namespace FluentIL
 
         /// <summary>
         /// Emits the IL to load a array element of type <see cref="byte"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -232,7 +234,7 @@ namespace FluentIL
 
         /// <summary>
         /// Emits the IL to load a array element of type <see cref="byte"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The element index.</param>
@@ -245,8 +247,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="Int16"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="short"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -257,8 +259,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="Int16"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="short"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The element index.</param>
@@ -271,8 +273,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="Int32"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="int"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -283,8 +285,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="Int32"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="int"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The element index.</param>
@@ -297,8 +299,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="Int64"/> onto the top
-        /// of the evaluation stack as an <see cref="Int64"/>.
+        /// Emits the IL to load a array element of type <see cref="long"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -309,8 +311,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="Int64"/> onto the top
-        /// of the evaluation stack as an <see cref="Int64"/>.
+        /// Emits the IL to load a array element of type <see cref="long"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The element index.</param>
@@ -402,7 +404,7 @@ namespace FluentIL
 
         /// <summary>
         /// Emits the IL to load a array element of type <b>unsigned int8</b> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -414,7 +416,7 @@ namespace FluentIL
 
         /// <summary>
         /// Emits the IL to load a array element of type <b>unsigned int8</b> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The element index.</param>
@@ -427,8 +429,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="UInt16"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="ushort"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -438,8 +440,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="UInt16"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="ushort"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The element index.</param>
@@ -452,8 +454,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="UInt32"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="uint"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
@@ -463,8 +465,8 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits the IL to load a array element of type <see cref="UInt32"/> onto the top
-        /// of the evaluation stack as an <see cref="Int32"/>.
+        /// Emits the IL to load a array element of type <see cref="uint"/> onto the top
+        /// of the evaluation stack as an <see cref="int"/>.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="index">The element index.</param>
@@ -505,6 +507,7 @@ namespace FluentIL
         /// Emits the IL to replace the array element at a given index with the value on the top
         /// of the evaluation stack.
         /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElem<T>(this IEmitter emitter)
@@ -610,8 +613,8 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localArray">A local containing an array.</param>
-        /// <param name="index">The array element index</param>
-        /// <param name="value">The value to set</param>
+        /// <param name="index">The array element index.</param>
+        /// <param name="value">The value to set.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemI(this IEmitter emitter, ILocal localArray, int index, int value)
         {
@@ -657,7 +660,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localArray">A local containing an array.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemI1(this IEmitter emitter, ILocal localArray, int index)
         {
@@ -701,7 +704,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localArray">A local containing an array.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemI2(this IEmitter emitter, ILocal localArray, int index)
         {
@@ -731,7 +734,7 @@ namespace FluentIL
         /// The array must have previously been pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemI4(this IEmitter emitter, int index)
         {
@@ -745,7 +748,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localArray">A local containing an array.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemI4(this IEmitter emitter, ILocal localArray, int index)
         {
@@ -775,7 +778,7 @@ namespace FluentIL
         /// The array must have previously been pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemI8(this IEmitter emitter, int index)
         {
@@ -789,7 +792,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localArray">A local containing an array.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemI8(this IEmitter emitter, ILocal localArray, int index)
         {
@@ -819,7 +822,7 @@ namespace FluentIL
         /// The array must have previously been pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemR4(this IEmitter emitter, int index)
         {
@@ -833,7 +836,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localArray">A local containing an array.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemR4(this IEmitter emitter, ILocal localArray, int index)
         {
@@ -863,7 +866,7 @@ namespace FluentIL
         /// The array must have previously been pushed onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemR8(this IEmitter emitter, int index)
         {
@@ -877,7 +880,7 @@ namespace FluentIL
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="localArray">A local containing an array.</param>
-        /// <param name="index">The array element index</param>
+        /// <param name="index">The array element index.</param>
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter StElemR8(this IEmitter emitter, ILocal localArray, int index)
         {

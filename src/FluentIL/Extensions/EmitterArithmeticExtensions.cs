@@ -353,6 +353,5 @@ namespace FluentIL
                 .LdLoc(localValue2)
                 .RemUn();
         }
-
     }
 }

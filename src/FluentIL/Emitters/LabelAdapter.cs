@@ -10,7 +10,7 @@ namespace FluentIL.Emitters
         IAdaptedLabel
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="LabelAdapter"/> class.
+        /// Initializes a new instance of the <see cref="LabelAdapter"/> class.
         /// </summary>
         /// <param name="name">The name of the label.</param>
         /// <param name="label">The label.</param>

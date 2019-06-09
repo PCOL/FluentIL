@@ -13,7 +13,7 @@ namespace FluentIL
         /// <summary>
         /// Gets or sets the <see cref="ITypeBuilder"/> attributes.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The types attributes.</returns>
         TypeAttributes TypeAttributes { get; set; }
 
         /// <summary>

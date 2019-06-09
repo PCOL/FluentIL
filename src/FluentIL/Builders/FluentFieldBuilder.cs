@@ -26,7 +26,7 @@ namespace FluentIL.Builders
         private FieldBuilder fieldBuilder;
 
         /// <summary>
-        /// Initialises a new instance of <see cref="FluentFieldBuilder"/> class.
+        /// Initializes a new instance of the <see cref="FluentFieldBuilder"/> class.
         /// </summary>
         /// <param name="fieldName">The field name.</param>
         /// <param name="fieldType">The field type.</param>
@@ -73,7 +73,7 @@ namespace FluentIL.Builders
                 DebugOutput.WriteLine("=======================================");
                 DebugOutput.WriteLine("New Field '{0}' [{1}]", this.FieldName, this.FieldType);
                 DebugOutput.WriteLine("Field Attributes: {0}", this.fieldAttributes);
-                DebugOutput.WriteLine("");
+                DebugOutput.WriteLine(string.Empty);
             }
 
             return this.fieldBuilder;

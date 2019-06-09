@@ -10,7 +10,7 @@ namespace FluentIL
         /// <summary>
         /// Gets or sets the <see cref="IDebugOutput"/> instance.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The <see cref="IDebugOutput"/> instsnce.</returns>
         public static IDebugOutput Output { get; set; }
 
         /// <summary>

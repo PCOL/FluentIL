@@ -26,7 +26,7 @@ namespace FluentIL
         private IAssemblyBuilder assemblyBuilder;
 
         /// <summary>
-        /// THe module builder
+        /// THe module builder.
         /// </summary>
         private IModuleBuilder moduleBuilder;
 

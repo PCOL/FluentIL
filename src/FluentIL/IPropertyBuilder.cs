@@ -15,14 +15,21 @@ namespace FluentIL
         PropertyAttributes PropertyAttributes { get; set; }
 
         /// <summary>
-        /// Gets the set method.
+        /// Gets or sets the set method.
         /// </summary>
         IMethodBuilder SetMethod { get; set; }
 
         /// <summary>
-        /// Gets the get method.
+        /// Gets or sets the get method.
         /// </summary>
         IMethodBuilder GetMethod { get; set; }
+
+        /// <summary>
+        /// Sets the calling convention.
+        /// </summary>
+        /// <param name="callingConvention">The calling convention.</param>
+        /// <returns>The <see cref="IPropertyBuilder"/> instance.</returns>
+        IPropertyBuilder CallingConvention(CallingConventions callingConvention);
 
         /// <summary>
         /// Sets the attributes for the property.

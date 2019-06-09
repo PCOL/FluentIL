@@ -48,6 +48,15 @@ namespace FluentIL
         /// <summary>
         /// Adds a parameter to the method.
         /// </summary>
+        /// <param name="parameterType">The parameters type.</param>
+        /// <param name="parameterName">The parameters name.</param>
+        /// <param name="attrs">The parameters attributes.</param>
+        /// <returns>The <see cref="IDynamicMethodBuilder"/> instsnce.</returns>
+        IDynamicMethodBuilder Param(Type parameterType, string parameterName, ParameterAttributes attrs = ParameterAttributes.None);
+
+        /// <summary>
+        /// Adds a parameter to the method.
+        /// </summary>
         /// <param name="action">A parameter builder action.</param>
         /// <returns>The <see cref="IDynamicMethodBuilder"/> instance.</returns>
         IDynamicMethodBuilder Param(Action<IParameterBuilder> action);

@@ -30,34 +30,34 @@ namespace FluentIL
         /// <summary>
         /// The <see cref="MethodInfo"/> for the <see cref="MethodBase.GetMethodFromHandle(RuntimeMethodHandle)"/> method.
         /// </summary>
-        private readonly static MethodInfo MethodBaseGetMethodFromHandle = typeof(MethodBase).GetMethod("GetMethodFromHandle", new[] { typeof(RuntimeMethodHandle) });
+        private static readonly MethodInfo MethodBaseGetMethodFromHandle = typeof(MethodBase).GetMethod("GetMethodFromHandle", new[] { typeof(RuntimeMethodHandle) });
 
         /// <summary>
         /// The <see cref="MethodInfo"/> for the <see cref="MethodBase.GetMethodFromHandle(RuntimeMethodHandle, RuntimeTypeHandle)"/> method.
         /// </summary>
-        private readonly static MethodInfo MethodBaseGetMethodFromHandleGeneric = typeof(MethodBase).GetMethod("GetMethodFromHandle", new[] { typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle) });
+        private static readonly MethodInfo MethodBaseGetMethodFromHandleGeneric = typeof(MethodBase).GetMethod("GetMethodFromHandle", new[] { typeof(RuntimeMethodHandle), typeof(RuntimeTypeHandle) });
 
         /// <summary>
-        /// A <see cref="MethodInfo"/> for the <see cref="Object.GetType()"/> method.
+        /// A <see cref="MethodInfo"/> for the <see cref="object.GetType()"/> method.
         /// </summary>
-        private readonly static MethodInfo ObjectGetType = typeof(object).GetMethod("GetType");
+        private static readonly MethodInfo ObjectGetType = typeof(object).GetMethod("GetType");
 
         /// <summary>
         /// A <see cref="MethodInfo"/> for the <see cref="Type.GetType(string, bool)"/> method.
         /// </summary>
-        private readonly static MethodInfo TypeGetType = typeof(Type).GetMethod("GetType", new[] { typeof(string), typeof(bool) });
+        private static readonly MethodInfo TypeGetType = typeof(Type).GetMethod("GetType", new[] { typeof(string), typeof(bool) });
 
         /// <summary>
         /// A <see cref="MethodInfo"/> for the <see cref="Type.IsAssignableFrom(Type)"/> method.
         /// </summary>
-        private readonly static MethodInfo TypeIsAssignableFrom = typeof(Type).GetMethod("IsAssignableFrom");
+        private static readonly MethodInfo TypeIsAssignableFrom = typeof(Type).GetMethod("IsAssignableFrom");
 
         /// <summary>
         /// Writes a local to standard output.
         /// </summary>
-        /// <param name="emitter">An emitter.</param>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="local">The local to write out.</param>
-        /// <returns>The <see cref="IEmitter"/>.</returns>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter WriteLineLoc(this IEmitter emitter, ILocal local)
         {
             return emitter.EmitWriteLine(local);
@@ -66,9 +66,9 @@ namespace FluentIL
         /// <summary>
         /// Emits a <see cref="OpCodes.Newobj"/>.
         /// </summary>
-        /// <param name="emitter"></param>
-        /// <param name="ctor"></param>
-        /// <returns>The <see cref="IEmitter"/>.</returns>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="ctor">A constructor.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Newobj(this IEmitter emitter, ConstructorInfo ctor)
         {
             return emitter.Emit(OpCodes.Newobj, ctor);
@@ -183,6 +183,7 @@ namespace FluentIL
         /// <summary>
         /// Attempts to cast an object passed by reference to the specified class.
         /// </summary>
+        /// <typeparam name="T">The type to cast to.</typeparam>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter CastClass<T>(this IEmitter emitter)
