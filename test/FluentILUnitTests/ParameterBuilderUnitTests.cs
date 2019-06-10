@@ -4,9 +4,15 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Parameter Builder Unit Tests.
+    /// </summary>
     [TestClass]
-    public class ParameterBuilderUnittests
+    public class ParameterBuilderUnitTests
     {
+        /// <summary>
+        /// Create Method With Parameters Using Params.
+        /// </summary>
         [TestMethod]
         public void CreateMethod_WithParametersUsingParams()
         {
@@ -32,7 +38,7 @@ namespace FluentILUnitTests
                     .Box<int>()
                     .Call(formatMethodInfo)
                     .Ret());
-                
+
             var type = typeBuilder.CreateType();
             var instance = Activator.CreateInstance(type);
             var method = instance.GetMethodFunc<string, int, string>("TestMethod");
@@ -43,6 +49,9 @@ namespace FluentILUnitTests
             Assert.AreEqual(string.Format(Format, arg1, arg2), method(arg1, arg2));
         }
 
+        /// <summary>
+        /// Create Method With Parameters Using Parameter Builders.
+        /// </summary>
         [TestMethod]
         public void CreateMethod_WithParametersUsingParameterBuilders()
         {
@@ -72,7 +81,7 @@ namespace FluentILUnitTests
                     .Box<int>()
                     .Call(formatMethodInfo)
                     .Ret());
-                
+
             var type = typeBuilder.CreateType();
             var instance = Activator.CreateInstance(type);
             var method = instance.GetMethodFunc<string, int, string>("TestMethod");
@@ -83,6 +92,9 @@ namespace FluentILUnitTests
             Assert.AreEqual(string.Format(Format, arg1, arg2), method(arg1, arg2));
         }
 
+        /// <summary>
+        /// Create Method With Parameters Using Param Actions.
+        /// </summary>
         [TestMethod]
         public void CreateMethod_WithParametersUsingParamActions()
         {
@@ -108,7 +120,7 @@ namespace FluentILUnitTests
                     .Box<int>()
                     .Call(formatMethodInfo)
                     .Ret());
-                
+
             var type = typeBuilder.CreateType();
             var instance = Activator.CreateInstance(type);
             var method = instance.GetMethodFunc<string, int, string>("TestMethod");

@@ -5,9 +5,15 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Emit For Unit Tests.
+    /// </summary>
     [TestClass]
     public class EmitForUnitTests
     {
+        /// <summary>
+        /// Create Method With Index For Loop.
+        /// </summary>
         [TestMethod]
         public void CreateMethod_WithIndexForLoop()
         {
@@ -68,6 +74,9 @@ namespace FluentILUnitTests
             }
         }
 
+        /// <summary>
+        /// Create Method With Index And Array For Loop.
+        /// </summary>
         [TestMethod]
         public void CreateMethod_WithIndexAndArrayForLoop()
         {

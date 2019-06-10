@@ -5,9 +5,15 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Module Method Unit Tests.
+    /// </summary>
     [TestClass]
     public class ModuleMethodUnitTests
     {
+        /// <summary>
+        /// Create Global Method With Parameters And Return.
+        /// </summary>
         [TestMethod]
         public void CreateGlobalMethod_WithParametersAndReturn()
         {
@@ -23,8 +29,7 @@ namespace FluentILUnitTests
                     .LdArg0()
                     .LdArg1()
                     .Add()
-                    .Ret()
-                );
+                    .Ret());
 
             TypeFactory
                 .Default
@@ -34,7 +39,7 @@ namespace FluentILUnitTests
                 .Default
                 .GetMethod("Add");
 
-            var result = method.Invoke(null, new object[] { 10, 20 } );
+            var result = method.Invoke(null, new object[] { 10, 20 });
 
             Assert.AreEqual(30, (int)result);
         }

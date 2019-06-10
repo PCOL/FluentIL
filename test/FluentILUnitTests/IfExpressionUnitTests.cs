@@ -6,9 +6,15 @@ namespace FluentILUnitTests
     using FluentIL.Expressions;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// If Expression Unit Tests.
+    /// </summary>
     [TestClass]
     public class IfExpressionUnitTests
     {
+        /// <summary>
+        /// Emit If With Simple Equals Constant Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleEqualsConstantExpression()
         {
@@ -20,6 +26,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(-1));
         }
 
+        /// <summary>
+        /// Emit If With Simple Not Equals Constant Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleNotEqualsConstantExpression()
         {
@@ -31,6 +40,9 @@ namespace FluentILUnitTests
             Assert.IsTrue(method(-2));
         }
 
+        /// <summary>
+        /// Emit If With Simple Greater Than Constant Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleGreaterThanConstantExpression()
         {
@@ -42,6 +54,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(-10));
         }
 
+        /// <summary>
+        /// Emit If With Simple Greater Than Or Equal Constant Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleGreaterThanOrEqualConstantExpression()
         {
@@ -53,6 +68,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1));
         }
 
+        /// <summary>
+        /// Emit If With Simple Less Than Constant Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleLessThanConstantExpression()
         {
@@ -64,6 +82,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(20));
         }
 
+        /// <summary>
+        /// Emit If With Simple Less Than Or Equal Constant Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleLessThanOrEqualConstantExpression()
         {
@@ -75,6 +96,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(20));
         }
 
+        /// <summary>
+        /// Emit If With Simple Equals Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleEqualsExpression()
         {
@@ -86,6 +110,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 2));
         }
 
+        /// <summary>
+        /// Emit If With Simple Not Equals Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleNotEqualsExpression()
         {
@@ -97,6 +124,9 @@ namespace FluentILUnitTests
             Assert.IsTrue(method(1, 2));
         }
 
+        /// <summary>
+        /// Emit If With Simple Greater Than Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleGreaterThanExpression()
         {
@@ -108,6 +138,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 2));
         }
 
+        /// <summary>
+        /// Emit If With Simple Greater Than Or Equal Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleGreaterThanOrEqualExpression()
         {
@@ -119,6 +152,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 2));
         }
 
+        /// <summary>
+        /// Emit If With Simple Less Than Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleLessThanExpression()
         {
@@ -130,6 +166,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(2, 1));
         }
 
+        /// <summary>
+        /// Emit If With Simple Less Than Or Equal Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithSimpleLessThanOrEqualExpression()
         {
@@ -141,6 +180,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(2, 1));
         }
 
+        /// <summary>
+        /// Emit If With Equals And Not Equals Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithEqualsAndNotEqualsExpression()
         {
@@ -153,6 +195,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 20));
         }
 
+        /// <summary>
+        /// Emit If With Equals And Greater Than Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithEqualsAndGreaterThanExpression()
         {
@@ -164,6 +209,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 20));
         }
 
+        /// <summary>
+        /// Emit If With Equals And Greater Than Or Equal Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithEqualsAndGreaterThanOrEqualExpression()
         {
@@ -176,6 +224,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 10));
         }
 
+        /// <summary>
+        /// Emit If With Equals And Less Than Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithEqualsAndLessThanExpression()
         {
@@ -188,6 +239,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 1));
         }
 
+        /// <summary>
+        /// Emit If With Equals And Less Than Or Equal Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithEqualsAndLessThanOrEqualExpression()
         {
@@ -200,6 +254,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 10));
         }
 
+        /// <summary>
+        /// Emit If With Equals Or Not Equals Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithEqualsOrNotEqualsExpression()
         {
@@ -212,6 +269,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(1, 10));
         }
 
+        /// <summary>
+        /// Emit If With Modulus Equals Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithModulusEqualsExpression()
         {
@@ -224,6 +284,9 @@ namespace FluentILUnitTests
             Assert.IsFalse(method(3));
         }
 
+        /// <summary>
+        /// Emit If With Modulus Not Equals Expression.
+        /// </summary>
         [TestMethod]
         public void EmitIfWithModulusNotEqualsExpression()
         {
@@ -236,6 +299,13 @@ namespace FluentILUnitTests
             Assert.IsTrue(method(3));
         }
 
+        /// <summary>
+        /// Creates a type to test an expression.
+        /// </summary>
+        /// <typeparam name="T">The argument type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>A function to call to test the expression.</returns>
         private Func<T, TResult> CreateType<T, TResult>(Expression<Func<IExpression, bool>> expression)
         {
             var methodName = $"Method_{Guid.NewGuid()}";
@@ -260,14 +330,21 @@ namespace FluentILUnitTests
                             .LdcI4_1()
                             .StLoc0())
                     .LdLoc0()
-                    .Ret()
-                );
+                    .Ret());
 
             var type = testTypeBuilder.CreateType();
             var instance = Activator.CreateInstance(type);
             return instance.GetMethodFunc<T, TResult>(methodName);
         }
 
+        /// <summary>
+        /// Creates a type to test an expression.
+        /// </summary>
+        /// <typeparam name="T1">The first argument type.</typeparam>
+        /// <typeparam name="T2">The second argument type.</typeparam>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <param name="expression">The expression to test.</param>
+        /// <returns>A function to call to test the expression.</returns>
         private Func<T1, T2, TResult> CreateType<T1, T2, TResult>(Expression<Func<IExpression, bool>> expression)
         {
             var methodName = $"Method_{Guid.NewGuid()}";
@@ -293,8 +370,7 @@ namespace FluentILUnitTests
                             .LdcI4_1()
                             .StLoc0())
                     .LdLoc0()
-                    .Ret()
-                );
+                    .Ret());
 
             var type = testTypeBuilder.CreateType();
             var instance = Activator.CreateInstance(type);

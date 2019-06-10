@@ -5,9 +5,15 @@ namespace FluentILUnitTests
     using FluentILUnitTests.Resources;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Type Interface Unit Tests.
+    /// </summary>
     [TestClass]
     public class TypeInterfaceUnitTests
     {
+        /// <summary>
+        /// Type Implement Interface.
+        /// </summary>
         [TestMethod]
         public void Type_ImplementInterface()
         {
@@ -29,18 +35,14 @@ namespace FluentILUnitTests
                         .LdArg0()
                         .LdArg1()
                         .StFld(field)
-                        .Ret()
-                    )
-                )
+                        .Ret()))
                 .Getter(m => m
                     .Public()
                     .Virtual()
                     .Body(il => il
                         .LdArg0()
                         .LdFld(field)
-                        .Ret()
-                    )
-                );
+                        .Ret()));
 
             var testType = testTypeBuilder.CreateType();
             Assert.IsNotNull(testType);

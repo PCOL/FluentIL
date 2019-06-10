@@ -1,13 +1,19 @@
-using System;
-using System.Reflection.Emit;
-using FluentIL;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace FluentILUnitTests
 {
+    using System;
+    using System.Reflection.Emit;
+    using FluentIL;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    /// <summary>
+    /// Box Unbox Unit Tests.
+    /// </summary>
     [TestClass]
-    public class BoxUnBoxUnitTests
+    public class BoxUnboxUnitTests
     {
+        /// <summary>
+        /// Box Value Type.
+        /// </summary>
         [TestMethod]
         public void BoxValueType()
         {
@@ -35,6 +41,9 @@ namespace FluentILUnitTests
             Assert.AreEqual("10", value);
         }
 
+        /// <summary>
+        /// Unbox Value Type.
+        /// </summary>
         [TestMethod]
         public void UnboxValueType()
         {

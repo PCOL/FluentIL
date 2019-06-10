@@ -5,9 +5,15 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Constructor Unit Tests.
+    /// </summary>
     [TestClass]
     public class ConstructorUnitTests
     {
+        /// <summary>
+        /// New Constructor.
+        /// </summary>
         [TestMethod]
         public void NewConstructor()
         {
@@ -28,6 +34,9 @@ namespace FluentILUnitTests
             Assert.IsNotNull(obj);
         }
 
+        /// <summary>
+        /// New Default Constructor.
+        /// </summary>
         [TestMethod]
         public void NewDefaultConstructor()
         {

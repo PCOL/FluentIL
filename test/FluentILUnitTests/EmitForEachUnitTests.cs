@@ -5,9 +5,15 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Emit For Each Unit Tests.
+    /// </summary>
     [TestClass]
     public class EmitForEachUnitTests
     {
+        /// <summary>
+        /// Create Method With For Each.
+        /// </summary>
         [TestMethod]
         public void CreateMethod_WithForEach()
         {
@@ -54,7 +60,7 @@ namespace FluentILUnitTests
             testMethod.Invoke(obj, new object[] { source, list });
 
             Assert.AreEqual(source.Length, list.Count);
-            for( int i = 0; i < source.Length; i++)
+            for (int i = 0; i < source.Length; i++)
             {
                 Assert.AreEqual(source[i], list[i]);
             }

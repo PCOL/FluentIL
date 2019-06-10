@@ -6,13 +6,19 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Type Property Unit Tests.
+    /// </summary>
     [TestClass]
     public class TypePropertyUnitTests
     {
+        /// <summary>
+        /// Create Property With String Field Get Value Matches Set Value.
+        /// </summary>
         [TestMethod]
         public void CreateProperty_WithStringField_GetValueMatchesSetValue()
         {
-            //DebugOutput.Output = new ConsoleOutput();
+            ////DebugOutput.Output = new ConsoleOutput();
 
             var testTypeBuilder = TypeFactory
                 .Default
@@ -61,6 +67,9 @@ namespace FluentILUnitTests
             Assert.AreEqual("Hello World", (string)result);
         }
 
+        /// <summary>
+        /// Set Property With Private Setter Using A Set Method.
+        /// </summary>
         [TestMethod]
         public void SetPropertyWithPrivateSetter_UsingASetMethod()
         {

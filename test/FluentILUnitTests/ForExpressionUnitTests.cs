@@ -5,13 +5,36 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// For Expression Unit Tests.
+    /// </summary>
     [TestClass]
     public class ForExpressionUnitTests
     {
+        /// <summary>
+        /// Test 2 delegate.
+        /// </summary>
+        /// <param name="start">The start value.</param>
+        /// <param name="increment">The increment value.</param>
+        /// <param name="counter">The counter value.</param>
+        /// <returns>The incremented value.</returns>
         public delegate int Test2Delegate(int start, int increment, out int counter);
 
+        /// <summary>
+        /// Test 3 delegate.
+        /// </summary>
+        /// <param name="start">The start value.</param>
+        /// <param name="increment">The increment value.</param>
+        /// <param name="counter">The counter value.</param>
+        /// <returns>The incremented value.</returns>
         public delegate int Test3Delegate(int start, int increment, ref int counter);
 
+        /// <summary>
+        /// Test 1.
+        /// </summary>
+        /// <param name="start">The start value.</param>
+        /// <param name="increment">The increment value.</param>
+        /// <param name="expectedResult">The expected result.</param>
         [TestMethod]
         [DataRow(0, 10, 100)]
         [DataRow(0, 100, 1000)]
@@ -20,7 +43,7 @@ namespace FluentILUnitTests
         [DataRow(1100, -100, 100)]
         public void Test(int start, int increment, int expectedResult)
         {
-             var methodName = $"Method_{Guid.NewGuid()}";
+            var methodName = $"Method_{Guid.NewGuid()}";
 
             var testTypeBuilder = TypeFactory
                 .Default
@@ -48,8 +71,7 @@ namespace FluentILUnitTests
                             .Add()
                             .StLoc0())
                     .LdLoc0()
-                    .Ret()
-                );
+                    .Ret());
 
             var type = testTypeBuilder.CreateType();
             var instance = Activator.CreateInstance(type);
@@ -59,13 +81,19 @@ namespace FluentILUnitTests
             Assert.AreEqual(expectedResult, res);
         }
 
+        /// <summary>
+        /// Test 2.
+        /// </summary>
+        /// <param name="start">The start value.</param>
+        /// <param name="increment">The increment value.</param>
+        /// <param name="expectedResult">The expected result.</param>
         [TestMethod]
         [DataRow(0, 10, 100)]
         public void Test2(int start, int increment, int expectedResult)
         {
             DebugOutput.Output = new ConsoleOutput();
 
-             var methodName = $"Method_{Guid.NewGuid()}";
+            var methodName = $"Method_{Guid.NewGuid()}";
 
             var testTypeBuilder = TypeFactory
                 .Default
@@ -97,8 +125,7 @@ namespace FluentILUnitTests
                     .LdLoc1()
                     .StIndI4()
                     .LdLoc0()
-                    .Ret()
-                );
+                    .Ret());
 
             var type = testTypeBuilder.CreateType();
             var methodInfo = type.GetMethod(methodName, new[] { typeof(int), typeof(int), typeof(int).MakeByRefType() });
@@ -110,6 +137,14 @@ namespace FluentILUnitTests
             Assert.AreEqual(10, ctr);
         }
 
+        /// <summary>
+        /// Test 3.
+        /// </summary>
+        /// <param name="start">The start value.</param>
+        /// <param name="increment">The increment value.</param>
+        /// <param name="ctr">The counter value.</param>
+        /// <param name="expectedResult">The expected result.</param>
+        /// <param name="expectedCounter">The expected counter result.</param>
         [TestMethod]
         [DataRow(0, 10, 0, 100, 100)]
         [DataRow(0, 10, 100, 100, 200)]
@@ -117,7 +152,7 @@ namespace FluentILUnitTests
         {
             DebugOutput.Output = new ConsoleOutput();
 
-             var methodName = $"Method_{Guid.NewGuid()}";
+            var methodName = $"Method_{Guid.NewGuid()}";
 
             var testTypeBuilder = TypeFactory
                 .Default
@@ -152,8 +187,7 @@ namespace FluentILUnitTests
                             .Add()
                             .StIndI4())
                     .LdLoc0()
-                    .Ret()
-                );
+                    .Ret());
 
             var type = testTypeBuilder.CreateType();
             var methodInfo = type.GetMethod(methodName, new[] { typeof(int), typeof(int), typeof(int).MakeByRefType() });

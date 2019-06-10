@@ -4,13 +4,19 @@ namespace FluentILUnitTests
     using FluentIL;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    /// <summary>
+    /// Generic Type Unit Tests.
+    /// </summary>
     [TestClass]
     public class GenericTypeUnitTests
     {
+        /// <summary>
+        /// Create Simple Generic Type.
+        /// </summary>
         [TestMethod]
         public void CreateSimpleGenericType()
         {
-            //DebugOutput.Output = new ConsoleOutput();
+            ////DebugOutput.Output = new ConsoleOutput();
 
             var testTypeBuilder = TypeFactory
                 .Default
@@ -31,8 +37,7 @@ namespace FluentILUnitTests
                     .LdArg0()
                     .LdArg1()
                     .StFld(field)
-                    .Ret()
-                );
+                    .Ret());
 
             testTypeBuilder
                 .NewProperty("Value", typeT)
@@ -41,9 +46,7 @@ namespace FluentILUnitTests
                     .Body(il => il
                         .LdArg0()
                         .LdFld(field)
-                        .Ret()
-                    )
-                );
+                        .Ret()));
 
             var testType = testTypeBuilder.CreateType();
             Assert.IsNotNull(testType);

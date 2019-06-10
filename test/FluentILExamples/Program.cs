@@ -6,7 +6,7 @@
     using System.Linq.Expressions;
     using System.Reflection;
     using FluentIL;
-    
+
     /// <summary>
     /// Main program class.
     /// </summary>
@@ -15,12 +15,12 @@
         /// <summary>
         /// <see cref="Console.WriteLine(string, object[])"/> <see cref="MethodInfo"/>.
         /// </summary>
-        private static MethodInfo ConsoleWriteLine = typeof(Console).GetMethodWithParameters("WriteLine", BindingFlags.Public | BindingFlags.Static, new[] { typeof(string), typeof(object[]) });
+        private static readonly MethodInfo ConsoleWriteLine = typeof(Console).GetMethodWithParameters("WriteLine", BindingFlags.Public | BindingFlags.Static, new[] { typeof(string), typeof(object[]) });
 
         /// <summary>
         /// <see cref="Console.WriteLine(string, object, object)"/> <see cref="MethodInfo"/>.
         /// </summary>
-        private static MethodInfo ConsoleWriteLineStringObjectObject = typeof(Console).GetMethodWithParameters("WriteLine", BindingFlags.Public | BindingFlags.Static, new[] { typeof(string), typeof(object), typeof(object) });
+        private static readonly MethodInfo ConsoleWriteLineStringObjectObject = typeof(Console).GetMethodWithParameters("WriteLine", BindingFlags.Public | BindingFlags.Static, new[] { typeof(string), typeof(object), typeof(object) });
 
         private static readonly MethodInfo AnyTMethod =
             typeof(Enumerable)
@@ -30,6 +30,11 @@
                 .FirstOrDefault();
 
         /// <summary>
+        /// Dynamic method test delegate.
+        /// </summary>
+        private delegate void TestDelegate();
+
+        /// <summary>
         /// Program entry point.
         /// </summary>
         /// <param name="args">Program arguments.</param>
@@ -37,18 +42,21 @@
         {
             FluentIL.DebugOutput.Output = new ConsoleOutput();
 
-            // IfExample();
-            // WhileExample();
-            // DoExample();
-            // ForExample();
+            IfExample();
+            WhileExample();
+            DoExample();
+            ForExample();
 
-            //GlobalMethod();
+            GlobalMethod();
 
-            //IfNotNullOrEmptyExample();
+            IfNotNullOrEmptyExample();
 
             DynamicMethodExample();
         }
 
+        /// <summary>
+        /// Global method examples.
+        /// </summary>
         private static void GlobalMethod()
         {
             var globalMethod = TypeFactory
@@ -74,9 +82,8 @@
                     .Ret());
 
             var methodBuilder = globalMethod.Define();
-            
-            TypeFactory.Default.CreateGlobalFunctions();
 
+            TypeFactory.Default.CreateGlobalFunctions();
 
             var methodInfo = TypeFactory.Default.GetMethod("GlobalMethod");
             var method = (Func<int, bool>)methodInfo.CreateDelegate(typeof(Func<int, bool>));
@@ -84,6 +91,9 @@
             Console.WriteLine("10 == 10 : {0}", method(20));
         }
 
+        /// <summary>
+        /// If not null or empty examples.
+        /// </summary>
         private static void IfNotNullOrEmptyExample()
         {
             Console.WriteLine("If Not Null Or Empty Example");
@@ -115,12 +125,15 @@
             var mytype = typeBuilder.CreateType();
             var instance = Activator.CreateInstance(mytype);
             var method = instance.GetMethodFunc<IEnumerable<string>, bool>("IfNotNullOrEmptyExample");
-            
+
             Console.WriteLine("null = {0}", method(null));
             Console.WriteLine("Empty = {0}", method(Enumerable.Empty<string>()));
             Console.WriteLine("list = {0}", method(new[] { "a", "b", "c" }));
         }
 
+        /// <summary>
+        /// If examples.
+        /// </summary>
         private static void IfExample()
         {
             Console.WriteLine("If Example");
@@ -157,12 +170,15 @@
             var mytype = typeBuilder.CreateType();
             var instance = Activator.CreateInstance(mytype);
             var method = instance.GetMethodFunc<string, int, bool>("IfExample");
-            
+
             Console.WriteLine("Arg2 {0} == 10 && Arg1 {1} == Hello [{2}]", 10, "Hello", method("Hello", 10));
             Console.WriteLine("Arg2 {0} == 10 && Arg1 {1} == Hello [{2}]", 20, "Hello", method("Hello", 20));
             Console.WriteLine("Arg2 {0} == 10 && Arg1 {1} == Hello [{2}]", 10, "World", method("World", 10));
         }
 
+        /// <summary>
+        /// While examples.
+        /// </summary>
         private static void WhileExample()
         {
             Console.WriteLine("While Example");
@@ -205,9 +221,12 @@
             var instance = Activator.CreateInstance(mytype);
             var method = instance.GetMethodAction<int>("WhileExample");
 
-            method(10);            
+            method(10);
         }
 
+        /// <summary>
+        /// Do examples.
+        /// </summary>
         private static void DoExample()
         {
             Console.WriteLine("Do Example");
@@ -250,9 +269,12 @@
             var instance = Activator.CreateInstance(mytype);
             var method = instance.GetMethodAction<int>("DoExample");
 
-            method(10);            
+            method(10);
         }
 
+        /// <summary>
+        /// For examples.
+        /// </summary>
         private static void ForExample()
         {
             Console.WriteLine("For Example");
@@ -294,8 +316,9 @@
             method(10);
         }
 
-        private delegate void TestDelegate();
-
+        /// <summary>
+        /// Dynamic method examples.
+        /// </summary>
         private static void DynamicMethodExample()
         {
             var methodFactory = new DynamicMethodFactory();
@@ -305,8 +328,8 @@
                 .Body(m => m
                     .EmitWriteLine("Hello")
                     .Ret());
-            
-            TestDelegate test = (TestDelegate) methodBuilder.Create(typeof(TestDelegate));
+
+            TestDelegate test = (TestDelegate)methodBuilder.Create(typeof(TestDelegate));
             test.Invoke();
 
             var methodBuilder1 = methodFactory
