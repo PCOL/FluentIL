@@ -8,7 +8,7 @@
     <AssemblyTitle>Fluent.IL</AssemblyTitle>
     <Description>A fluent IL helper library.</Description>
     <PackageReleaseNotes>Initial release</PackageReleaseNotes>
-    <PackageTags>relection emit il</PackageTags>
+    <PackageTags>reflection emit il</PackageTags>
     <PackageProjectUrl>https://github.com/PCOL/FluentIL</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <TargetFramework>netstandard2.0</TargetFramework>
