@@ -53,5 +53,54 @@ namespace FluentILUnitTests
 
             Assert.IsNotNull(obj);
         }
+ 
+        /// <summary>
+        /// New Constructor with one argument.
+        /// </summary>
+        [TestMethod]
+        public void NewConstructor_WithOneArgument()
+        {
+            var typeBuilder = TypeFactory
+                .Default
+                .NewType(Guid.NewGuid().ToString())
+                .Public();
+
+            typeBuilder
+                .NewConstructor()
+                .Public()
+                .Param<int>("arg1")
+                .Body()
+                .Ret();
+
+            var type = typeBuilder.CreateType();
+            var obj = Activator.CreateInstance(type, new object[] { 10 });
+
+            Assert.IsNotNull(obj);
+        }
+
+        /// <summary>
+        /// New Constructor with one argument.
+        /// </summary>
+        [TestMethod]
+        public void NewConstructor_WithTwoArguments()
+        {
+            var typeBuilder = TypeFactory
+                .Default
+                .NewType(Guid.NewGuid().ToString())
+                .Public();
+
+            typeBuilder
+                .NewConstructor()
+                .Public()
+                .Param<int>("arg1")
+                .Param<string>("arg2")
+                .Body()
+                .Ret();
+
+            var type = typeBuilder.CreateType();
+            var obj = Activator.CreateInstance(type, new object[] { 10, "Test" });
+
+            Assert.IsNotNull(obj);
+        }
     }
 }

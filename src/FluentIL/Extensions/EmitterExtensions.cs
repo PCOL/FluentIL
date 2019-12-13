@@ -1222,6 +1222,19 @@ namespace FluentIL
         }
 
         /// <summary>
+        /// Emits a finally block.
+        /// </summary>
+        /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>
+        /// <param name="block">An <see cref="Action{IEmitter}"/>> block.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Finally(this IEmitter emitter, Action<IEmitter> block)
+        {
+            emitter.BeginFinallyBlock();
+            block(emitter);
+            return emitter.EndExceptionBlock();
+        }
+
+        /// <summary>
         /// Starts a fault block.
         /// </summary>
         /// <param name="emitter">An <see cref="IEmitter"/>> instance.</param>

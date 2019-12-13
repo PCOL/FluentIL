@@ -128,14 +128,18 @@ namespace FluentIL.Expressions
                 .MarkLabel(ifLabel)
                 .Nop();
 
+            this.emitter.BeginScope();
             trueAction?.Invoke(this.emitter);
+            this.emitter.EndScope();
 
             this.emitter
                 .Br(endifLabel)
                 .MarkLabel(elseLabel)
                 .Nop();
 
+            this.emitter.BeginScope();
             falseAction?.Invoke(this.emitter);
+            this.emitter.EndScope();
 
             this.emitter
                 .MarkLabel(endifLabel)
