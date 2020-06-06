@@ -15,6 +15,11 @@ namespace FluentIL
         GenericParameterAttributes Attributes { get; set; }
 
         /// <summary>
+        /// Gets the generic parameters name.
+        /// </summary>
+        string ParameterName { get; }
+
+        /// <summary>
         /// Sets the base type that a type must inherit in order to be substituted for the type parameter.
         /// </summary>
         /// <typeparam name="T">The base type.</typeparam>
@@ -78,6 +83,6 @@ namespace FluentIL
         /// Defines the generic parameter.
         /// </summary>
         /// <returns>The <see cref="GenericTypeParameterBuilder"/> instance.</returns>
-        GenericTypeParameterBuilder Define();
+        Type AsType();
     }
 }

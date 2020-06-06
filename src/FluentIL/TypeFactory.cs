@@ -150,8 +150,8 @@ namespace FluentIL
             return this.moduleBuilder.GetMethod(methodName);
         }
 
-                /// <summary>
-        /// Gets a type by name from the current <see cref="AppDomain"/>.
+        /// <summary>
+        /// Gets a type by name.
         /// </summary>
         /// <param name="typeName">The name of the type.</param>
         /// <param name="dynamicOnly">Optional value indicating whether only dynamic assemblies should be checked or not.</param>

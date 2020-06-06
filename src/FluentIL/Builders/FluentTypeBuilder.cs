@@ -93,6 +93,9 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc />
+        public string TypeName => this.typeName;
+
+        /// <inheritdoc />
         public TypeAttributes TypeAttributes { get; set; }
 
         /// <inheritdoc />
@@ -123,12 +126,20 @@ namespace FluentIL.Builders
         {
             this.ThrowIfAlreadyBuilt();
 
+#if NETSTANDARD1_6
+            if (baseType.GetTypeInfo().IsInterface == true)
+#else
             if (baseType.IsInterface == true)
+#endif
             {
                 throw new InvalidOperationException("Type cannot be an interface.");
             }
 
+#if NETSTANDARD1_6
+            if (baseType.GetTypeInfo().IsSealed == true)
+#else
             if (baseType.IsSealed == true)
+#endif
             {
                 throw new InvalidOperationException("Type cannot inherit from a sealed type.");
             }
@@ -148,7 +159,11 @@ namespace FluentIL.Builders
         {
             this.ThrowIfAlreadyBuilt();
 
+#if NETSTANDARD1_6
+            if (interfaceType.GetTypeInfo().IsInterface == false)
+#else
             if (interfaceType.IsInterface == false)
+#endif
             {
                 throw new InvalidOperationException("Type must be an interface.");
             }
@@ -167,8 +182,9 @@ namespace FluentIL.Builders
                 required,
                 optional) =>
                 {
-                    return this
-                        .Define()
+                    var type = this.Define();
+
+                    return type
                         .DefineConstructor(
                             attrs,
                             calling,
@@ -222,6 +238,63 @@ namespace FluentIL.Builders
                     .DefineField(
                         name,
                         type,
+                        requiredCustomModifiers,
+                        optionalCustomModifiers,
+                        fieldAttributes);
+            });
+
+            this.actions.Add(() => fieldBuilder.Define());
+            return fieldBuilder;
+        }
+
+        /// <inheritdoc />
+        public IFieldBuilder NewField(string fieldName, Type fieldType, params IGenericParameterBuilder[] genericParameters)
+        {
+            if (fieldType.IsConstructedGenericType == true)
+            {
+                throw new ArgumentException("Must be generic type definition", nameof(fieldType));
+            }
+
+            var fieldBuilder = new FluentFieldBuilder(
+                fieldName,
+                fieldType,
+                (name,
+                type,
+                requiredCustomModifiers,
+                optionalCustomModifiers,
+                fieldAttributes) =>
+            {
+                return this
+                    .Define()
+                    .DefineField(
+                        name,
+                        type.MakeGenericType(genericParameters.Select(g => g.AsType()).ToArray()),
+                        requiredCustomModifiers,
+                        optionalCustomModifiers,
+                        fieldAttributes);
+            });
+
+            this.actions.Add(() => fieldBuilder.Define());
+            return fieldBuilder;
+        }
+
+        /// <inheritdoc />
+        public IFieldBuilder NewField(string fieldName, IGenericParameterBuilder genericParameterBuilder)
+        {
+            var fieldBuilder = new FluentFieldBuilder(
+                fieldName,
+                null,
+                (name,
+                type,
+                requiredCustomModifiers,
+                optionalCustomModifiers,
+                fieldAttributes) =>
+            {
+                return this
+                    .Define()
+                    .DefineField(
+                        name,
+                        genericParameterBuilder.AsType(),
                         requiredCustomModifiers,
                         optionalCustomModifiers,
                         fieldAttributes);
@@ -370,7 +443,7 @@ namespace FluentIL.Builders
         public IGenericParameterBuilder NewGenericParameter(string parameterName)
         {
             this.genericParameters = this.genericParameters ?? new List<FluentGenericParameterBuilder>();
-            var builder = new FluentGenericParameterBuilder(parameterName, null);
+            var builder = new FluentGenericParameterBuilder(parameterName);
             this.genericParameters.Add(builder);
             return builder;
         }

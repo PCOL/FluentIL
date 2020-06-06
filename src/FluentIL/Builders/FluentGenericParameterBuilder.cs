@@ -26,7 +26,7 @@ namespace FluentIL.Builders
         /// <param name="defineFunc">The builder action.</param>
         public FluentGenericParameterBuilder(
             string parameterName,
-            Func<string, GenericTypeParameterBuilder> defineFunc)
+            Func<string, GenericTypeParameterBuilder> defineFunc = null)
         {
             this.ParameterName = parameterName;
             this.define = defineFunc;
@@ -40,7 +40,7 @@ namespace FluentIL.Builders
         /// <summary>
         /// Gets the parameter builder.
         /// </summary>
-        internal GenericTypeParameterBuilder ParameterBuilder { get; private set; }
+        internal GenericTypeParameterBuilder ParameterBuilder => this.builder;
 
         /// <inheritdoc />
         public GenericParameterAttributes Attributes { get; set; }
@@ -67,7 +67,11 @@ namespace FluentIL.Builders
         /// <inheritdoc />
         public IGenericParameterBuilder InterfaceType(Type interfaceType)
         {
+#if NETSTANDARD1_6
+            if (interfaceType.GetTypeInfo().IsInterface == false)
+#else
             if (interfaceType.IsInterface == false)
+#endif
             {
                 throw new InvalidOperationException("Type must be an interface");
             }
@@ -131,18 +135,11 @@ namespace FluentIL.Builders
 
         public Type AsType()
         {
+#if NETSTANDARD2_0
+            return this.builder;
+#else
             return this.builder.AsType();
-        }
-
-        /// <inheritdoc />
-        public GenericTypeParameterBuilder Define()
-        {
-            if (this.ParameterBuilder == null)
-            {
-                this.ParameterBuilder = this.define(this.ParameterName);
-            }
-
-            return this.ParameterBuilder;
+#endif
         }
     }
 }

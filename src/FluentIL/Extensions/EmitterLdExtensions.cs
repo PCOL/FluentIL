@@ -17,8 +17,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdStr(this IEmitter emitter, string value)
         {
-            emitter.Emit(OpCodes.Ldstr, value);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldstr, value);
         }
 
         /// <summary>
@@ -29,8 +28,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdLoc(this IEmitter emitter, ILocal local)
         {
-            emitter.Emit(OpCodes.Ldloc, local);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloc, local);
         }
 
         /// <summary>
@@ -41,8 +39,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdLocS(this IEmitter emitter, ILocal local)
         {
-            emitter.Emit(OpCodes.Ldloc_S, local);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloc_S, local);
         }
 
         /// <summary>
@@ -52,8 +49,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdLoc0(this IEmitter emitter)
         {
-            emitter.Emit(OpCodes.Ldloc_0);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloc_0);
         }
 
         /// <summary>
@@ -63,8 +59,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdLoc1(this IEmitter emitter)
         {
-            emitter.Emit(OpCodes.Ldloc_1);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloc_1);
         }
 
         /// <summary>
@@ -74,8 +69,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdLoc2(this IEmitter emitter)
         {
-            emitter.Emit(OpCodes.Ldloc_2);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloc_2);
         }
 
         /// <summary>
@@ -85,8 +79,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/>.</returns>
         public static IEmitter LdLoc3(this IEmitter emitter)
         {
-            emitter.Emit(OpCodes.Ldloc_3);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloc_3);
         }
 
         /// <summary>
@@ -97,8 +90,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocA(this IEmitter emitter, ILocal local)
         {
-            emitter.LdLocA(local.LocalIndex);
-            return emitter;
+            return emitter.LdLocA(local.LocalIndex);
         }
 
         /// <summary>
@@ -109,8 +101,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocA(this IEmitter emitter, int index)
         {
-            emitter.Emit(OpCodes.Ldloca, Convert.ToInt16(index));
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloca, Convert.ToInt16(index));
         }
 
         /// <summary>
@@ -121,14 +112,17 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocAS(this IEmitter emitter, ILocal local)
         {
-            int index = local.LocalIndex;
-            if (index > 255)
-            {
-                throw new InvalidProgramException("Local index greater than 255 so short form cannot be used");
-            }
+            return emitter.Defer(
+                (e) =>
+                {
+                    int index = local.LocalIndex;
+                    if (index > 255)
+                    {
+                        throw new InvalidProgramException("Local index greater than 255 so short form cannot be used");
+                    }
 
-            emitter.LdLocAS(Convert.ToByte(index));
-            return emitter;
+                    e.LdLocAS(Convert.ToByte(index));
+                });
         }
 
         /// <summary>
@@ -139,8 +133,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdLocAS(this IEmitter emitter, byte index)
         {
-            emitter.Emit(OpCodes.Ldloca, index);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldloca_S, index);
         }
 
         /// <summary>
@@ -151,8 +144,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdFld(this IEmitter emitter, FieldInfo field)
         {
-            emitter.Emit(OpCodes.Ldfld, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldfld, field);
         }
 
         /// <summary>
@@ -163,8 +155,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdFld(this IEmitter emitter, IFieldBuilder field)
         {
-            emitter.Emit(OpCodes.Ldfld, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldfld, field);
         }
 
         /// <summary>
@@ -175,8 +166,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdFlda(this IEmitter emitter, FieldBuilder field)
         {
-            emitter.Emit(OpCodes.Ldflda, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldflda, field);
         }
 
         /// <summary>
@@ -187,8 +177,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdFlda(this IEmitter emitter, IFieldBuilder field)
         {
-            emitter.Emit(OpCodes.Ldflda, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldflda, field);
         }
 
         /// <summary>
@@ -199,8 +188,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdsFld(this IEmitter emitter, IFieldBuilder field)
         {
-            emitter.Emit(OpCodes.Ldsfld, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldsfld, field);
         }
 
         /// <summary>
@@ -211,8 +199,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdsFld(this IEmitter emitter, FieldBuilder field)
         {
-            emitter.Emit(OpCodes.Ldsfld, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldsfld, field);
         }
 
         /// <summary>
@@ -223,8 +210,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdsFlda(this IEmitter emitter, IFieldBuilder field)
         {
-            emitter.Emit(OpCodes.Ldsflda, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldsflda, field);
         }
 
         /// <summary>
@@ -235,8 +221,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdsFlda(this IEmitter emitter, FieldBuilder field)
         {
-            emitter.Emit(OpCodes.Ldsflda, field);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldsflda, field);
         }
 
         /// <summary>
@@ -247,8 +232,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdArg(this IEmitter emitter, int index)
         {
-            emitter.Emit(OpCodes.Ldarg, index);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldarg, index);
         }
 
         /// <summary>
@@ -258,8 +242,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdArg0(this IEmitter emitter)
         {
-            emitter.Emit(OpCodes.Ldarg_0);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldarg_0);
         }
 
         /// <summary>
@@ -269,8 +252,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdArg1(this IEmitter emitter)
         {
-            emitter.Emit(OpCodes.Ldarg_1);
-            return emitter;
+            return emitter.Emit(OpCodes.Ldarg_1);
         }
 
         /// <summary>
@@ -496,7 +478,11 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdInd(this IEmitter emitter, Type type)
         {
+#if NETSTANDARD1_6
             switch (Type.GetTypeCode(type))
+#else
+            switch (Type.GetTypeCode(type))
+#endif
             {
                 case TypeCode.Boolean:
                 case TypeCode.SByte:

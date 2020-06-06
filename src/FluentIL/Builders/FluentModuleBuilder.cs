@@ -54,7 +54,11 @@ namespace FluentIL.Builders
         /// <inheritdoc />
         public MethodInfo GetMethod(string methodName)
         {
+#if NETSTANDARD1_6
+            return this.moduleBuilder.GetType().GetMethod(methodName);
+#else
             return this.moduleBuilder.GetMethod(methodName);
+#endif
         }
     }
 }

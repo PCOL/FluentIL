@@ -39,6 +39,15 @@ namespace FluentIL
         /// <summary>
         /// Defines a constructor parameter.
         /// </summary>
+        /// <param name="genericParameter">The parameters generic type.</param>
+        /// <param name="parameterName">The name of the parameter.</param>
+        /// <param name="attrs">The parameters attributes.</param>
+        /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
+        IConstructorBuilder Param(IGenericParameterBuilder genericParameter, string parameterName, ParameterAttributes attrs = ParameterAttributes.None);
+
+        /// <summary>
+        /// Defines a constructor parameter.
+        /// </summary>
         /// <param name="action">Parameter builder action.</param>
         /// <returns>The <see cref="IConstructorBuilder"/> instance.</returns>
         IConstructorBuilder Param(Action<IParameterBuilder> action);

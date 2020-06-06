@@ -5,6 +5,8 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
+    using System.Threading.Tasks;
     using FluentIL;
 
     /// <summary>
@@ -40,7 +42,7 @@
         /// <param name="args">Program arguments.</param>
         public static void Main(string[] args)
         {
-            FluentIL.DebugOutput.Output = new ConsoleOutput();
+            ////FluentIL.DebugOutput.Output = new ConsoleOutput();
 
             IfExample();
             WhileExample();

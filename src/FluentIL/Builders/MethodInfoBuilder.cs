@@ -65,8 +65,11 @@ namespace FluentIL.Builders
         /// <returns>The <see cref="MethodInfoBuilder"/> instance.</returns>
         public MethodInfoBuilder HasMetadataToken(int metadataToken)
         {
+#if NETSTANDARD1_6
+#else
             this.methods = this.methods
                 .Where(m => m.MetadataToken == metadataToken);
+#endif
 
             return this;
         }
@@ -107,7 +110,11 @@ namespace FluentIL.Builders
                 if (types[i] != null)
                 {
                     Type parmType = parms[i].ParameterType;
+#if NETSTANDARD1_6
+                    if (types[i].GetTypeInfo().IsGenericTypeDefinition == true)
+#else
                     if (types[i].IsGenericTypeDefinition == true)
+#endif
                     {
                         parmType = parmType.GetGenericTypeDefinition();
                     }

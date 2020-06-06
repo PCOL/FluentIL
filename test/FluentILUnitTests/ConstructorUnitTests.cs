@@ -53,7 +53,7 @@ namespace FluentILUnitTests
 
             Assert.IsNotNull(obj);
         }
- 
+
         /// <summary>
         /// New Constructor with one argument.
         /// </summary>

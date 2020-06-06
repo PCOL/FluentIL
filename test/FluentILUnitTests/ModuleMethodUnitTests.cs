@@ -1,5 +1,6 @@
 namespace FluentILUnitTests
 {
+    using System;
     using System.Reflection;
     using System.Reflection.Emit;
     using FluentIL;
@@ -31,15 +32,18 @@ namespace FluentILUnitTests
                     .Add()
                     .Ret());
 
+            addMethodBuilder.Define();
+
             TypeFactory
                 .Default
                 .CreateGlobalFunctions();
 
-            var method = TypeFactory
+            var methodInfo = TypeFactory
                 .Default
                 .GetMethod("Add");
 
-            var result = method.Invoke(null, new object[] { 10, 20 });
+            var method = (Func<int, int, int>)methodInfo.CreateDelegate(typeof(Func<int, int, int>));
+            var result = method(10, 20);
 
             Assert.AreEqual(30, (int)result);
         }

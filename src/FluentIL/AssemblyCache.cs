@@ -4,8 +4,10 @@ namespace FluentIL
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+#if NETSTANDARD1_6
     using Microsoft.DotNet.InternalAbstractions;
     using Microsoft.Extensions.DependencyModel;
+#endif
 
     /// <summary>
     ///  Represents a cache of assemblies in the current application.
@@ -39,13 +41,16 @@ namespace FluentIL
         /// <returns>A list of assemblies.</returns>
         public static IEnumerable<Assembly> GetAssemblies(bool dynamicOnly = false)
         {
+#if NETSTANDARD2_0
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+#elif NETSTANDARD1_6
             var runtimeId = RuntimeEnvironment.GetRuntimeIdentifier();
-            var compiled =
+            var assemblies =
                 from lib in DependencyContext.Default.GetRuntimeAssemblyNames(runtimeId)
                 let ass = Assembly.Load(lib)
                 select ass;
-
-            return FilterAssemblies(compiled, dynamicOnly);
+#endif
+            return FilterAssemblies(assemblies, dynamicOnly);
         }
 
         private static IEnumerable<Assembly> FilterAssemblies(IEnumerable<Assembly> list, bool dynamicOnly)

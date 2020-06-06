@@ -13,7 +13,7 @@ namespace FluentIL.Emitters
     /// IL to be written to a <see cref="IDebugOutput"/> implemenation.
     /// </summary>
     internal class DebugEmitter
-        : IEmitter
+        : EmitterBase
     {
         /// <summary>
         /// The <see cref="IEmitter"/> to make the actual call to.
@@ -49,7 +49,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public int ILOffset
+        public override int ILOffset
         {
             get
             {
@@ -58,7 +58,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter BeginCatchBlock(Type exceptionType)
+        public override IEmitter BeginCatchBlock(Type exceptionType)
         {
             this.emitter?.BeginCatchBlock(exceptionType);
 
@@ -68,7 +68,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter BeginExceptFilterBlock()
+        public override IEmitter BeginExceptFilterBlock()
         {
             this.emitter?.BeginExceptFilterBlock();
 
@@ -78,7 +78,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter BeginExceptionBlock(out ILabel label)
+        public override IEmitter BeginExceptionBlock(out ILabel label)
         {
             this.emitter?.BeginExceptionBlock(out label);
 
@@ -89,14 +89,14 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter BeginExceptionBlock(ILabel label)
+        public override IEmitter BeginExceptionBlock(ILabel label)
         {
             this.emitter?.BeginExceptionBlock(label);
             return this;
         }
 
         /// <inheritdoc/>
-        public IEmitter BeginFaultBlock()
+        public override IEmitter BeginFaultBlock()
         {
             this.emitter?.BeginFaultBlock();
 
@@ -106,7 +106,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter BeginFinallyBlock()
+        public override IEmitter BeginFinallyBlock()
         {
             this.emitter?.BeginFinallyBlock();
 
@@ -116,7 +116,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter BeginScope()
+        public override IEmitter BeginScope()
         {
             this.emitter?.BeginScope();
 
@@ -126,25 +126,25 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter DeclareLocal(Type localType, out ILocal local)
+        public override IEmitter DeclareLocal(Type localType, out ILocal local)
         {
             return this.DeclareLocal(localType, Guid.NewGuid().ToString(), false, out local);
         }
 
         /// <inheritdoc/>
-        public IEmitter DeclareLocal(Type localType, string localName, out ILocal local)
+        public override IEmitter DeclareLocal(Type localType, string localName, out ILocal local)
         {
             return this.DeclareLocal(localType, localName, false, out local);
         }
 
         /// <inheritdoc/>
-        public IEmitter DeclareLocal(Type localType, bool pinned, out ILocal local)
+        public override IEmitter DeclareLocal(Type localType, bool pinned, out ILocal local)
         {
             return this.DeclareLocal(localType, Guid.NewGuid().ToString(), pinned, out local);
         }
 
         /// <inheritdoc/>
-        public IEmitter DeclareLocal(Type localType, string localName, bool pinned, out ILocal local)
+        public override IEmitter DeclareLocal(Type localType, string localName, bool pinned, out ILocal local)
         {
             local = null;
             this.emitter?.DeclareLocal(localType, localName, out local);
@@ -153,19 +153,48 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter DeclareLocal(ILocal local)
+        public override IEmitter DeclareLocal(IGenericParameterBuilder genericParameter, out ILocal local)
         {
+            local = null;
+            this.emitter?.DeclareLocal(genericParameter, out local);
+            this.debugOutput.WriteLineColor(ConsoleColor.Yellow, "Local - [{0}] Generic Type)", this.index++);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IEmitter DeclareLocal(Type localGenericTypeDefinition, IGenericParameterBuilder[] genericTypeArgs, out ILocal local)
+        {
+            local = null;
+            this.emitter?.DeclareLocal(localGenericTypeDefinition, genericTypeArgs, out local);
+            this.debugOutput.WriteLineColor(ConsoleColor.Yellow, "Local - [{0}] Generic Type {1}", this.index++, localGenericTypeDefinition.Name);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override IEmitter DeclareLocal(ITypeBuilder typeBuilder, out ILocal local)
+        {
+            local = null;
+            this.emitter?.DeclareLocal(typeBuilder, out local);
+            this.debugOutput.WriteLineColor(ConsoleColor.Yellow, "Local - [{0}] {1}", this.index++, typeBuilder.TypeName);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IEmitter DeclareLocal(ILocal local)
+        {
+            this.emitter?.DeclareLocal(local);
+            this.debugOutput.WriteLineColor(ConsoleColor.Yellow, "Local - [{0}] {1}", this.index++, local.Name);
             return this;
         }
 
          /// <inheritdoc/>
-        public IEmitter DefineLabel(out ILabel label)
+        public override IEmitter DefineLabel(out ILabel label)
         {
             return this.DefineLabel(Guid.NewGuid().ToString(), out label);
         }
 
         /// <inheritdoc/>
-        public IEmitter DefineLabel(string labelName, out ILabel label)
+        public override IEmitter DefineLabel(string labelName, out ILabel label)
         {
             label = null;
             this.emitter?.DefineLabel(labelName, out label);
@@ -173,13 +202,13 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter DefineLabel(ILabel label)
+        public override IEmitter DefineLabel(ILabel label)
         {
             return this;
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, Type type)
+        public override IEmitter Emit(OpCode opcode, Type type)
         {
             this.emitter?.Emit(opcode, type);
 
@@ -187,7 +216,7 @@ namespace FluentIL.Emitters
 
             if (type == null)
             {
-                this.WriteLineError("\t!Null Type!");
+                WriteLineError("\t!Null Type!");
                 return this;
             }
 
@@ -197,7 +226,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, string str)
+        public override IEmitter Emit(OpCode opcode, string str)
         {
             this.emitter?.Emit(opcode, str);
 
@@ -212,7 +241,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, float arg)
+        public override IEmitter Emit(OpCode opcode, float arg)
         {
             this.emitter?.Emit(opcode, arg);
 
@@ -222,7 +251,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, sbyte arg)
+        public override IEmitter Emit(OpCode opcode, sbyte arg)
         {
             this.emitter?.Emit(opcode, arg);
 
@@ -232,7 +261,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, MethodInfo methodInfo)
+        public override IEmitter Emit(OpCode opcode, MethodInfo methodInfo)
         {
             this.emitter?.Emit(opcode, methodInfo);
 
@@ -240,7 +269,7 @@ namespace FluentIL.Emitters
 
             if (methodInfo == null)
             {
-                this.WriteLineError("\t!Null MethodInfo!");
+                WriteLineError("\t!Null MethodInfo!");
                 return this;
             }
 
@@ -249,7 +278,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, FieldInfo field)
+        public override IEmitter Emit(OpCode opcode, FieldInfo field)
         {
             this.emitter?.Emit(opcode, field);
 
@@ -257,7 +286,7 @@ namespace FluentIL.Emitters
 
             if (field == null)
             {
-                this.WriteLineError("\t!Null FieldInfo!");
+                WriteLineError("\t!Null FieldInfo!");
                 return this;
             }
 
@@ -266,13 +295,13 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, IFieldBuilder field)
+        public override IEmitter Emit(OpCode opcode, IFieldBuilder field)
         {
             return this.Emit(opcode, field.Define());
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, ILabel[] labels)
+        public override IEmitter Emit(OpCode opcode, ILabel[] labels)
         {
             this.emitter?.Emit(opcode, labels);
 
@@ -280,7 +309,7 @@ namespace FluentIL.Emitters
 
             if (labels == null)
             {
-                this.WriteLineError("\t!Null ILabel[]!");
+                WriteLineError("\t!Null ILabel[]!");
                 return this;
             }
 
@@ -289,7 +318,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, SignatureHelper signature)
+        public override IEmitter Emit(OpCode opcode, SignatureHelper signature)
         {
             this.emitter?.Emit(opcode, signature);
 
@@ -297,7 +326,7 @@ namespace FluentIL.Emitters
 
             if (signature == null)
             {
-                this.WriteLineError("\t!Null SignatureHelper!");
+                WriteLineError("\t!Null SignatureHelper!");
                 return this;
             }
 
@@ -306,8 +335,10 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, ILocal local)
+        public override IEmitter Emit(OpCode opcode, ILocal local)
         {
+            local = local ?? throw new ArgumentNullException(nameof(local));
+
             this.emitter?.Emit(opcode, local);
 
             int localIndex = local.LocalIndex;
@@ -382,14 +413,14 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, ConstructorInfo con)
+        public override IEmitter Emit(OpCode opcode, ConstructorInfo con)
         {
             this.emitter?.Emit(opcode, con);
             this.OutputOpCode(opcode);
 
             if (con == null)
             {
-                this.WriteLineError("\t!Null ConstructorInfo!");
+                WriteLineError("\t!Null ConstructorInfo!");
                 return this;
             }
 
@@ -398,7 +429,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, long arg)
+        public override IEmitter Emit(OpCode opcode, long arg)
         {
             this.emitter?.Emit(opcode, arg);
             this.OutputOpCode(opcode);
@@ -407,7 +438,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, int arg)
+        public override IEmitter Emit(OpCode opcode, int arg)
         {
             this.emitter?.Emit(opcode, arg);
             this.OutputOpCode(opcode);
@@ -416,7 +447,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, short arg)
+        public override IEmitter Emit(OpCode opcode, short arg)
         {
             this.emitter?.Emit(opcode, arg);
             this.OutputOpCode(opcode);
@@ -425,7 +456,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, double arg)
+        public override IEmitter Emit(OpCode opcode, double arg)
         {
             this.emitter?.Emit(opcode, arg);
             this.OutputOpCode(opcode);
@@ -434,7 +465,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, byte arg)
+        public override IEmitter Emit(OpCode opcode, byte arg)
         {
             this.emitter?.Emit(opcode, arg);
             this.OutputOpCode(opcode);
@@ -443,7 +474,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode)
+        public override IEmitter Emit(OpCode opcode)
         {
             this.emitter?.Emit(opcode);
             this.OutputOpCode(opcode);
@@ -452,7 +483,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Emit(OpCode opcode, ILabel label)
+        public override IEmitter Emit(OpCode opcode, ILabel label)
         {
             this.emitter?.Emit(opcode, label);
             this.OutputOpCode(opcode);
@@ -461,7 +492,31 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter EmitCall(OpCode opcode, MethodInfo methodInfo, Type[] optionalParameterTypes)
+        public override IEmitter EmitCall(OpCode opcode, Func<MethodInfo> action)
+        {
+            this.emitter?.EmitCall(
+                opcode,
+                () =>
+                {
+                    var methodInfo = action();
+                    this.OutputOpCode(opcode);
+                    if (methodInfo == null)
+                    {
+                        this.debugOutput.WriteLine("\tNull Pointer");
+                    }
+                    else
+                    {
+                        this.debugOutput.WriteLine("\t{0})", methodInfo.Name);
+                    }
+
+                    return methodInfo;
+                });
+
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override IEmitter EmitCall(OpCode opcode, MethodInfo methodInfo, Type[] optionalParameterTypes)
         {
             this.emitter?.EmitCall(opcode, methodInfo, optionalParameterTypes);
             this.OutputOpCode(opcode);
@@ -476,7 +531,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter EmitCalli(OpCode opcode, CallingConventions callingConvention, Type returnType, Type[] parameterTypes, Type[] optionalParameterTypes)
+        public override IEmitter EmitCalli(OpCode opcode, CallingConventions callingConvention, Type returnType, Type[] parameterTypes, Type[] optionalParameterTypes)
         {
             this.emitter?.EmitCalli(opcode, callingConvention, returnType, parameterTypes, optionalParameterTypes);
             this.OutputOpCode(opcode);
@@ -485,11 +540,11 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter EmitWriteLine(FieldInfo fld)
+        public override IEmitter EmitWriteLine(FieldInfo fld)
         {
             if (fld == null)
             {
-                this.WriteLineError("\t!Null FieldInfo!");
+                WriteLineError("\t!Null FieldInfo!");
                 return this;
             }
 
@@ -528,7 +583,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter EmitWriteLine(string value)
+        public override IEmitter EmitWriteLine(string value)
         {
             this.LdStr(value);
             MethodInfo method = typeof(Console)
@@ -538,7 +593,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter EmitWriteLine(ILocal local)
+        public override IEmitter EmitWriteLine(ILocal local)
         {
             this.debugOutput.WriteLineColor(
                 ConsoleColor.DarkYellow,
@@ -576,7 +631,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter EndExceptionBlock()
+        public override IEmitter EndExceptionBlock()
         {
             this.emitter?.EndExceptionBlock();
             this.OutputILOffset();
@@ -585,7 +640,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter EndScope()
+        public override IEmitter EndScope()
         {
             this.emitter?.EndScope();
             this.OutputILOffset();
@@ -594,7 +649,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter MarkLabel(ILabel label)
+        public override IEmitter MarkLabel(ILabel label)
         {
             this.emitter?.MarkLabel(label);
             this.debugOutput.WriteLineColor(ConsoleColor.Cyan, "[{0}]", label.Name);
@@ -602,7 +657,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter ThrowException(Type excType)
+        public override IEmitter ThrowException(Type excType)
         {
             this.emitter?.ThrowException(excType);
             this.OutputILOffset();
@@ -611,7 +666,7 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter UsingNamespace(string @namespace)
+        public override IEmitter UsingNamespace(string @namespace)
         {
             this.emitter?.UsingNamespace(@namespace);
             this.OutputILOffset();
@@ -620,10 +675,23 @@ namespace FluentIL.Emitters
         }
 
         /// <inheritdoc/>
-        public IEmitter Comment(string comment)
+        public override IEmitter Comment(string comment)
         {
             this.debugOutput.WriteLineColor(ConsoleColor.Green, "// {0}", comment);
             return this;
+        }
+
+        /// <inheritdoc/>
+        public override IEmitter Defer(Action<IEmitter> action)
+        {
+            action(this);
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public override void EmitIL(ILGenerator generator)
+        {
+            ((EmitterBase)this.emitter)?.EmitIL(generator);
         }
 
         /// <summary>
@@ -643,26 +711,6 @@ namespace FluentIL.Emitters
         {
             this.OutputILOffset();
             this.debugOutput.Write("\t{0}", opcode);
-        }
-
-        /// <summary>
-        /// Outputs an error.
-        /// </summary>
-        /// <param name="format">A format string.</param>
-        /// <param name="args">A list of arguments.</param>
-        private void WriteError(string format, params object[] args)
-        {
-            this.debugOutput.WriteColor(ConsoleColor.Red, format, args);
-        }
-
-        /// <summary>
-        /// Outputs an error.
-        /// </summary>
-        /// <param name="format">A format string.</param>
-        /// <param name="args">A list of arguments.</param>
-        private void WriteLineError(string format, params object[] args)
-        {
-            this.debugOutput.WriteLineColor(ConsoleColor.Red, format, args);
         }
     }
 }

@@ -11,9 +11,13 @@ namespace FluentIL
     public interface ITypeBuilder
     {
         /// <summary>
+        /// Gets the type name.
+        /// </summary>
+        string TypeName { get; }
+
+        /// <summary>
         /// Gets or sets the <see cref="ITypeBuilder"/> attributes.
         /// </summary>
-        /// <returns>The types attributes.</returns>
         TypeAttributes TypeAttributes { get; set; }
 
         /// <summary>
@@ -83,6 +87,23 @@ namespace FluentIL
         /// <param name="fieldType">The fields type.</param>
         /// <returns>The <see cref="IFieldBuilder"/> instance.</returns>
         IFieldBuilder NewField(string fieldName, Type fieldType);
+
+        /// <summary>
+        /// Defines a new field as a generic type of.
+        /// </summary>
+        /// <param name="fieldName">The name of the field.</param>
+        /// <param name="fieldType">The fields generic type definition.</param>
+        /// <param name="genericParameters">An array of generic type parameters.</param>
+        /// <returns>The <see cref="IFieldBuilder"/> instance.</returns>
+        IFieldBuilder NewField(string fieldName, Type fieldType, params IGenericParameterBuilder[] genericParameters);
+
+        /// <summary>
+        /// Defines a new field.
+        /// </summary>
+        /// <param name="fieldName">The name of the field.</param>
+        /// <param name="genericParameter">A generic type parameter.</param>
+        /// <returns>The <see cref="IFieldBuilder"/> instance.</returns>
+        IFieldBuilder NewField(string fieldName, IGenericParameterBuilder genericParameter);
 
         /// <summary>
         /// Defines a new field.

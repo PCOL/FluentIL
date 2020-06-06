@@ -6,6 +6,7 @@ namespace FluentIL.Builders
     using System.Reflection;
     using System.Reflection.Emit;
     using System.Runtime.CompilerServices;
+    using System.Text;
     using FluentIL.Emitters;
 
     /// <summary>
@@ -18,6 +19,11 @@ namespace FluentIL.Builders
         /// A reference to the function that creates the <see cref="MethodBuilder"/>.
         /// </summary>
         private readonly Func<string, MethodAttributes, CallingConventions, Type, Type[], Type[], Type[], Type[][], Type[][], MethodBuilder> defineMethod;
+
+        /// <summary>
+        /// The method body.
+        /// </summary>
+        private readonly EmitterBase body;
 
         /// <summary>
         /// The methods name.
@@ -33,6 +39,16 @@ namespace FluentIL.Builders
         /// The methods return type.
         /// </summary>
         private Type returnType;
+
+        /// <summary>
+        /// The methods generic return type.
+        /// </summary>
+        private IGenericParameterBuilder genericReturnType;
+
+        /// <summary>
+        /// The methods return types generic paramters.
+        /// </summary>
+        private IGenericParameterBuilder[] genericReturnTypes;
 
         /// <summary>
         /// The methods parameters.
@@ -78,6 +94,26 @@ namespace FluentIL.Builders
             this.methodName = methodName;
             this.returnType = typeof(void);
             this.defineMethod = defineMethod;
+            this.body = new DeferredILGeneratorEmitter();
+        }
+
+        /// <summary>
+        /// Gets the return type.
+        /// </summary>
+        internal Type ReturnType
+        {
+            get
+            {
+                if (this.genericReturnType != null)
+                {
+                    return this.genericReturnType.AsType();
+                }
+                else if (this.genericReturnTypes != null)
+                {
+                }
+
+                return this.returnType;
+            }
         }
 
         /// <inheritdoc/>
@@ -86,13 +122,13 @@ namespace FluentIL.Builders
         /// <inheritdoc />
         public IEmitter Body()
         {
-            return this.Define().Body();
+            return this.body;
         }
 
         /// <inheritdoc />
         public IMethodBuilder Body(Action<IEmitter> action)
         {
-            action(this.Define().Body());
+            action(this.body);
             return this;
         }
 
@@ -212,6 +248,23 @@ namespace FluentIL.Builders
         }
 
         /// <inheritdoc/>
+        public IMethodBuilder Returns(IGenericParameterBuilder genericType)
+        {
+            this.ThrowIfDefined();
+            this.genericReturnType = genericType;
+            return this;
+        }
+
+        /// <inheritdoc/>
+        public IMethodBuilder Returns(Type genericTypeDefintion, params IGenericParameterBuilder[] genericTypes)
+        {
+            this.ThrowIfDefined();
+            this.returnType = genericTypeDefintion;
+            this.genericReturnTypes = genericTypes;
+            return this;
+        }
+
+        /// <inheritdoc/>
         public IGenericParameterBuilder NewGenericParameter(string parameterName)
         {
             this.genericParameterBuilders = this.genericParameterBuilders ?? new List<FluentGenericParameterBuilder>();
@@ -313,7 +366,7 @@ namespace FluentIL.Builders
                     this.methodName,
                     this.Attributes,
                     this.callingConvention,
-                    this.returnType,
+                    this.ReturnType,
                     null,
                     null,
                     parameterTypes,
@@ -346,7 +399,7 @@ namespace FluentIL.Builders
 
             DebugOutput.WriteLine(string.Empty);
             DebugOutput.WriteLine("=======================================");
-            DebugOutput.Write($"New Method {this.methodBuilder.Name}");
+            DebugOutput.Write($"{this.Attributes.OutputMethodAttributes()}{this.returnType.Name} {this.methodBuilder.Name}");
             if (this.methodBuilder.IsGenericMethodDefinition == true)
             {
                 DebugOutput.Write($"<{string.Join(", ", this.methodBuilder.GetGenericArguments().Select(t => t.Name))}>");
@@ -356,6 +409,8 @@ namespace FluentIL.Builders
             DebugOutput.WriteLine("Calling Convention: {0}", this.methodBuilder.CallingConvention);
             DebugOutput.WriteLine("Attributes: {0}", this.Attributes);
             DebugOutput.WriteLine(string.Empty);
+
+            this.body.EmitIL(this.methodBuilder.GetILGenerator());
 
             return this.methodBuilder;
         }

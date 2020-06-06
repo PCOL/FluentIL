@@ -267,7 +267,11 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter StInd(this IEmitter emitter, Type type)
         {
+#if NETSTANDARD1_6
             switch (Type.GetTypeCode(type))
+#else
+            switch (Type.GetTypeCode(type))
+#endif
             {
                 case TypeCode.Boolean:
                 case TypeCode.SByte:

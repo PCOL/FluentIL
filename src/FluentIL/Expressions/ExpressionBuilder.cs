@@ -475,11 +475,19 @@ namespace FluentIL.Expressions
             }
 
             MethodInfo compareMethod = null;
+#if NETSTANDARD1_6
+            if (comparisonType != null &&
+                comparisonType.GetTypeInfo().IsClass == true)
+            {
+                compareMethod = comparisonType.GetMethod("op_Equality");
+            }
+#else
             if (comparisonType != null &&
                 comparisonType.IsClass == true)
             {
                 compareMethod = comparisonType.GetMethod("op_Equality", BindingFlags.Public | BindingFlags.Static, null, new[] { comparisonType, comparisonType }, null);
             }
+#endif
 
             switch (expressionType)
             {

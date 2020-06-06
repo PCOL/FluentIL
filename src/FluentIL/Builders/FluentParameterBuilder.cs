@@ -12,6 +12,11 @@ namespace FluentIL.Builders
         : IParameterBuilder
     {
         /// <summary>
+        /// The parameters type.
+        /// </summary>
+        private Type parameterType;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FluentParameterBuilder"/> class.
         /// </summary>
         public FluentParameterBuilder()
@@ -26,15 +31,39 @@ namespace FluentIL.Builders
         /// <param name="attrs">The parameters attributes.</param>
         public FluentParameterBuilder(Type parameterType, string parameterName, ParameterAttributes attrs)
         {
-            this.ParameterType = parameterType;
+            this.parameterType = parameterType;
             this.ParameterName = parameterName;
             this.Attributes = attrs;
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FluentParameterBuilder"/> class.
+        /// </summary>
+        /// <param name="parameterType">The parameters type.</param>
+        /// <param name="parameterName">The parameters name.</param>
+        /// <param name="attrs">The parameters attributes.</param>
+        public FluentParameterBuilder(IGenericParameterBuilder parameterType, string parameterName, ParameterAttributes attrs)
+        {
+            this.GenericParameterType = parameterType;
+            this.ParameterName = parameterName;
+            this.Attributes = attrs;
+        }
+
+        /// <summary>
+        /// Gets the generic type parameter.
+        /// </summary>
+        internal IGenericParameterBuilder GenericParameterType { get; }
+
+        /// <summary>
         /// Gets the parameters type.
         /// </summary>
-        internal Type ParameterType { get; private set; }
+        internal Type ParameterType
+        {
+            get
+            {
+                return this.parameterType ?? this.GenericParameterType.AsType();
+            }
+        }
 
         /// <summary>
         /// Gets the parameters name.
@@ -60,7 +89,7 @@ namespace FluentIL.Builders
         /// <inheritdoc/>
         public IParameterBuilder Type(Type parameterType)
         {
-            this.ParameterType = parameterType;
+            this.parameterType = parameterType;
             return this;
         }
 

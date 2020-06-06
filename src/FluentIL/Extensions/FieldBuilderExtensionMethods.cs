@@ -70,7 +70,7 @@ namespace FluentIL
         /// <returns>The <see cref="IFieldBuilder"/> instance.</returns>
         public static IFieldBuilder Public(this IFieldBuilder builder)
         {
-            builder.FieldAttributes |= FieldAttributes.Public;
+            builder.FieldAttributes = (builder.FieldAttributes & ~FieldAttributes.Private) | FieldAttributes.Public;
             return builder;
         }
 

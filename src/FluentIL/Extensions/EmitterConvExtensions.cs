@@ -261,9 +261,15 @@ namespace FluentIL
                     emitter.LdInd(elementType);
                     emitter.Conv(elementType, targetType, isAddress);
                 }
+#if NETSTANDARD1_6
+                else if (targetType.GetTypeInfo().IsValueType == true)
+                {
+                    if (sourceType.GetTypeInfo().IsValueType == true)
+#else
                 else if (targetType.IsValueType == true)
                 {
                     if (sourceType.IsValueType == true)
+#endif
                     {
                         emitter.EmitConv(targetType);
                     }
@@ -278,7 +284,11 @@ namespace FluentIL
                 }
                 else if (targetType.IsAssignableFrom(sourceType) == true)
                 {
+#if NETSTANDARD1_6
+                    if (sourceType.GetTypeInfo().IsValueType == true)
+#else
                     if (sourceType.IsValueType == true)
+#endif
                     {
                         if (isAddress == true)
                         {

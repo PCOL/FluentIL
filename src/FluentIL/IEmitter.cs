@@ -99,6 +99,31 @@ namespace FluentIL
         /// <summary>
         /// Declares a local.
         /// </summary>
+        /// <param name="genericParameter">A generic parameter.</param>
+        /// <param name="local">A variable to receive the local.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        IEmitter DeclareLocal(IGenericParameterBuilder genericParameter, out ILocal local);
+
+        /// <summary>
+        /// Declares a local.
+        /// </summary>
+        /// <param name="localGenericTypeDefinition">The locals generic type definition.</param>
+        /// <param name="genericParameterArgs">An array of generic parameter args.</param>
+        /// <param name="local">A variable to receive the local.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        IEmitter DeclareLocal(Type localGenericTypeDefinition, IGenericParameterBuilder[] genericParameterArgs, out ILocal local);
+
+        /// <summary>
+        /// Declares a local.
+        /// </summary>
+        /// <param name="typeBuilder">A type builder.</param>
+        /// <param name="local">A variable to receive a local.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        IEmitter DeclareLocal(ITypeBuilder typeBuilder, out ILocal local);
+
+        /// <summary>
+        /// Declares a local.
+        /// </summary>
         /// <param name="local">A local.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter DeclareLocal(ILocal local);
@@ -272,6 +297,14 @@ namespace FluentIL
         /// Emits IL to perform a <see cref="OpCodes.Call"/>.
         /// </summary>
         /// <param name="opcode">The <see cref="OpCodes.Call"/> opcode.</param>
+        /// <param name="action">Action to obtain method to call.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        IEmitter EmitCall(OpCode opcode, Func<MethodInfo> action);
+
+        /// <summary>
+        /// Emits IL to perform a <see cref="OpCodes.Call"/>.
+        /// </summary>
+        /// <param name="opcode">The <see cref="OpCodes.Call"/> opcode.</param>
         /// <param name="methodInfo">The method to call.</param>
         /// <param name="optionalParameterTypes">Optional parameter types.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
@@ -348,5 +381,12 @@ namespace FluentIL
         /// <param name="comment">A comment.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         IEmitter Comment(string comment);
+
+        /// <summary>
+        /// Defers an operation.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        IEmitter Defer(Action<IEmitter> action);
     }
 }

@@ -3,6 +3,7 @@ namespace FluentIL
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -48,7 +49,7 @@ namespace FluentIL
         private static readonly MethodInfo TypeGetType = typeof(Type).GetMethod("GetType", new[] { typeof(string), typeof(bool) });
 
         /// <summary>
-        /// A <see cref="MethodInfo"/> for the <see cref="Type.IsAssignableFrom(Type)"/> method.
+        /// A <see cref="MethodInfo"/> for the 'IsAssignableFrom' method.
         /// </summary>
         private static readonly MethodInfo TypeIsAssignableFrom = typeof(Type).GetMethod("IsAssignableFrom");
 
@@ -72,6 +73,17 @@ namespace FluentIL
         public static IEmitter Newobj(this IEmitter emitter, ConstructorInfo ctor)
         {
             return emitter.Emit(OpCodes.Newobj, ctor);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Newobj"/>.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="ctorBuilder">A constructor builder.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Newobj(this IEmitter emitter, IConstructorBuilder ctorBuilder)
+        {
+            return emitter.Emit(OpCodes.Newobj, ctorBuilder.Define());
         }
 
         /// <summary>
@@ -162,7 +174,11 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter SizeOf(this IEmitter emitter, Type valueType)
         {
+#if NETSTANDARD1_6
+            if (valueType.GetTypeInfo().IsValueType == false)
+#else
             if (valueType.IsValueType == false)
+#endif
             {
                 throw new InvalidProgramException("SizeOf instruction must take a value type");
             }
@@ -189,6 +205,21 @@ namespace FluentIL
         public static IEmitter CastClass<T>(this IEmitter emitter)
         {
             return emitter.CastClass(typeof(T));
+        }
+
+        /// <summary>
+        /// Attempts to cast an object passed by reference to the specified class.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="genericParameter">The generic type to cast to.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter CastClass(this IEmitter emitter, IGenericParameterBuilder genericParameter)
+        {
+            return emitter.Defer(
+                e =>
+                {
+                    e.CastClass(genericParameter.AsType());
+                });
         }
 
         /// <summary>
@@ -300,7 +331,11 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Box(this IEmitter emitter, Type valueType)
         {
+#if NETSTANDARD1_6
+            if (valueType.GetTypeInfo().IsValueType == false)
+#else
             if (valueType.IsValueType == false)
+#endif
             {
                 throw new InvalidProgramException("Box instruction must take a value type");
             }
@@ -342,7 +377,11 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter Unbox(this IEmitter emitter, Type valueType)
         {
+#if NETSTANDARD1_6
+            if (valueType.GetTypeInfo().IsValueType == false)
+#else
             if (valueType.IsValueType == false)
+#endif
             {
                 throw new InvalidProgramException("Unbox instruction must take a value type");
             }
@@ -370,7 +409,11 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter UnboxAny(this IEmitter emitter, Type valueType)
         {
+#if NETSTANDARD1_6
+            if (valueType.GetTypeInfo().IsValueType == false)
+#else
             if (valueType.IsValueType == false)
+#endif
             {
                 throw new InvalidProgramException("Unbox instruction must take a value type");
             }
@@ -428,11 +471,30 @@ namespace FluentIL
         /// Initializes each field of the value type at a specified address to a null reference or a 0 of the appropriate primitive type.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="genericParameter">A generic type.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter InitObj(this IEmitter emitter, IGenericParameterBuilder genericParameter)
+        {
+            return emitter.Defer(
+                e =>
+                {
+                    e.InitObj(genericParameter.AsType());
+                });
+        }
+
+        /// <summary>
+        /// Initializes each field of the value type at a specified address to a null reference or a 0 of the appropriate primitive type.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="valueType">A value type.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter InitObj(this IEmitter emitter, Type valueType)
         {
+#if NETSTANDARD1_6
+            if (valueType.GetTypeInfo().IsValueType == false)
+#else
             if (valueType.IsValueType == false)
+#endif
             {
                 throw new InvalidProgramException("InitObj instruction must take a value type");
             }
@@ -484,14 +546,47 @@ namespace FluentIL
         }
 
         /// <summary>
-        /// Emits IL to load the address of an objects virtual method onto the evaluation stack.
+        /// Emits IL to load the address of an objects method (type native int) onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodInfo">The method to load the address of.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdFunc(this IEmitter emitter, MethodInfo methodInfo)
+        {
+            return emitter.Emit(OpCodes.Ldftn, methodInfo);
+        }
+
+        /// <summary>
+        /// Emits IL to load the address of an objects method (type native int) onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodBuilder">The method to load the address of.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdFunc(this IEmitter emitter, IMethodBuilder methodBuilder)
+        {
+            return emitter.LdFunc(methodBuilder.Define());
+        }
+
+        /// <summary>
+        /// Emits IL to load the address of an objects virtual method (type native int) onto the evaluation stack.
         /// </summary>
         /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
         /// <param name="methodInfo">The method to load the address of.</param>
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter LdVirtFunc(this IEmitter emitter, MethodInfo methodInfo)
         {
-            return emitter.Emit(OpCodes.Ldvirtftn, methodInfo);
+            return emitter.LdVirtFunc(methodInfo);
+        }
+
+        /// <summary>
+        /// Emits IL to load the address of an objects virtual method (type native int) onto the evaluation stack.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodBuilder">The method to load the address of.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter LdVirtFunc(this IEmitter emitter, IMethodBuilder methodBuilder)
+        {
+            return emitter.Emit(OpCodes.Ldvirtftn, methodBuilder.Define());
         }
 
         /// <summary>
@@ -503,6 +598,17 @@ namespace FluentIL
         public static IEmitter Jmp(this IEmitter emitter, MethodInfo methodInfo)
         {
             return emitter.Emit(OpCodes.Jmp, methodInfo);
+        }
+
+        /// <summary>
+        /// Emits the IL to call a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="action">The method to call.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, Func<MethodInfo> action)
+        {
+            return emitter.EmitCall(OpCodes.Call, action);
         }
 
         /// <summary>
@@ -525,6 +631,47 @@ namespace FluentIL
         public static IEmitter Call(this IEmitter emitter, IMethodBuilder method)
         {
             return emitter.Call(method.Define());
+        }
+
+        /// <summary>
+        /// Emits the IL to call a method.
+        /// </summary>
+        /// <typeparam name="T">The type to call.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodName">The method to call.</param>
+        /// <param name="argumentTypes">Optional method argument types.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call<T>(this IEmitter emitter, string methodName, params Type[] argumentTypes)
+        {
+            return emitter.Call(typeof(T), methodName, argumentTypes);
+        }
+
+        /// <summary>
+        /// Emits the IL to call a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="type">The type that implements the method to call.</param>
+        /// <param name="methodName">The name of the method to call.</param>
+        /// <param name="argumentTypes">Optional method argument types.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, Type type, string methodName, params Type[] argumentTypes)
+        {
+            return emitter.Emit(OpCodes.Call, type.GetMethodWithNameAndOptionalTypes(methodName, argumentTypes));
+        }
+
+        /// <summary>
+        /// Emits the IL to call a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="type">The type that implements the method to call.</param>
+        /// <param name="methodName">The method to call.</param>
+        /// <param name="genArgs">Generic argument types.</param>
+        /// <param name="argumentTypes">Optional method argument types.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, Type type, string methodName, IEnumerable<IGenericParameterBuilder> genArgs, params Type[] argumentTypes)
+        {
+            var methodInfo = type.GetMethodWithNameAndOptionalTypes(methodName, argumentTypes).MakeGenericMethod(genArgs.Select(g => g.AsType()).ToArray());
+            return emitter.Emit(OpCodes.Call, methodInfo);
         }
 
         /// <summary>
@@ -556,6 +703,27 @@ namespace FluentIL
             }
 
             return emitter.Call(method);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// </summary>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="genericTypeDefinition">A generic type definition.</param>
+        /// <param name="genericTypeArgs">A list of generic type arguments.</param>
+        /// <param name="methodName">The name of the method.</param>
+        /// <param name="argumentTypes">A list of argument types.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call(this IEmitter emitter, Type genericTypeDefinition, IGenericParameterBuilder[] genericTypeArgs, string methodName, Type[] argumentTypes = null)
+        {
+            return emitter.Call(
+                () =>
+                {
+                    var argTypes = genericTypeArgs.Select(t => t.AsType());
+                    var genericType = genericTypeDefinition.MakeGenericType(argTypes.ToArray());
+
+                    return genericTypeDefinition.GetMethodWithNameAndOptionalTypes(methodName, argumentTypes);
+                });
         }
 
         /// <summary>
@@ -826,7 +994,11 @@ namespace FluentIL
                     (index) =>
                     {
                         emitter.LdLoc(locals[index]);
+#if NETSTANDARD1_6
+                        if (locals[index].LocalType.GetTypeInfo().IsValueType == true)
+#else
                         if (locals[index].LocalType.IsValueType == true)
+#endif
                         {
                             emitter.Emit(OpCodes.Box, locals[index].LocalType);
                         }
@@ -1025,7 +1197,11 @@ namespace FluentIL
                         action(emitter, item, () => emitter.Br(loopEnd));
                     });
             }
+#if NETSTANDARD1_6
+            else if (localType.GetTypeInfo().IsGenericType == false ||
+#else
             else if (localType.IsGenericType == false ||
+#endif
                 typeof(IEnumerable<>).MakeGenericType(localType.GetGenericArguments()).IsAssignableFrom(localEnumerable.LocalType) == false)
             {
                 throw new InvalidOperationException("Not a enumerable type");
@@ -1101,8 +1277,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, out ILocal local)
         {
-            emitter.DeclareLocal(typeof(T), out local);
-            return emitter;
+            return emitter.DeclareLocal(typeof(T), out local);
         }
 
         /// <summary>
@@ -1115,8 +1290,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, string localName, out ILocal local)
         {
-            emitter.DeclareLocal(typeof(T), localName, out local);
-            return emitter;
+            return emitter.DeclareLocal(typeof(T), localName, out local);
         }
 
         /// <summary>
@@ -1130,8 +1304,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, string localName, bool pinned, out ILocal local)
         {
-            emitter.DeclareLocal(typeof(T), localName, pinned, out local);
-            return emitter;
+            return emitter.DeclareLocal(typeof(T), localName, pinned, out local);
         }
 
         /// <summary>
@@ -1144,8 +1317,7 @@ namespace FluentIL
         /// <returns>The <see cref="IEmitter"/> instance.</returns>
         public static IEmitter DeclareLocal<T>(this IEmitter emitter, bool pinned, out ILocal local)
         {
-            emitter.DeclareLocal(typeof(T), pinned, out local);
-            return emitter;
+            return emitter.DeclareLocal(typeof(T), pinned, out local);
         }
 
         /// <summary>

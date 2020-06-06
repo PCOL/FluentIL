@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/test/FluentILUnitTests/bin/Debug/netcoreapp2.0/FluentILUnitTests.dll",
+            "program": "${workspaceFolder}/test/FluentILExamples/bin/Debug/netcoreapp2.2/FluentILExamples.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/test/FluentILUnitTests",
+            "cwd": "${workspaceFolder}/test/FluentILExamples",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
             "console": "internalConsole",
             "stopAtEntry": false,

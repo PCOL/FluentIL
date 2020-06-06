@@ -201,6 +201,24 @@
         }
 
         /// <summary>
+        /// Gets a method from a type using the methods name and optional argument type list.
+        /// </summary>
+        /// <param name="type">The type to get the method from.</param>
+        /// <param name="methodName">The method name.</param>
+        /// <param name="argumentTypes">The methods argument types.</param>
+        /// <returns>A method if found; otherwise null.</returns>
+        public static MethodInfo GetMethodWithNameAndOptionalTypes(this Type type, string methodName, params Type[] argumentTypes)
+        {
+            if (argumentTypes != null &&
+                argumentTypes.Any() == true)
+            {
+                return type.GetMethod(methodName, argumentTypes);
+            }
+
+            return type.GetMethod(methodName);
+        }
+
+        /// <summary>
         /// Gets a generic method by name.
         /// </summary>
         /// <param name="type">The type to search for the method.</param>
@@ -237,9 +255,15 @@
                     {
                         methodInfos = a.GetTypes()
                             .Where(t =>
+#if NETSTANDARD1_6
+                                t.GetTypeInfo().IsSealed &&
+                                !t.GetTypeInfo().IsGenericType &&
+                                !t.IsNested)
+#else
                                 t.IsSealed &&
                                 !t.IsGenericType &&
                                 !t.IsNested)
+#endif
                             .SelectMany(
                                 (t) =>
                                 {
@@ -422,6 +446,15 @@
                 // Check for extension methods
                 bindingFlags |= BindingFlags.Static;
 
+#if NETSTANDARD1_6
+                var extensionTypes = type.GetTypeInfo()
+                    .Assembly
+                    .GetTypes()
+                    .Where(t =>
+                        t.GetTypeInfo().IsSealed &&
+                        !t.GetTypeInfo().IsGenericType &&
+                        !t.IsNested);
+#else
                 var extensionTypes = type
                     .Assembly
                     .GetTypes()
@@ -429,6 +462,7 @@
                         t.IsSealed &&
                         !t.IsGenericType &&
                         !t.IsNested);
+#endif
 
                 foreach (var extensionType in extensionTypes)
                 {
@@ -551,13 +585,23 @@
             // Has a method been found?
             if (returnValue == null)
             {
+#if NETSTANDARD1_6
+                var extensionMethods = type.GetTypeInfo()
+#else
                 var extensionMethods = type
+#endif
                     .Assembly
                     .GetTypes()
                     .Where(t =>
+#if NETSTANDARD1_6
+                        t.GetTypeInfo().IsSealed &&
+                        !t.GetTypeInfo().IsGenericType &&
+                        !t.IsNested)
+#else
                         t.IsSealed &&
                         !t.IsGenericType &&
                         !t.IsNested)
+#endif
                     .SelectMany(
                         t =>
                         {
@@ -584,9 +628,15 @@
                     .GetAssemblies()
                     .SelectMany(a => a.GetTypes()
                         .Where(t =>
+#if NETSTANDARD1_6
+                            t.GetTypeInfo().IsSealed &&
+                            !t.GetTypeInfo().IsGenericType &&
+                            !t.IsNested)
+#else
                             t.IsSealed &&
                             !t.IsGenericType &&
                             !t.IsNested)
+#endif
                         .SelectMany(
                             t =>
                             {
@@ -813,15 +863,24 @@
             // or the special 'T' type, treat as a match
             if (thisType == type ||
                 (thisType.IsGenericParameter == true && type.IsGenericParameter == false) ||
+#if NETSTANDARD1_6
+                (thisType.GetTypeInfo().IsInterface == false && type.GetTypeInfo().IsInterface == true) ||
+                (thisType.GetTypeInfo().IsEnum == true && type.GetTypeInfo().IsEnum == true &&
+#else
                 (thisType.IsInterface == false && type.IsInterface == true) ||
                 (thisType.IsEnum == true && type.IsEnum == true &&
+#endif
                 Enum.GetUnderlyingType(thisType) == Enum.GetUnderlyingType(type)))
             {
                 return true;
             }
 
             // Handle any generic arguments
+#if NETSTANDARD1_6
+            if (thisType.GetTypeInfo().IsGenericType && type.GetTypeInfo().IsGenericType)
+#else
             if (thisType.IsGenericType && type.IsGenericType)
+#endif
             {
                 Type[] thisArguments = thisType.GetGenericArguments();
                 Type[] arguments = type.GetGenericArguments();

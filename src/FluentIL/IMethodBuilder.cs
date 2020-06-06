@@ -56,6 +56,21 @@ namespace FluentIL
         IMethodBuilder Returns(Type returnType);
 
         /// <summary>
+        /// Sets the methods return type.
+        /// </summary>
+        /// <param name="genericType">The return type.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
+        IMethodBuilder Returns(IGenericParameterBuilder genericType);
+
+        /// <summary>
+        /// Sets the methods return type.
+        /// </summary>
+        /// <param name="genericTypeDefinition">A generic type definition.</param>
+        /// <param name="genericTypes">A list of generic type parameters.</param>
+        /// <returns>The <see cref="IMethodBuilder"/> instance.</returns>
+        IMethodBuilder Returns(Type genericTypeDefinition, params IGenericParameterBuilder[] genericTypes);
+
+        /// <summary>
         /// Adds a parameter to the method.
         /// </summary>
         /// <typeparam name="TParam">The parameters type.</typeparam>

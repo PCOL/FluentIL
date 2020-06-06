@@ -41,6 +41,11 @@ namespace FluentIL.Builders
         private MethodImplAttributes methodImplAttributes;
 
         /// <summary>
+        /// The body emitter.
+        /// </summary>
+        private EmitterBase body;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FluentConstructorBuilder"/> class.
         /// </summary>
         /// <param name="define">A constructor definition function.</param>
@@ -49,6 +54,7 @@ namespace FluentIL.Builders
         {
             this.define = define;
             this.callingConvention = CallingConventions.HasThis;
+            this.body = new DeferredILGeneratorEmitter();
         }
 
         /// <summary>
@@ -68,7 +74,7 @@ namespace FluentIL.Builders
         /// <inheritdoc />
         public IEmitter Body()
         {
-            return this.Define().Body();
+            return this.body;
         }
 
         /// <inheritdoc />
@@ -84,6 +90,18 @@ namespace FluentIL.Builders
             this.parameters.Add(
                 new FluentParameterBuilder(
                     parameterType,
+                    parameterName,
+                    attrs));
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IConstructorBuilder Param(IGenericParameterBuilder genericParameterType, string parameterName, ParameterAttributes attrs = ParameterAttributes.None)
+        {
+            this.parameters.Add(
+                new FluentParameterBuilder(
+                    genericParameterType,
                     parameterName,
                     attrs));
 
@@ -132,10 +150,18 @@ namespace FluentIL.Builders
 
             if (this.define != null)
             {
+                DebugOutput.WriteLine("=======================================");
+                DebugOutput.Write($"{this.MethodAttributes.OutputMethodAttributes()}");
+                DebugOutput.WriteLine("ctor({0})", string.Join(", ", this.parameters.Select(p => $"{p.ParameterType} {p.ParameterName}")));
+                DebugOutput.WriteLine("Calling Convention: {0}", this.callingConvention);
+                DebugOutput.WriteLine(string.Empty);
+
+                var parms = this.parameters.Select(p => p.ParameterType).ToArray();
+
                 this.ctor = this.define(
                     this.MethodAttributes,
                     this.callingConvention,
-                    this.parameters.Select(p => p.ParameterType).ToArray(),
+                    parms,
                     null,
                     null);
 
@@ -146,16 +172,13 @@ namespace FluentIL.Builders
                 }
 
                 this.ctor.SetImplementationFlags(this.methodImplAttributes);
+
+                this.body.EmitIL(this.ctor.GetILGenerator());
             }
             else if (this.defineDefault != null)
             {
                 this.ctor = this.defineDefault(this.MethodAttributes);
             }
-
-            DebugOutput.WriteLine("=======================================");
-            DebugOutput.WriteLine("New Constructor ({0})", string.Join(", ", this.parameters.Select(p => $"{p.ParameterType} {p.ParameterName}")));
-            DebugOutput.WriteLine("Calling Convention: {0}", this.callingConvention);
-            DebugOutput.WriteLine(string.Empty);
 
             return this.ctor;
         }

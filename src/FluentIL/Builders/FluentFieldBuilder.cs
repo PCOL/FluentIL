@@ -16,11 +16,6 @@ namespace FluentIL.Builders
         private readonly Func<string, Type, Type[], Type[], FieldAttributes, FieldBuilder> defineFunc;
 
         /// <summary>
-        /// The field attributes.
-        /// </summary>
-        private FieldAttributes fieldAttributes = FieldAttributes.Private;
-
-        /// <summary>
         /// The field builder.
         /// </summary>
         private FieldBuilder fieldBuilder;
@@ -68,11 +63,11 @@ namespace FluentIL.Builders
                     this.FieldType,
                     null,
                     null,
-                    this.fieldAttributes);
+                    this.FieldAttributes);
 
                 DebugOutput.WriteLine("=======================================");
                 DebugOutput.WriteLine("New Field '{0}' [{1}]", this.FieldName, this.FieldType);
-                DebugOutput.WriteLine("Field Attributes: {0}", this.fieldAttributes);
+                DebugOutput.WriteLine("Field Attributes: {0}", this.FieldAttributes);
                 DebugOutput.WriteLine(string.Empty);
             }
 
