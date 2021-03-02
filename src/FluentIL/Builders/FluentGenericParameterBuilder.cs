@@ -135,10 +135,10 @@ namespace FluentIL.Builders
 
         public Type AsType()
         {
-#if NETSTANDARD2_0
-            return this.builder;
-#else
+#if NETSTANDARD1_6
             return this.builder.AsType();
+#else
+            return this.builder;
 #endif
         }
     }

@@ -41,14 +41,14 @@ namespace FluentIL
         /// <returns>A list of assemblies.</returns>
         public static IEnumerable<Assembly> GetAssemblies(bool dynamicOnly = false)
         {
-#if NETSTANDARD2_0
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-#elif NETSTANDARD1_6
+#if NETSTANDARD1_6
             var runtimeId = RuntimeEnvironment.GetRuntimeIdentifier();
             var assemblies =
                 from lib in DependencyContext.Default.GetRuntimeAssemblyNames(runtimeId)
                 let ass = Assembly.Load(lib)
                 select ass;
+#else
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 #endif
             return FilterAssemblies(assemblies, dynamicOnly);
         }
