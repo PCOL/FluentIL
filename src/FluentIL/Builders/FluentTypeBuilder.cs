@@ -331,7 +331,7 @@ namespace FluentIL.Builders
         {
             return this.NewMethod(methodName)
                 .MethodAttributes(methodAttributes)
-                .CallingConvention(CallingConventions.HasThis)
+                .CallingConvention(callingConvention)
                 .Returns(returnType);
         }
 
