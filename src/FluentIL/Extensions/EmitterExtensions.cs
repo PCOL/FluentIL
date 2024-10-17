@@ -4,7 +4,6 @@ namespace FluentIL
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Reflection;
     using System.Reflection.Emit;
 
@@ -703,6 +702,89 @@ namespace FluentIL
             }
 
             return emitter.Call(method);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// </summary>
+        /// <typeparam name="TMethod">The type that implements the method.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodName">The name method to call.</param>
+        /// <param name="locals">Method parameters as local variables.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call<TMethod>(this IEmitter emitter, string methodName, params ILocal[] locals)
+        {
+            return emitter.Call<TMethod>(methodName, BindingFlags.Public | BindingFlags.Instance, Type.EmptyTypes, locals);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// </summary>
+        /// <typeparam name="TMethod">The type that implements the method.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodName">The name method to call.</param>
+        /// <param name="bindingFlags">The binding flags.</param>
+        /// <param name="genericArgTypes">A list of generic argument types.</param>
+        /// <param name="locals">Method parameters as local variables.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call<TMethod>(this IEmitter emitter, string methodName, BindingFlags bindingFlags, Type[] genericArgTypes, params ILocal[] locals)
+        {
+            var paramTypes = locals != null ? locals.Select(l => l.LocalType).ToArray() : Type.EmptyTypes;
+            var method = typeof(TMethod).GetMethod(methodName, bindingFlags, genericArgTypes ?? Type.EmptyTypes, paramTypes);
+            if (method == null)
+            {
+                throw new MissingMethodException($"Cannot find method {methodName}");
+            }
+
+            return emitter.Call(method, locals);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// </summary>
+        /// <typeparam name="TMethod">The type that implements the method.</typeparam>
+        /// <typeparam name="TArg">The methods generic argument type.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodName">The name method to call.</param>
+        /// <param name="locals">Method parameters as local variables.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call<TMethod, TArg>(this IEmitter emitter, string methodName, params ILocal[] locals)
+        {
+            var genericArgTypes = new[] { typeof(TArg) };
+            return emitter.Call<TMethod>(methodName, BindingFlags.Public | BindingFlags.Instance, genericArgTypes, locals);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// </summary>
+        /// <typeparam name="TMethod">The type that implements the method.</typeparam>
+        /// <typeparam name="TArg1">The methods first generic argument type.</typeparam>
+        /// <typeparam name="TArg2">The methods second generic argument type.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodName">The name method to call.</param>
+        /// <param name="locals">Method parameters as local variables.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call<TMethod, TArg1, TArg2>(this IEmitter emitter, string methodName, params ILocal[] locals)
+        {
+            var genericArgTypes = new[] { typeof(TArg1), typeof(TArg2) };
+            return emitter.Call<TMethod>(methodName, BindingFlags.Public | BindingFlags.Instance, genericArgTypes, locals);
+        }
+
+        /// <summary>
+        /// Emits a <see cref="OpCodes.Call"/> to a method.
+        /// </summary>
+        /// <typeparam name="TMethod">The type that implements the method.</typeparam>
+        /// <typeparam name="TArg1">The methods first generic argument type.</typeparam>
+        /// <typeparam name="TArg2">The methods second generic argument type.</typeparam>
+        /// <typeparam name="TArg3">The methods third generic argument type.</typeparam>
+        /// <param name="emitter">A <see cref="IEmitter"/> instance.</param>
+        /// <param name="methodName">The name method to call.</param>
+        /// <param name="locals">Method parameters as local variables.</param>
+        /// <returns>The <see cref="IEmitter"/> instance.</returns>
+        public static IEmitter Call<TMethod, TArg1, TArg2, TArg3>(this IEmitter emitter, string methodName, params ILocal[] locals)
+        {
+            var genericArgTypes = new[] { typeof(TArg1), typeof(TArg2), typeof(TArg3) };
+            return emitter.Call<TMethod>(methodName, BindingFlags.Public | BindingFlags.Instance, genericArgTypes, locals);
         }
 
         /// <summary>

@@ -228,8 +228,22 @@
         /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
         public static MethodInfo GetMethod(this Type type, string name, int genericArgumentCount, params Type[] argumentTypes)
         {
+            return type.GetMethod(name, BindingFlags.Public | BindingFlags.Instance, genericArgumentCount, argumentTypes);
+        }
+
+        /// <summary>
+        /// Gets a method by name.
+        /// </summary>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The name of the method.</param>
+        /// <param name="bindingFlags">The binding flags.</param>
+        /// <param name="genericArgumentCount">The number of generic arguments expected.</param>
+        /// <param name="argumentTypes">An array of argument types.</param>
+        /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
+        public static MethodInfo GetMethod(this Type type, string name, BindingFlags bindingFlags, int genericArgumentCount, params Type[] argumentTypes)
+        {
             IEnumerable<MethodInfo> methodInfos = type
-                .GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(m => m.Name == name);
+                .GetMethods(bindingFlags).Where(m => m.Name == name);
 
             MethodInfo methodInfo = methodInfos
                 .Where(m => m.Name == name)
@@ -248,50 +262,96 @@
 
             if (methodInfo == null)
             {
-                // Check for extension methods
-                foreach (var a in AssemblyCache.GetAssemblies())
-                {
-                    if (a.IsDynamic == false)
+                methodInfo = type.GetMethod(name, methodInfos, bindingFlags, argumentTypes);
+            }
+
+            return methodInfo;
+        }
+
+        /// <summary>
+        /// Gets a method by name.
+        /// </summary>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The name of the method.</param>
+        /// <param name="bindingFlags">The binding flags.</param>
+        /// <param name="genericArgTypes">An array of generic argument types.</param>
+        /// <param name="argumentTypes">An array of argument types.</param>
+        /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
+        public static MethodInfo GetMethod(this Type type, string name, BindingFlags bindingFlags, Type[] genericArgTypes, params Type[] argumentTypes)
+        {
+            IEnumerable<MethodInfo> methodInfos = type
+                .GetMethods(bindingFlags).Where(m => m.Name == name);
+
+            MethodInfo methodInfo = methodInfos
+                .Where(m => m.Name == name)
+                .Select(
+                    m => new
                     {
-                        methodInfos = a.GetTypes()
-                            .Where(t =>
+                        Method = m,
+                        Parms = m.GetParameters(),
+                        GenericArgs = m.GetGenericArguments()
+                    })
+                .Where(x =>
+                    TypesMatch(x.GenericArgs, genericArgTypes) &&
+                    ParameterTypesMatch(x.Parms, argumentTypes))
+                .Select(x => x.Method)
+                .FirstOrDefault();
+
+            if (methodInfo == null)
+            {
+                methodInfo = type.GetMethod(name, methodInfos, bindingFlags, argumentTypes);
+            }
+
+            return methodInfo;
+        }
+
+        private static MethodInfo GetMethod(this Type type, string name, IEnumerable<MethodInfo> methodInfos, BindingFlags bindingFlags, params Type[] argumentTypes)
+        {
+            MethodInfo methodInfo = null;
+
+            // Check for extension methods
+            foreach (var a in AssemblyCache.GetAssemblies())
+            {
+                if (a.IsDynamic == false)
+                {
+                    methodInfos = a.GetTypes()
+                        .Where(t =>
 #if NETSTANDARD1_6
-                                t.GetTypeInfo().IsSealed &&
-                                !t.GetTypeInfo().IsGenericType &&
-                                !t.IsNested)
+                            t.GetTypeInfo().IsSealed &&
+                            !t.GetTypeInfo().IsGenericType &&
+                            !t.IsNested)
 #else
-                                t.IsSealed &&
-                                !t.IsGenericType &&
-                                !t.IsNested)
+                            t.IsSealed &&
+                            !t.IsGenericType &&
+                            !t.IsNested)
 #endif
-                            .SelectMany(
-                                (t) =>
-                                {
-                                    return t
-                                        .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                                        .Where(m => m.Name == name);
-                                });
-
-                        if (!methodInfos.IsNullOrEmpty())
-                        {
-                            methodInfo = methodInfos.Select(
-                                m => new
-                                {
-                                    Method = m,
-                                    Parms = m.GetParameters(),
-                                    Args = m.GetGenericArguments()
-                                })
-                                .Where(x =>
-                                    x.Method.IsDefined(typeof(ExtensionAttribute), false) &&
-                                    x.Parms[0].ParameterType == type &&
-                                    ParameterTypesMatch(x.Parms, 1, argumentTypes, 1, argumentTypes.Length - 1))
-                                .Select(x => x.Method)
-                                .FirstOrDefault();
-
-                            if (methodInfo != null)
+                        .SelectMany(
+                            (t) =>
                             {
-                                return methodInfo;
-                            }
+                                return t
+                                    .GetMethods(bindingFlags)
+                                    .Where(m => m.Name == name);
+                            });
+
+                    if (!methodInfos.IsNullOrEmpty())
+                    {
+                        methodInfo = methodInfos.Select(
+                            m => new
+                            {
+                                Method = m,
+                                Parms = m.GetParameters(),
+                                Args = m.GetGenericArguments()
+                            })
+                            .Where(x =>
+                                x.Method.IsDefined(typeof(ExtensionAttribute), false) &&
+                                x.Parms[0].ParameterType == type &&
+                                ParameterTypesMatch(x.Parms, 1, argumentTypes, 1, argumentTypes.Length - 1))
+                            .Select(x => x.Method)
+                            .FirstOrDefault();
+
+                        if (methodInfo != null)
+                        {
+                            return methodInfo;
                         }
                     }
                 }
@@ -499,31 +559,63 @@
         /// <summary>
         /// Gets a method by name and paramters.
         /// </summary>
+        /// <typeparam name="T">The generic argument type.</typeparam>
         /// <param name="type">The type to search for the method.</param>
         /// <param name="name">The name of the method.</param>
         /// <param name="bindingFlags">The binding flags to use.</param>
-        /// <param name="genericArgs">An array of generic argument types.</param>
         /// <param name="parameters">An array of parameter types.</param>
         /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
-        public static MethodInfo GetMethod(this Type type, string name, BindingFlags bindingFlags, Type[] genericArgs, Type[] parameters)
+        public static MethodInfo GetMethod<T>(this Type type, string name, BindingFlags bindingFlags, Type[] parameters)
         {
-            var mis = type
-                .GetMethods(bindingFlags).Where(m => m.Name == name);
+            return type.GetMethod(name, bindingFlags, new[] { typeof(T) }, parameters);
+        }
 
-            MethodInfo mi = mis.Select(
-                m => new
-                {
-                    Method = m,
-                    Parms = m.GetParameters(),
-                    Args = m.GetGenericArguments()
-                })
-                .Where(x =>
-                    TypeListsMatch(x.Args, genericArgs) &&
-                    ParameterTypesMatch(x.Parms, parameters))
-                .Select(x => x.Method)
-                .FirstOrDefault();
+        /// <summary>
+        /// Gets a method by name and paramters.
+        /// </summary>
+        /// <typeparam name="T1">The first generic argument type.</typeparam>
+        /// <typeparam name="T2">The second generic argument type.</typeparam>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The name of the method.</param>
+        /// <param name="bindingFlags">The binding flags to use.</param>
+        /// <param name="parameters">An array of parameter types.</param>
+        /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
+        public static MethodInfo GetMethod<T1, T2>(this Type type, string name, BindingFlags bindingFlags, Type[] parameters)
+        {
+            return type.GetMethod(name, bindingFlags, new[] { typeof(T1), typeof(T2) }, parameters);
+        }
 
-            return mi;
+        /// <summary>
+        /// Gets a method by name and paramters.
+        /// </summary>
+        /// <typeparam name="T1">The first generic argument type.</typeparam>
+        /// <typeparam name="T2">The second generic argument type.</typeparam>
+        /// <typeparam name="T3">The third generic argument type.</typeparam>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The name of the method.</param>
+        /// <param name="bindingFlags">The binding flags to use.</param>
+        /// <param name="parameters">An array of parameter types.</param>
+        /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
+        public static MethodInfo GetMethod<T1, T2, T3>(this Type type, string name, BindingFlags bindingFlags, Type[] parameters)
+        {
+            return type.GetMethod(name, bindingFlags, new[] { typeof(T1), typeof(T2), typeof(T3) }, parameters);
+        }
+
+        /// <summary>
+        /// Gets a method by name and paramters.
+        /// </summary>
+        /// <typeparam name="T1">The first generic argument type.</typeparam>
+        /// <typeparam name="T2">The second generic argument type.</typeparam>
+        /// <typeparam name="T3">The third generic argument type.</typeparam>
+        /// <typeparam name="T4">The fourth generic argument type.</typeparam>
+        /// <param name="type">The type to search for the method.</param>
+        /// <param name="name">The name of the method.</param>
+        /// <param name="bindingFlags">The binding flags to use.</param>
+        /// <param name="parameters">An array of parameter types.</param>
+        /// <returns>A <see cref="MethodInfo"/> if the method is found; otherwise false.</returns>
+        public static MethodInfo GetMethod<T1, T2, T3, T4>(this Type type, string name, BindingFlags bindingFlags, Type[] parameters)
+        {
+            return type.GetMethod(name, bindingFlags, new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, parameters);
         }
 
         /// <summary>
@@ -731,6 +823,35 @@
                 if (source[i].ParameterType.IsSimilarType(dest[i]) == false)
                 {
                     return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks a list of types to see if they match another list of types.
+        /// </summary>
+        /// <param name="leftTypes">The first type list.</param>
+        /// <param name="rightTypes">The second type list.</param>
+        /// <returns>True if the types match; otherwise false.</returns>
+        private static bool TypesMatch(this Type[] leftTypes, Type[] rightTypes)
+        {
+            if (leftTypes != rightTypes)
+            {
+                if ((leftTypes != null && rightTypes == null) ||
+                    (leftTypes == null && rightTypes != null) ||
+                    leftTypes.Length != rightTypes.Length)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < leftTypes.Length; i++)
+                {
+                    if (leftTypes[i] != rightTypes[i])
+                    {
+                        return false;
+                    }
                 }
             }
 
